@@ -1,6 +1,7 @@
 package com.example.gigi_ibuhamil.pages.diagnosisscreen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,12 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.models.listpertayaan
 import com.example.gigi_ibuhamil.ui.*
+import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.example.gigi_ibuhamil.util.insertIntoDatabase
 import com.example.gigi_ibuhamil.util.lists
@@ -225,6 +228,7 @@ fun Pertanyaan(item: listpertayaan, navController: NavController) {
 
 @Composable
 fun ShowDiagnose(item:String,navController: NavController) {
+    val context = LocalContext.current
     val openDialog = remember { mutableStateOf(false) }
     AlertDialog(
         modifier = Modifier.clip(RoundedCornerShape(15.dp)),
@@ -256,7 +260,11 @@ fun ShowDiagnose(item:String,navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
-                    insertIntoDatabase(cur)
+                    SavedPreference.setDiagnosis(context,cur)
+                    Toast.makeText(context,
+                        SavedPreference.getDiagnosis(context),
+                        Toast.LENGTH_SHORT).show()
+                    Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
                     openDialog.value = false
                     CurReturn()
                     navController.navigate(Screen.DiagnosisScreen.route){popUpTo(0)}
@@ -269,12 +277,16 @@ fun ShowDiagnose(item:String,navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
-                    insertIntoDatabase(cur)
+                    SavedPreference.setDiagnosis(context,cur)
+                    Toast.makeText(context,
+                        SavedPreference.getDiagnosis(context),
+                        Toast.LENGTH_SHORT).show()
+                    Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
                     openDialog.value = false
                     CurReturn()
-                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                    navController.navigate(Screen.BeratBadanScreen.route){popUpTo(0)}
                 }) {
-                Text(fontSize = 15.sp,text = "Halaman Utama")
+                Text(fontSize = 15.sp,text = "Lanjutkan Assessment")
             }
         }
     )

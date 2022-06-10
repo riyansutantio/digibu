@@ -9,13 +9,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.gigi_ibuhamil.models.AuthViewModel
 import com.example.gigi_ibuhamil.pages.aboutscreen.AboutScreen
+import com.example.gigi_ibuhamil.pages.beratbadanscreen.BeratBadanScreen
 import com.example.gigi_ibuhamil.pages.diagnosisscreen.DiagnosisScreen
 import com.example.gigi_ibuhamil.pages.ebookscreen.EbookScreen
 import com.example.gigi_ibuhamil.pages.firstscreen.FirstScreen
 import com.example.gigi_ibuhamil.pages.gejalascreen.GejalaScreen
+import com.example.gigi_ibuhamil.pages.kesimpulanscreen.KesimpulanScreen
 import com.example.gigi_ibuhamil.pages.loginscreen.LoginScreen
 import com.example.gigi_ibuhamil.pages.penyakitscreen.PenyakitScreen
+import com.example.gigi_ibuhamil.pages.perilakuscreen.PerilakuScreen
 import com.example.gigi_ibuhamil.pages.petunjukscreen.PetunjukScreen
+import com.example.gigi_ibuhamil.pages.polamakanscreen.PolaMakanScreen
 import com.example.gigi_ibuhamil.pages.splashscreen.SplashScreen
 import com.example.gigi_ibuhamil.pages.videoscreen.VideoScreen
 import com.example.gigi_ibuhamil.pages.welcomescreen.WelcomeScreen
@@ -59,6 +63,18 @@ fun Navigations() {
         }
         composable(route = Screen.InformationScreen.route){
             FirstScreen(navController)
+        }
+        composable(route = Screen.BeratBadanScreen.route){
+            BeratBadanScreen(navController)
+        }
+        composable(route = Screen.PolaMakanScreen.route){
+            PolaMakanScreen(navController)
+        }
+        composable(route = Screen.PerilakuScreen.route){
+            PerilakuScreen(navController)
+        }
+        composable(route = Screen.KesimpulanScreen.route){
+            KesimpulanScreen(navController)
         }
 
     }

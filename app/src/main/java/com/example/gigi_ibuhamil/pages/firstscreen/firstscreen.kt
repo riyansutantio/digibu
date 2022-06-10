@@ -71,6 +71,7 @@ fun Isi(navController: NavController) {
         FormItems(navController)
     }
 }
+
 @Composable
 fun FormItems(navController: NavController) {
     val TAG = "add user's data"
@@ -101,7 +102,7 @@ fun FormItems(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(DaftarColor)
-        ){
+        ) {
             Column() {
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -151,7 +152,8 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
                     OutlinedTextField(
                         value = usiaController,
@@ -200,11 +202,21 @@ fun FormItems(navController: NavController) {
                             cursorColor = Color.White),
                     )
                     Button(onClick = {
-                        db.collection("users").document(emailController.text)
-                            .set(user)
-                            .addOnSuccessListener {
-                                Toast.makeText(context, "Sucessfull add user's data", Toast.LENGTH_SHORT).show()
-                            }.addOnFailureListener { Toast.makeText(context, "Failed add user's data", Toast.LENGTH_SHORT).show() }
+                        try {
+                            db.collection("users").document(emailController.text)
+                                .set(user)
+                                .addOnSuccessListener {
+                                    Toast.makeText(context,
+                                        "Sucessfull add user's data",
+                                        Toast.LENGTH_SHORT).show()
+                                }.addOnFailureListener {
+                                    Toast.makeText(context,
+                                        "Failed add user's data",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                        } catch (e: Exception){
+                            println("we catch something")
+                        }
                     }) {
                         Text(text = "Simpan ", color = Color.White, fontSize = 15.sp)
                     }
