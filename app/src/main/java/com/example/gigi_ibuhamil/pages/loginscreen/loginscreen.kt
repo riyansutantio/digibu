@@ -22,6 +22,8 @@ import com.example.gigi_ibuhamil.util.AuthResultContract
 import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 
@@ -29,7 +31,9 @@ private val TAG = "AuthScreen"
 @ExperimentalMaterialApi
 @Composable
 fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
+    val db = Firebase.firestore
     val context = LocalContext.current
+    val emails = ArrayList<String>()
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf<String?>(null) }
     val user by remember(authViewModel){authViewModel.user}.collectAsState()
@@ -60,16 +64,28 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
         }
     )
     user?.let{
+        val current = LocalContext.current
         SavedPreference.setDisplayName(LocalContext.current,it.displayName)
         SavedPreference.setEmail(LocalContext.current,it.email)
-        if(SavedPreference.getFirst(context).toString()== "true"){
-            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
-            Toast.makeText(LocalContext.current, "Sucessfull Login, Directing to Home", Toast.LENGTH_SHORT).show()
-        }else{
-            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
-            Toast.makeText(LocalContext.current, "Sucessfull Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
-        }
-        Log.d(TAG,"Successfull login,Directing to Welcome Screen")
+        db.collection("users")
+            .get()
+            .addOnSuccessListener {
+                    result ->
+                for(document in result) {
+                    var emailUser = document.data["email"].toString()
+                    emails.add(emailUser)
+                    for (email in emails.indices)
+                        if(SavedPreference.getEmail(context).toString() == emails[email]) {
+                            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                            Toast.makeText(current, "Successful Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
+                        }
+                        else if (SavedPreference.getEmail(context).toString() != emails[email]){
+                            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
+//                            Toast.makeText(current, "Successful Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
+
+                        }
+                }
+            }
     }
 }
 
