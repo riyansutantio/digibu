@@ -22,24 +22,13 @@ class lists {
         ),
         listpenyakit(
             id = "P02",
-            namaPenyakit = "Karang Gigi",
-            deskripsi = "Pengerasan sisa makanan dan bakteri yang tersisa/menempel pada permukaan gigi.",
-            gejala = "G04 - Gigi terasa kotor  \n" +
-                    "G05 - Berdarah ketika menyikat gigi",
-            penyebab = "Cara dan frekuensi gosok gigi yang tidak tepat.",
-            penanganan = "Tidak ada penanganan pertama oleh pasien. Karang gigi tidak boleh dicongkel-congkel "+
-                    "sendiri serta tidak boleh membeli obat-obatan kimia yang tidak disarankan dokter gigi.",
-            pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat.",
-            perawatan = "Scaling dan root Planning (Pembersihan karang gigi)."
-        ),
-        listpenyakit(
-            id = "P03",
             namaPenyakit = "Gingivitis",
             deskripsi = "Gusi mengalami pembengkakan/peradangan yang disebabkan oleh sisa makanan "+
                     "yang mengeras/Karang gigi dan bakteri.",
-            gejala = "G05 - Berdarah ketika menyikat gigi   \n" +
-                    "G07 - Gusi mengalami pembekakan  \n"+
-                    "G08 - Gusi terasa saki",
+            gejala = "G04 - Berdarah ketika menyikat gigi   \n" +
+                    "G05 - Gusi mengalami pembekakan  \n"+
+                    "G06 - Gusi terasa sakit \n" +
+                    "G07 - Gusi berwarna merah sampai kebiruan",
             penyebab = "Gingivitis disebabkan oleh bakteri/ karang gigi.",
             penanganan = "Meminum obat anti radang",
             pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat.",
@@ -47,94 +36,19 @@ class lists {
                     "obat-obatan anti raadang, antibiotik, sampai operasi gusi."
         ),
         listpenyakit(
-            id = "P04",
+            id = "P03",
             namaPenyakit = "Periodontitis",
             deskripsi = "Peradangan pada jaringan penyokong gigi.",
-            gejala = "G09 - Gigi terasa ngilu yang menyebar   \n" +
-                    "G10 - Gigi terasa ngilu saat mengunyah  \n"+
-                    "G11 - Gigi goyah \n"+
-                    "G12 - Gigi terlihat memanjang",
-            penyebab = "Trauma gigitan, Tambalan berlebih, usia lanjut, karang gigi, karies gigi.",
-            penanganan = "Meminum obat penahan nyeri dan anti radang",
-            pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat dan scaling teratur setidaknya 6 bulan sekali.",
-            perawatan = "Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan."
-        ),
-        listpenyakit(
-            id = "P05",
-            namaPenyakit = "Abses Periodontal",
-            deskripsi = "Keluarnya nanah yang disebabkan oleh infeksi di daerah sekitar gigi.",
-            gejala = "G09 - Gigi terasa ngilu yang menyebar \n" +
-                    "G10 - Gigi terasa ngilu saat mengunyah \n"+
+            gejala = "G02 - Gigi terasa ngilu \n" +
+                    "G08 - Gigi terasa ngilu yang menyebar  \n"+
+                    "G09 - Gigi terasa ngilu saat mengunyah \n"+
+                    "G10 - Gigi terlihat memanjang \n" +
                     "G11 - Gigi goyah",
             penyebab = "Trauma gigitan, Tambalan berlebih, usia lanjut, karang gigi, karies gigi.",
             penanganan = "Meminum obat penahan nyeri dan anti radang",
             pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat dan scaling teratur setidaknya 6 bulan sekali.",
-            perawatan = "Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan antibiotik."
-        ),
-        listpenyakit(
-            id = "P06",
-            namaPenyakit = "Abses Periapikal",
-            deskripsi = "Disebabkan oleh bakteri karies yang menginfeksi sampai ke saraf gigi (pasti disertai dengan gigi berlubang).",
-            gejala = "G10 - Gigi terasa ngilu saat mengunyah\n" +
-                    "G13 - Sakit yang terlokalisir (spesifik ke tempat tertentu)\n"+
-                    "G14 - Gigi terasa pegal \n" +
-                    "G15 - Gigi terasa sakit walaupun sudah ditambal",
-            penyebab = "Penyakit disebabkan oleh infeksi bakteri serta kesalahan dalam teknik dan frekuensi menggosok gigi yang baik dan benar .",
-            penanganan = "meminum obat penahan nyeri.",
-            pencegahan = "Menggosok gigi dengan frekuensi dan teknik yang tepat.",
             perawatan = "Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan."
         ),
-        listpenyakit(
-            id = "P07",
-            namaPenyakit = "Kanker Mulut",
-            deskripsi = "Kondisi keganasan/ jaringan asing yang tidak seharusnya berkembang di dalam mulut. ",
-            gejala = "G16 - Sariawan terjadi terus menerus   \n" +
-                    "G17 - Berat badan menurun \n"+
-                    "G18 - Muncul benjolan di daerah mulut" ,
-            penyebab = "Merokok, jarang kontrol ke dokter gigi, mengunyah sirih, obat-obatan/benda-benda karsinogenik.",
-            penanganan = "Disarankan untuk langsung ke dokter gigi.",
-            pencegahan = "Tidak merokok, mengindari bahan karsinogenik, dan kontrol teratur ke dokter gigi karena "+
-                    "kanker gigi sebagian banyak tidak terdeteksi/tanpa gejala.",
-            perawatan = "Pengobatan dan pembedahan kanker."
-        ),
-        listpenyakit(
-            id = "P08",
-            namaPenyakit = "Abrasi Gigi",
-            deskripsi = "Terkikisnya bagian gigi yang berdekatan dengan gusi.",
-            gejala = "G19 - Gigi terasa ngilu saat minum-minuman panas/dingin" ,
-            penyebab = "Cara menggosok gigi yang salah/terlalu keras sehingga terkikisnya gigi.",
-            penanganan = "Mengubah cara dan frekuensi menggosok gigi.",
-            pencegahan = "Kontrol teratur ke dokter gigi.",
-            perawatan = "Penambalan gigi  serta memperbaiki metode dan frekuensi menggosok gigi."
-        ),
-        listpenyakit(
-            id = "P09",
-            namaPenyakit = "Gangguan Gigi Bungsu",
-            deskripsi = "Nyeri yang disebabkan oleh pertumbuhan gigi bungsu.",
-            gejala = "G20 - Terasa sakit yang tajam di daerah belakang gigi(dekat rahang belakang) \n" +
-                    "G21 - Gigi terasa sakit hingga ke mata/telinga\n"+
-                    "G22 - Migrain \n"+
-                    "G23 - Sakit gigi diusia gigi bungsu tumbuh (18-25 tahun)",
-            penyebab = "Tumbuhnya gigi bungsu yang mendesak posisi gigi sebelahnya.",
-            penanganan = "Meminum obat analgetik.",
-            pencegahan = "Rajin kontrol ke dokter gigi sehingga dapat terdiagnosa lebih awal.",
-            perawatan = "pengobatan dan operasi pencabutan gigi."
-        ),
-        listpenyakit(
-            id = "P10",
-            namaPenyakit = "Halitosis",
-            deskripsi = "Bau mulut yang mengganggu.",
-            gejala = "G06 - Bau mulut \n" +
-                    "G24 - Sakit perut",
-            penyebab = "dapat disebabkan oleh faktor dalam mulut (karang gigi dan bakteri karies),"+
-                    " faktor dalam tubuh (sakit lambung, dan ginjal).",
-            penanganan = "faktor dalam mulut = boleh menggunakan obat kumur dengan sayarat sesuai dengan anjuran "+
-                    "dokter gigi dan tidak boleh digunakan lebih dari 2 minggu.\n" +
-                    "faktor dalam tubuh = jika bau mulut tidak dari dalam mulut, kemungkinan "+
-                    "disebabkan oleh lambung dan ginjal dan segera ke dokter spesialis penyakit dalam.",
-            pencegahan = "Kontrol ke dokter gigi dan perubahan metode gosok gigi.",
-            perawatan = "Mengilangkan/menyebuhkan faktor penyebab dan pengobatan."
-        )
     )
     val gejalalist: List<listgejala> = listOf(
         listgejala(
@@ -151,88 +65,36 @@ class lists {
         ),
         listgejala(
             id = "G04",
-            namagejala = "Gigi Terasa Kotor"
+            namagejala = "Berdarah ketika menyikat gigi"
         ),
         listgejala(
             id = "P05",
-            namagejala = "Berdarah Ketika Menyikat Gigi"
+            namagejala = "Gusi mengalami pembekakan"
         ),
         listgejala(
             id = "G06",
-            namagejala = "Bau Mulut"
+            namagejala = "Gusi terasa sakit"
         ),
         listgejala(
             id = "G07",
-            namagejala = "Gusi Mengalami Pembengkakan"
+            namagejala = "Gusi berwarna merah sampai kebiruan"
         ),
         listgejala(
             id = "G08",
-            namagejala = "Gusi Terasa Sakit"
+            namagejala = "Gigi terasa ngilu yang menyebar"
         ),
         listgejala(
             id = "G09",
-            namagejala = "Gigi Terasa Ngilu Yang Menyebar"
+            namagejala = "Gigi terasa ngilu saat mengunyah"
         ),
         listgejala(
             id = "G10",
-            namagejala = "Gigi Terasa Ngilu Saat Mengunyah"
+            namagejala = "Gigi terlihat memanjang"
         ),
         listgejala(
             id = "G11",
-            namagejala = "Gigi Goyah"
+            namagejala = "Gigi goyah"
         ),
-        listgejala(
-            id = "G12",
-            namagejala = "Gigi Terlihat Memanjang"
-        ),
-        listgejala(
-            id = "G13",
-            namagejala = "Sakit Yang Terlokalisir"
-        ),
-        listgejala(
-            id = "G14",
-            namagejala = "Gigi Terasa Pegal"
-        ),
-        listgejala(
-            id = "G15",
-            namagejala = "Gigi Terasa Sakit Walaupun Sudah Ditambal"
-        ),
-        listgejala(
-            id = "G16",
-            namagejala = "Sariawan Terjadi Terus Menerus"
-        ),
-        listgejala(
-            id = "G17",
-            namagejala = "Berat Badan Menurun"
-        ),
-        listgejala(
-            id = "G18",
-            namagejala = "Muncul benjolan Di Mulut"
-        ),
-        listgejala(
-            id = "G19",
-            namagejala = "Gigi Ngilu Saat Minum Minuman Dingin/Panas"
-        ),
-        listgejala(
-            id = "G20",
-            namagejala = "Terasa Sakit Yang Tajam Pada Gigi Belakang"
-        ),
-        listgejala(
-            id = "G21",
-            namagejala = "Gigi Sakit Hingga Merambat Ke Telinga/Mata"
-        ),
-        listgejala(
-            id = "G22",
-            namagejala = "Migrain"
-        ),
-        listgejala(
-            id = "G23",
-            namagejala = "Gigi Sakit Ketika Usia 18-25 Tahun"
-        ),
-        listgejala(
-            id = "G24",
-            namagejala = "Sakit Perut"
-        )
     )
     val petunjuklist: List<listpetunjuk> = listOf(
         listpetunjuk(
@@ -296,77 +158,26 @@ class lists {
             idpertanyaan = "Q01",
             soal = "Apakah gigi anda terasa ngilu saat mengunyah?",
             jawaban1 = "Q02",
-            jawaban0 = "Q05"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q02",
-            soal = "Apakah gigi anda terasa ngilu yang menyebar dan/atau gigi terasa goyah?",
-            jawaban1 = "Q03",
             jawaban0 = "Q04"
         ),
         listpertayaan(
+            idpertanyaan = "Q02",
+            soal = "Apakah anda merasakah gigi ngilu yang menyebar saat mengunyah dan gigi tampak memanjang serta goyah",
+            jawaban1 = "Penyakit Periodintitis",
+            jawaban0 = "Q03"
+        ),
+        listpertayaan(
             idpertanyaan = "Q03",
-            soal = "Apakah gigi anda terlihat memanjang pada beberapa/salah satu gigi?",
-            jawaban1 = "Penyakit Periodontitis",
-            jawaban0 = "Penyakit Abses Periodontal"
+            soal = "Apakah gigi anda terasa sakit hingga merasakan pusing?",
+            jawaban1 = "Penyakit Karies Gigi",
+            jawaban0 = "Penyakit Karies Gigi atau Periodontitis"
         ),
         listpertayaan(
             idpertanyaan = "Q04",
-            soal = "Apakah anda merasakan rasa sakit yang terpusat dan " +
-                    "merasakan pegal pada gigi walaupun gigi sudah pernah ditambal?",
-            jawaban1 = "Penyakit Abses Periapikal",
-            jawaban0 = "Penyakit Periodontitis atau Abses Periodontal atau Abses Peripikal"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q05",
-            soal = "Apakah gigi anda pernah berdarah ketika menggosok gigi?",
-            jawaban1 = "Q06",
-            jawaban0 = "Q08"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q06",
-            soal = "Apakah gigi anda terasa kotor?",
-            jawaban1 = "Penyakit Karang Gigi",
-            jawaban0 = "Q07"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q07",
-            soal = "Apakah gusi anda mengalami pembekakan dan terasa sakit?",
+            soal = "Apakah gusi anda terlihat membengkak dan sakit serta berwarna merah hingga kebiruan?",
             jawaban1 = "Penyakit Gingivitis",
-            jawaban0 = "Penyakit Karang Gigi atau Gingivitis"
+            jawaban0 = "Sehat"
         ),
-        listpertayaan(
-            idpertanyaan = "Q08",
-            soal = "Apakah anda merasakan gigi ngilu dan sakit gigi sampai sakit kepala?",
-            jawaban1 = "Penyakit Karies Gigi",
-            jawaban0 = "Q09"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q09",
-            soal = "Apakah anda mengalami sakit perut dan bau mulut?",
-            jawaban1 = "Penyakit Halitosis",
-            jawaban0 = "Q10"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q10",
-            soal = "Apakah anda mengalami sariawan terus menerus dan muncul benjolan di " +
-                    "daerah mulut serta berat badan menurun?",
-            jawaban1 = "Penyakit Kanker Mulut",
-            jawaban0 = "Q11"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q11",
-            soal = "Apakah anda merasakan rasa sakit yang tajam pada gigi belakang/sampai " +
-                    "telinga saat umur diantara 18-25 tahun dan mengalami migrain?",
-            jawaban1 = "Penyakit Gangguan Gigi Bungsu",
-            jawaban0 = "Q12"
-        ),
-        listpertayaan(
-            idpertanyaan = "Q12",
-            soal = "Apakah Anda merasakan ngilu saat minum minuman dingin/panas?",
-            jawaban1 = "Penyakit Abrasi Gigi",
-            jawaban0 = "SEHAT"
-        )
     )
     val tentangList: List<listTentang> = listOf(
         listTentang(
@@ -380,6 +191,93 @@ class lists {
             desc4 = "Terimakasih, \n" +
                     "Pengembang.\n\n"+"Riyan Sutantio Bangkit Nugroho\n" +
                     "Riyantio84@gmail.com",
+        )
+    )
+    val polamakanlist: List<listpolamakan> = listOf(
+        listpolamakan(
+            idpertanyaan = 0,
+            soal = "Dalam 1 minggu berapa kali anda mengkonsumsi sayur?",
+            jawaban1 = "   7x  ",
+            jawaban2 = "5x - 6x",
+            jawaban3 = "2x - 4x",
+            jawaban4 = "   1x  ",
+            point1 = 4,
+            point2 = 3,
+            point3 = 2,
+            point4 = 1,
+            next = 1
+        ),
+        listpolamakan(
+            idpertanyaan = 1,
+            soal = "Dalam 1 minggu berapa kali anda mengkonsumsi buah?",
+            jawaban1 = "   7x  ",
+            jawaban2 = "5x - 6x",
+            jawaban3 = "2x - 4x",
+            jawaban4 = "   1x  ",
+            point1 = 4,
+            point2 = 3,
+            point3 = 2,
+            point4 = 1,
+            next = 2
+        ),
+        listpolamakan(
+            idpertanyaan = 2,
+            soal = "Dalam 1 minggu berapa kali anda mengkonsumsi olahan susu?",
+            jawaban1 = "   7x  ",
+            jawaban2 = "5x - 6x",
+            jawaban3 = "2x - 4x",
+            jawaban4 = "   1x  ",
+            point1 = 4,
+            point2 = 3,
+            point3 = 2,
+            point4 = 1,
+            next = 3
+        ),
+        listpolamakan(
+            idpertanyaan = 3,
+            soal = "Dalam 1 minggu berapa kali anda mengkonsumsi snack/kue/cemilan manis?",
+            jawaban1 = "   7x  ",
+            jawaban2 = "5x - 6x",
+            jawaban3 = "2x - 4x",
+            jawaban4 = "   1x  ",
+            point1 = 1,
+            point2 = 2,
+            point3 = 3,
+            point4 = 4,
+            next = 4
+        ),
+        listpolamakan(
+            idpertanyaan = 4,
+            soal = "Dalam 1 minggu berapa kali anda mengkonsumsi minuman-minuman manis?",
+            jawaban1 = "   7x  ",
+            jawaban2 = "5x - 6x",
+            jawaban3 = "2x - 4x",
+            jawaban4 = "   1x  ",
+            point1 = 1,
+            point2 = 2,
+            point3 = 3,
+            point4 = 4,
+            next = 5
+        ),
+    )
+    val perilakulist = listOf(
+        listperilaku(
+            idpertanyaan = 0,
+            soal = "Dalam sehari berapa kali anda menggosok gigi?",
+            jawaban1 = "     1x    ",
+            jawaban2 = "Lebih dari 1x",
+            point1 = 1,
+            point2 = 3,
+            next = 1
+        ),
+        listperilaku(
+            idpertanyaan = 1,
+            soal = "Dalam 6 bulan berapa kali anda datang ke dokter gigi?",
+            jawaban1 = "Tidak pernah",
+            jawaban2 = " 1x / Lebih ",
+            point1 = 4,
+            point2 = 8,
+            next = 2
         )
     )
 }

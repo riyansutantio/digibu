@@ -12,4 +12,8 @@ sealed class Screen(val route: String) {
     object SplashScreen : Screen("Splash_screen)")
     object VideoScreen : Screen("Video_screen)")
     object InformationScreen : Screen("information_screen")
+    object BeratBadanScreen : Screen("beratbadan_screen")
+    object PolaMakanScreen : Screen("polamakan_screen")
+    object PerilakuScreen : Screen("perilaku_screen")
+    object KesimpulanScreen : Screen("kesimpulan_screen")
 }
