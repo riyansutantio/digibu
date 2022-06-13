@@ -40,12 +40,12 @@ fun DiagnosisScreen(navController: NavController) {
         Column {
             Title(navController)
             Question(quest = ques,navController)
-            if ("P" in cur) {
+            if ("Penyakit" in cur) {
                 ShowDiagnose(item = cur, navController)
                 Log.d(TAG,"Kemungkinan Penyakit diketahui $cur")
 
             }
-            if (cur == "SEHAT") {
+            if (cur == "Sehat") {
                 ShowDiagnose(item = cur, navController)
                 Log.d(TAG,"Kemungkinan User $cur")
             }

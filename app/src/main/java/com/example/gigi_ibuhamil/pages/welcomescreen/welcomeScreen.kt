@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,63 +61,21 @@ fun LogoutButton(navController: NavController) {
 
 @Composable
 fun PopUpLogout(navController: NavController) {
-    val context = LocalContext.current
-    var dialogState by remember { mutableStateOf(false) }
     Column(
     ) {
-        Button(
-            modifier = Modifier
-                .padding(5.dp),
-            onClick = {
-                dialogState = true
-            },
-            colors = ButtonDefaults.buttonColors(YesButton)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Logout",color = Color.White)
-        }
-        if (dialogState) {
-            AlertDialog(
-                modifier = Modifier.clip(RoundedCornerShape(15.dp)),
-                title = {},
-                onDismissRequest = {
-                    dialogState = false
-                },
-                text = {
-                    Text(
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        text = "Apakah anda yakin untuk Log Out?"
-                    )
-                },
-                confirmButton = {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(YesButton),
-                        onClick = {
-                            dialogState = false
-                        }) {
-                        Text(fontSize = 15.sp, text = "Tidak",color = Color.White,)
-                    }
-                },
-                dismissButton = {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(NoButton),
-                        onClick = {
-                            getGoogleSignInClient(context).signOut().addOnCompleteListener{
-                                Toast.makeText(context, "Logout Berhasil", Toast.LENGTH_SHORT).show()
-                                SavedPreference.setDefaultEmail(context)
-                                SavedPreference.setDefaultName(context)
-                                navController.navigate(Screen.LoginScreen.route){popUpTo(0)}
-                            }
-                        }) {
-                        Text(fontSize = 15.sp, text = "Ya",color = Color.White,)
-                    }
-                }
+            Icon(
+                imageVector = Icons.Filled.Settings,
+                contentDescription = "setting",
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(10.dp)
+                    .clickable {
+                        navController.navigate(Screen.SettingScreen.route)
+                    },
             )
         }
     }
