@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.models.AuthViewModel
+import com.example.gigi_ibuhamil.models.User
 import com.example.gigi_ibuhamil.ui.GoogleSignInButtonUi
 import com.example.gigi_ibuhamil.ui.*
 import com.example.gigi_ibuhamil.util.AuthResultContract
@@ -23,6 +24,7 @@ import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
@@ -76,14 +78,30 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
                     emails.add(emailUser)
                     for (email in emails.indices)
                         if(SavedPreference.getEmail(context).toString() == emails[email]) {
-                            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                            SavedPreference.setAlamat(current,document.data["alamat"].toString())
+//                            SavedPreference.setDesa(current,it.email)
+//                            SavedPreference.setTahun(current,it.email)
+//                            SavedPreference.setUsia(current,it.email)
+//                            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                             Toast.makeText(current, "Successful Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
                         }
                         else if (SavedPreference.getEmail(context).toString() != emails[email]){
                             navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
 //                            Toast.makeText(current, "Successful Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
-
                         }
+                }
+            }
+        db.collection("users").document(it.email.toString())
+            .addSnapshotListener { document, e ->
+                if (document != null) {
+                    val userData = document.toObject<User>()
+                    SavedPreference.setAlamat(context, userData?.alamat)
+                    SavedPreference.setUsia(context, userData?.usia_kelahiran)
+                    SavedPreference.setTahun(context, userData?.tahun_kelahiran)
+                    SavedPreference.setDesa(context, userData?.desa)
+                    SavedPreference.setRole(context, userData?.role)
+                } else {
+                    Log.d(TAG, "No such document")
                 }
             }
     }

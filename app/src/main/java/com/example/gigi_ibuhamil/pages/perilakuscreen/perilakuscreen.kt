@@ -106,9 +106,6 @@ fun PerilakuScreen(navController: NavController) = Box(
                                 .fillMaxWidth(),
                             onClick = {
                                 SavedPreference.setPerilaku(context, result)
-                                Toast.makeText(context,
-                                    SavedPreference.getPerilaku(context),
-                                    Toast.LENGTH_SHORT).show()
                                 dialogState = false
                                 ResultReturn("Default")
                                 CurReturn(0)
@@ -124,9 +121,6 @@ fun PerilakuScreen(navController: NavController) = Box(
                                 .fillMaxWidth(),
                             onClick = {
                                 SavedPreference.setPerilaku(context, result)
-                                Toast.makeText(context,
-                                    SavedPreference.getPerilaku(context),
-                                    Toast.LENGTH_SHORT).show()
                                 dialogState = false
                                 ResultReturn("Default")
                                 CurReturn(0)

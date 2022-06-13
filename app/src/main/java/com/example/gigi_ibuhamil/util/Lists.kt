@@ -297,5 +297,9 @@ class lists {
             id = "S04",
             setting = "Cetak History"
         ),
+        settingModel(
+            id = "S05",
+            setting = "Add Admin"
+        ),
     )
 }

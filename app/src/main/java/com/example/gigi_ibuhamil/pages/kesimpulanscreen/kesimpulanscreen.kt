@@ -79,6 +79,8 @@ fun Isi(navController: NavController) {
     val bmi = SavedPreference.getBMI(context = context).toString()
     val perilaku = SavedPreference.getPerilaku(context = context).toString()
     val pola = SavedPreference.getPola(context = context).toString()
+    val usia = SavedPreference.getUsia(context = context).toString()
+    val tahun = SavedPreference.getTahun(context = context).toString()
     var dialogState by remember { mutableStateOf(false) }
 
     var namaController by remember { mutableStateOf(TextFieldValue(nama)) }
@@ -87,6 +89,8 @@ fun Isi(navController: NavController) {
     var bmiController by remember { mutableStateOf(TextFieldValue(bmi)) }
     var perilakuController by remember { mutableStateOf(TextFieldValue(perilaku)) }
     var polaController by remember { mutableStateOf(TextFieldValue(pola)) }
+    var usiaController by remember { mutableStateOf(TextFieldValue(usia)) }
+    var tahunController by remember { mutableStateOf(TextFieldValue(tahun)) }
 
     val diagResult = Result(
         namaController.text,
@@ -95,6 +99,8 @@ fun Isi(navController: NavController) {
         bmiController.text,
         perilakuController.text,
         polaController.text,
+        usiaController.text,
+        tahunController.text,
     )
     BoxWithConstraints(
         modifier = Modifier
@@ -235,26 +241,32 @@ fun Isi(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
-                    Button(onClick = {
-                        try{
-                            userCollection.document(emailController.text).get()
-                                .addOnSuccessListener { document ->
-                                    if (document != null) {
-                                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                    } else {
-                                        Log.d(TAG, "No such document")
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.d(TAG, "get failed with ", exception)
-                                }
-                        }
-                        catch (e: Exception){
-                            println("we catch something")
-                        }
-                    }) {
-                        Text(text = "Get Data usia and tahun lahir")
-                    }
+                    OutlinedTextField(
+                        value = tahunController,
+                        onValueChange = { tahunController = it },
+                        enabled = false,
+                        label = { Text("Tahun Kelahiran", color = Color.White) },
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.White,
+                            cursorColor = Color.White),
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                    )
+                    OutlinedTextField(
+                        value = usiaController,
+                        onValueChange = { usiaController = it },
+                        enabled = false,
+                        label = { Text("Usia Kehamilan", color = Color.White) },
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.White,
+                            cursorColor = Color.White),
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                    )
                     Button(onClick = {
                         try {
                             resultCollection.document(emailController.text)
@@ -263,7 +275,7 @@ fun Isi(navController: NavController) {
                                     Toast.makeText(context,
                                         "Sucessfull add user's results",
                                         Toast.LENGTH_SHORT).show()
-//                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                 }.addOnFailureListener {
                                     Toast.makeText(context,
                                         "Failed add user's results",

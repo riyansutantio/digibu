@@ -261,9 +261,6 @@ fun ShowDiagnose(item:String,navController: NavController) {
                     .fillMaxWidth(),
                 onClick = {
                     SavedPreference.setDiagnosis(context,cur)
-                    Toast.makeText(context,
-                        SavedPreference.getDiagnosis(context),
-                        Toast.LENGTH_SHORT).show()
                     Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
                     openDialog.value = false
                     CurReturn()
@@ -278,9 +275,6 @@ fun ShowDiagnose(item:String,navController: NavController) {
                     .fillMaxWidth(),
                 onClick = {
                     SavedPreference.setDiagnosis(context,cur)
-                    Toast.makeText(context,
-                        SavedPreference.getDiagnosis(context),
-                        Toast.LENGTH_SHORT).show()
                     Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
                     openDialog.value = false
                     CurReturn()
