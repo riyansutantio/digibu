@@ -92,6 +92,7 @@ fun Isi(navController: NavController) {
     var usiaController by remember { mutableStateOf(TextFieldValue(usia)) }
     var tahunController by remember { mutableStateOf(TextFieldValue(tahun)) }
 
+
     val diagResult = Result(
         namaController.text,
         emailController.text,

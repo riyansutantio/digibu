@@ -58,7 +58,7 @@ fun SettingTitle(navController: NavController) {
         Row() {
             IconButton(
                 modifier = Modifier.weight(1f),
-                onClick = { navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) } }
+                onClick = { navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)} }
             ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
