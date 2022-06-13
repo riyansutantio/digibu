@@ -209,6 +209,7 @@ fun FormItems(navController: NavController) {
                                     Toast.makeText(context,
                                         "Sucessfull add user's data",
                                         Toast.LENGTH_SHORT).show()
+                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                 }.addOnFailureListener {
                                     Toast.makeText(context,
                                         "Failed add user's data",
