@@ -13,6 +13,11 @@ object SavedPreference {
     const val BMI = "0.0"
     const val POLAMAKAN = "DefaultPola"
     const val PERILAKU = "DefaultPerilaku"
+    const val ALAMAT = "DefaultAlamat"
+    const val DESA = "DefaultDesa"
+    const val TAHUN = "DefaultTahun"
+    const val USIA = "DefaultUsia"
+    const val ROLE = "DefaultRole"
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -29,18 +34,11 @@ object SavedPreference {
             email
         )
     }
-    fun setDisplayName(context: Context, displayname: String?){
+    fun setDisplayName(context: Context, displayname: String?) {
         editor(
             context,
             DISPLAYNAME,
             displayname
-        )
-    }
-    fun setFirst(context: Context, condition: String?){
-        editor(
-            context,
-            FIRST,
-            condition
         )
     }
     fun setDiagnosis(context: Context, diagnosis: String?){
@@ -71,6 +69,41 @@ object SavedPreference {
             perilaku
         )
     }
+    fun setAlamat(context: Context, condition: String?){
+        editor(
+            context,
+            ALAMAT,
+            condition
+        )
+    }
+    fun setDesa(context: Context, condition: String?){
+        editor(
+            context,
+            DESA,
+            condition
+        )
+    }
+    fun setTahun(context: Context, condition: String?){
+        editor(
+            context,
+            TAHUN,
+            condition
+        )
+    }
+    fun setUsia(context: Context, condition: String?){
+        editor(
+            context,
+            USIA,
+            condition
+        )
+    }
+    fun setRole(context: Context, condition: String?){
+        editor(
+            context,
+            ROLE,
+            condition
+        )
+    }
 
     fun getEmail(context: Context)= getSharedPreference(
         context
@@ -78,9 +111,6 @@ object SavedPreference {
     fun getDisplayName(context: Context) = getSharedPreference(
         context
     )?.getString(DISPLAYNAME,"")
-    fun getFirst(context: Context)= getSharedPreference(
-        context
-    )?.getString(FIRST,"")
     fun getDiagnosis(context: Context)= getSharedPreference(
         context
     )?.getString(DIAGOSIS,"")
@@ -93,6 +123,21 @@ object SavedPreference {
     fun getPerilaku(context: Context)= getSharedPreference(
         context
     )?.getString(PERILAKU,"")
+    fun getAlamat(context: Context)= getSharedPreference(
+        context
+    )?.getString(ALAMAT,"")
+    fun getDesa(context: Context)= getSharedPreference(
+        context
+    )?.getString(DESA,"")
+    fun getTahun(context: Context)= getSharedPreference(
+        context
+    )?.getString(TAHUN,"")
+    fun getUsia(context: Context)= getSharedPreference(
+        context
+    )?.getString(USIA,"")
+    fun getRole(context: Context)= getSharedPreference(
+        context
+    )?.getString(ROLE,"")
 
     fun setDefaultName(context: Context){
         editor(

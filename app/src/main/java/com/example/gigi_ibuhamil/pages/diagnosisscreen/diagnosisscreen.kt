@@ -40,12 +40,12 @@ fun DiagnosisScreen(navController: NavController) {
         Column {
             Title(navController)
             Question(quest = ques,navController)
-            if ("P" in cur) {
+            if ("Penyakit" in cur) {
                 ShowDiagnose(item = cur, navController)
                 Log.d(TAG,"Kemungkinan Penyakit diketahui $cur")
 
             }
-            if (cur == "SEHAT") {
+            if (cur == "Sehat") {
                 ShowDiagnose(item = cur, navController)
                 Log.d(TAG,"Kemungkinan User $cur")
             }
@@ -261,9 +261,6 @@ fun ShowDiagnose(item:String,navController: NavController) {
                     .fillMaxWidth(),
                 onClick = {
                     SavedPreference.setDiagnosis(context,cur)
-                    Toast.makeText(context,
-                        SavedPreference.getDiagnosis(context),
-                        Toast.LENGTH_SHORT).show()
                     Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
                     openDialog.value = false
                     CurReturn()
@@ -278,9 +275,6 @@ fun ShowDiagnose(item:String,navController: NavController) {
                     .fillMaxWidth(),
                 onClick = {
                     SavedPreference.setDiagnosis(context,cur)
-                    Toast.makeText(context,
-                        SavedPreference.getDiagnosis(context),
-                        Toast.LENGTH_SHORT).show()
                     Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
                     openDialog.value = false
                     CurReturn()

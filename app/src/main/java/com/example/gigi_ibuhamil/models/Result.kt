@@ -7,4 +7,6 @@ data class Result (
     val bmi: String? = null,
     val perilaku: String? = null,
     val pola: String? = null,
+    val usia: String? = null,
+    val tahun: String? = null,
 )
