@@ -95,9 +95,6 @@ fun PolaMakanScreen(navController: NavController) = Box(
                                 .fillMaxWidth(),
                             onClick = {
                                 SavedPreference.setPola(context, result)
-                                Toast.makeText(context,
-                                    SavedPreference.getPola(context),
-                                    Toast.LENGTH_SHORT).show()
                                 dialogState = false
                                 ResultReturn("Default")
                                 CurReturn(0)
@@ -113,9 +110,6 @@ fun PolaMakanScreen(navController: NavController) = Box(
                                 .fillMaxWidth(),
                             onClick = {
                                 SavedPreference.setPola(context, result)
-                                Toast.makeText(context,
-                                    SavedPreference.getPola(context),
-                                    Toast.LENGTH_SHORT).show()
                                 dialogState = false
                                 ResultReturn("Default")
                                 CurReturn(0)
@@ -188,9 +182,6 @@ fun Pertanyaan(item: listpolamakan, navController: NavController) {
                 Button(
                     onClick = {
                         total = total + item.point1
-                        Toast.makeText(context,
-                            total.toString(),
-                            Toast.LENGTH_SHORT).show()
                         cur = item.next
                         navController.navigate(Screen.PolaMakanScreen.route)
                         Log.d(TAG,"Diagnosa Pilihan ${item.jawaban1}")
@@ -212,9 +203,6 @@ fun Pertanyaan(item: listpolamakan, navController: NavController) {
                     onClick = {
                         cur = item.next
                         total = total + item.point2
-                        Toast.makeText(context,
-                            total.toString(),
-                            Toast.LENGTH_SHORT).show()
                         navController.navigate(Screen.PolaMakanScreen.route)
                         Log.d(TAG,"Diagnosa Pilihan ${item.jawaban2}")
                     },
@@ -237,9 +225,6 @@ fun Pertanyaan(item: listpolamakan, navController: NavController) {
                     onClick = {
                         cur = item.next
                         total = total + item.point3
-                        Toast.makeText(context,
-                            total.toString(),
-                            Toast.LENGTH_SHORT).show()
                         navController.navigate(Screen.PolaMakanScreen.route)
                         Log.d(TAG,"Diagnosa Pilihan ${item.jawaban3}")
                     },
@@ -260,9 +245,6 @@ fun Pertanyaan(item: listpolamakan, navController: NavController) {
                     onClick = {
                         cur = item.next
                         total = total + item.point4
-                        Toast.makeText(context,
-                            total.toString(),
-                            Toast.LENGTH_SHORT).show()
                         navController.navigate(Screen.PolaMakanScreen.route)
                         Log.d(TAG,"Diagnosa Pilihan ${item.jawaban4}")
 

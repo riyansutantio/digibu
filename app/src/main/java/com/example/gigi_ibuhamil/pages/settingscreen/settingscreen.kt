@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,7 +76,8 @@ fun SettingTitle(navController: NavController) {
 
 @ExperimentalFoundationApi
 @Composable
-fun SettingsSection(items:List<settingModel>,navController: NavController) {
+fun SettingsSection(items: List<settingModel>, navController: NavController) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,8 +89,14 @@ fun SettingsSection(items:List<settingModel>,navController: NavController) {
             modifier = Modifier
                 .fillMaxHeight(),
             content = {
-                items(items.size){
-                    Settingitems(item = items[it], navController)
+                if (SavedPreference.getRole(context).toString() == "admin") {
+                    items(items.size) {
+                        Settingitems(item = items[it], navController)
+                    }
+                } else {
+                    items(items.size - 2) {
+                        Settingitems(item = items[it], navController)
+                    }
                 }
             }
         )
@@ -96,13 +104,17 @@ fun SettingsSection(items:List<settingModel>,navController: NavController) {
 }
 
 @Composable
-fun Settingitems(item: settingModel,navController: NavController) {
+fun Settingitems(item: settingModel, navController: NavController) {
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
             .clip(RoundedCornerShape(10.dp))
-    ) {val context = LocalContext.current
+    ) {
+        val context = LocalContext.current
         var dialogState by remember { mutableStateOf(false) }
+        var dialogStateCetak by remember { mutableStateOf(false) }
+        var dialogStateAddAdmin by remember { mutableStateOf(false) }
+        var emailController by remember { mutableStateOf(TextFieldValue()) }
         if (dialogState) {
             AlertDialog(
                 modifier = Modifier.clip(RoundedCornerShape(15.dp)),
@@ -126,7 +138,7 @@ fun Settingitems(item: settingModel,navController: NavController) {
                         onClick = {
                             dialogState = false
                         }) {
-                        Text(fontSize = 15.sp, text = "Tidak",color = Color.White,)
+                        Text(fontSize = 15.sp, text = "Tidak", color = Color.White)
                     }
                 },
                 dismissButton = {
@@ -136,16 +148,89 @@ fun Settingitems(item: settingModel,navController: NavController) {
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(NoButton),
                         onClick = {
-                            getGoogleSignInClient(context).signOut().addOnCompleteListener{
-                                Toast.makeText(context, "Logout Berhasil", Toast.LENGTH_SHORT).show()
+                            getGoogleSignInClient(context).signOut().addOnCompleteListener {
+                                Toast.makeText(context, "Logout Berhasil", Toast.LENGTH_SHORT)
+                                    .show()
                                 SavedPreference.setDefaultEmail(context)
                                 SavedPreference.setDefaultName(context)
-                                navController.navigate(Screen.LoginScreen.route){popUpTo(0)}
+                                navController.navigate(Screen.LoginScreen.route) { popUpTo(0) }
                             }
                         }) {
-                        Text(fontSize = 15.sp, text = "Ya",color = Color.White,)
+                        Text(fontSize = 15.sp, text = "Ya", color = Color.White)
                     }
                 }
+            )
+        }
+        if (dialogStateCetak) {
+            AlertDialog(
+                modifier = Modifier.clip(RoundedCornerShape(15.dp)),
+                title = {},
+                onDismissRequest = {
+                    dialogStateCetak = false
+                },
+                text = {
+                    Text(
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        text = "Cetak hasil diagnosis kedalam bentuk pdf"
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(YesButton),
+                        onClick = {
+                            dialogStateCetak = false
+                        }) {
+                        Text(fontSize = 15.sp, text = "Cetak", color = Color.White)
+                    }
+                },
+                dismissButton = {}
+            )
+        }
+        if (dialogStateAddAdmin) {
+            AlertDialog(
+                modifier = Modifier.clip(RoundedCornerShape(15.dp)),
+                title = {},
+                onDismissRequest = {
+                    dialogStateAddAdmin = false
+                },
+                text = {
+                    Column() {
+                        Text(
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center,
+                            text = "Tambah Admin"
+                        )
+                        OutlinedTextField(
+                            value = emailController,
+                            onValueChange = { emailController = it },
+                            label = { Text("Email", color = Color.Blue) },
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.Blue,
+                                unfocusedBorderColor = Color.Blue,
+                                cursorColor = Color.Blue),
+                        )
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(YesButton),
+                        onClick = {
+                            dialogStateAddAdmin = false
+
+                        }) {
+                        Text(fontSize = 15.sp, text = "Add Admin", color = Color.White)
+                    }
+                },
+                dismissButton = {}
             )
         }
         Box(
@@ -157,10 +242,11 @@ fun Settingitems(item: settingModel,navController: NavController) {
                         "S01" -> navController.navigate(Screen.AkunScreen.route)
                         "S02" -> navController.navigate(Screen.HistoryScreen.route)
                         "S03" -> dialogState = true
-                        "S04" -> navController.navigate(Screen.TentangScreen.route)
+                        "S04" -> dialogStateCetak = true
+                        "S05" -> dialogStateAddAdmin = true
                     }
                 }
-        ){
+        ) {
             Text(
                 text = item.setting,
                 textAlign = TextAlign.Center,

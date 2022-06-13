@@ -220,9 +220,6 @@ fun FormItems(navController: NavController) {
                                         .fillMaxWidth(),
                                     onClick = {
                                         SavedPreference.setBMI(context, bmi)
-                                        Toast.makeText(context,
-                                            SavedPreference.getBMI(context),
-                                            Toast.LENGTH_SHORT).show()
                                         dialogState = false
                                         ResultReturn(0.0)
                                         BmiReturn("Default")
@@ -237,9 +234,6 @@ fun FormItems(navController: NavController) {
                                         .fillMaxWidth(),
                                     onClick = {
                                         SavedPreference.setBMI(context, bmi)
-                                        Toast.makeText(context,
-                                            SavedPreference.getBMI(context),
-                                            Toast.LENGTH_SHORT).show()
                                         dialogState = false
                                         ResultReturn(0.0)
                                         BmiReturn("Default")

@@ -1,5 +1,6 @@
 package com.example.gigi_ibuhamil.pages.akunscreen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 @ExperimentalFoundationApi
@@ -85,16 +87,21 @@ fun Isi(navController: NavController) {
 }
 @Composable
 fun FormItems(navController: NavController) {
+    val TAG = "AKUN STREAM"
     val context = LocalContext.current
     val db = Firebase.firestore
     val savedNama = SavedPreference.getDisplayName(context).toString()
     val savedEmail = SavedPreference.getEmail(context).toString()
+    val savedAlamat = SavedPreference.getAlamat(context).toString()
+    val savedDesa = SavedPreference.getDesa(context).toString()
+    val savedUsia = SavedPreference.getUsia(context).toString()
+    val savedTahun = SavedPreference.getTahun(context).toString()
     var nama by remember { mutableStateOf(TextFieldValue(savedNama)) }
     var email by remember { mutableStateOf(TextFieldValue(savedEmail)) }
-    var alamat by remember { mutableStateOf(TextFieldValue()) }
-    var desa by remember { mutableStateOf(TextFieldValue()) }
-    var tahun_kelahiran by remember { mutableStateOf(TextFieldValue()) }
-    var usia_kelahiran by remember { mutableStateOf(TextFieldValue()) }
+    var alamat by remember { mutableStateOf(TextFieldValue(savedAlamat)) }
+    var desa by remember { mutableStateOf(TextFieldValue(savedDesa)) }
+    var tahun_kelahiran by remember { mutableStateOf(TextFieldValue(savedTahun)) }
+    var usia_kelahiran by remember { mutableStateOf(TextFieldValue(savedUsia)) }
     var dialogState by remember { mutableStateOf(false) }
     val user = User(
         nama.text,
@@ -281,7 +288,7 @@ fun FormItems(navController: NavController) {
                                         //tempat buat update data ke firestore
                                         try {
                                             db.collection("users").document(email.text)
-                                                .set(user, SetOptions.merge())
+                                                .set(user)
                                                 .addOnSuccessListener {
                                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                                     Toast.makeText(context,
