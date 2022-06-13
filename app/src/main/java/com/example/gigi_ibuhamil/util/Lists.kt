@@ -280,4 +280,22 @@ class lists {
             next = 2
         )
     )
+    val listsetting = listOf(
+        settingModel(
+            id = "S01",
+            setting = "Akun"
+        ),
+        settingModel(
+            id = "S02",
+            setting = "History"
+        ),
+        settingModel(
+            id = "S03",
+            setting = "Log Out"
+        ),
+        settingModel(
+            id = "S04",
+            setting = "Cetak History"
+        ),
+    )
 }

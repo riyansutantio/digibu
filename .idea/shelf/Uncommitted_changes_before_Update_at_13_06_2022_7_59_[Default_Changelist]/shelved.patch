@@ -1,0 +1,77 @@
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.loginscreen\r\n\r\nimport android.util.Log\r\nimport android.widget.Toast\r\nimport androidx.activity.compose.rememberLauncherForActivityResult\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.material.Colors\r\nimport androidx.compose.material.ExperimentalMaterialApi\r\nimport androidx.compose.material.MaterialTheme\r\nimport androidx.compose.material.Text\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.models.AuthViewModel\r\nimport com.example.gigi_ibuhamil.ui.GoogleSignInButtonUi\r\nimport com.example.gigi_ibuhamil.ui.*\r\nimport com.example.gigi_ibuhamil.util.AuthResultContract\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.google.android.gms.common.api.ApiException\r\nimport kotlinx.coroutines.launch\r\n\r\n\r\nprivate val TAG = \"AuthScreen\"\r\n@ExperimentalMaterialApi\r\n@Composable\r\nfun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {\r\n    val context = LocalContext.current\r\n    val coroutineScope = rememberCoroutineScope()\r\n    var text by remember { mutableStateOf<String?>(null) }\r\n    val user by remember(authViewModel){authViewModel.user}.collectAsState()\r\n    val signInRequestCode = 1\r\n    val authResultLauncher =\r\n        rememberLauncherForActivityResult(contract = AuthResultContract()){\r\n                task ->\r\n            try {\r\n                val account = task?.getResult(ApiException::class.java)\r\n                if (account==null){\r\n                    Toast.makeText(context,\"Google sign in failed\", Toast.LENGTH_SHORT).show()\r\n                    Log.d(TAG,\"Sign to Google Failed,There no account\")\r\n                }else{\r\n                    coroutineScope.launch {\r\n                        authViewModel.signIn(email = account.email, displayName = account.displayName)\r\n                    }\r\n                }\r\n            }catch (e: ApiException){\r\n                Toast.makeText(context,\"Google sign in failed\", Toast.LENGTH_SHORT).show()\r\n                Log.d(TAG,\"Sign to Google Failed,API Error\")\r\n            }\r\n        }\r\n    AuthView(\r\n        errorText = text,\r\n        onClick = {\r\n            text=null\r\n            authResultLauncher.launch(signInRequestCode)\r\n        }\r\n    )\r\n    user?.let{\r\n        SavedPreference.setDisplayName(LocalContext.current,it.displayName)\r\n        SavedPreference.setEmail(LocalContext.current,it.email)\r\n        if(SavedPreference.getFirst(context).toString()== \"true\"){\r\n            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}\r\n            Toast.makeText(LocalContext.current, \"Sucessfull Login, Directing to Home\", Toast.LENGTH_SHORT).show()\r\n        }else{\r\n            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}\r\n            Toast.makeText(LocalContext.current, \"Sucessfull Login, Directing to Information Data\", Toast.LENGTH_SHORT).show()\r\n        }\r\n        Log.d(TAG,\"Successfull login,Directing to Welcome Screen\")\r\n    }\r\n}\r\n\r\n@ExperimentalMaterialApi\r\n@Composable\r\nfun AuthView(errorText:String?,onClick:() -> Unit) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .background(gradbg)\r\n    ) {\r\n        Column(\r\n            modifier = Modifier.padding(40.dp),\r\n            verticalArrangement = Arrangement.Center,\r\n            horizontalAlignment = Alignment.CenterHorizontally\r\n        ) {\r\n            Text(\r\n                text = \"Login\",\r\n                style = MaterialTheme.typography.h1,\r\n                modifier = Modifier\r\n                    .padding(start = 10.dp, top = 10.dp)\r\n            )\r\n            Text(\r\n                text = \"With Google\",\r\n                style = MaterialTheme.typography.h6,\r\n                modifier = Modifier\r\n                    .padding(start = 10.dp,bottom = 30.dp)\r\n            )\r\n            Spacer(modifier = Modifier.height(30.dp))\r\n            GoogleSignInButtonUi(text = \"Sign In With Google\",\r\n                loadingText = \"Signing In....\",\r\n                onClicked = {onClick()})\r\n            errorText?.let {\r\n                Spacer(modifier = Modifier.height(30.dp))\r\n                Text(text = it)\r\n            }\r\n            Spacer(modifier = Modifier.height(50.dp))\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt	(revision 8c16d32afa32e1184c13537bf8d736fd368d453d)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt	(date 1655081297980)
+@@ -23,6 +23,8 @@
+ import com.example.gigi_ibuhamil.util.Screen
+ import com.google.android.gms.common.api.ApiException
+ import kotlinx.coroutines.launch
++import com.google.firebase.firestore.ktx.firestore
++import com.google.firebase.ktx.Firebase
+ 
+ 
+ private val TAG = "AuthScreen"
+@@ -30,6 +32,8 @@
+ @Composable
+ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
+     val context = LocalContext.current
++    val emails = ArrayList<String>()
++    val db = Firebase.firestore
+     val coroutineScope = rememberCoroutineScope()
+     var text by remember { mutableStateOf<String?>(null) }
+     val user by remember(authViewModel){authViewModel.user}.collectAsState()
+@@ -60,16 +64,28 @@
+         }
+     )
+     user?.let{
++        val current = LocalContext.current
+         SavedPreference.setDisplayName(LocalContext.current,it.displayName)
+         SavedPreference.setEmail(LocalContext.current,it.email)
+-        if(SavedPreference.getFirst(context).toString()== "true"){
+-            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+-            Toast.makeText(LocalContext.current, "Sucessfull Login, Directing to Home", Toast.LENGTH_SHORT).show()
+-        }else{
+-            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
+-            Toast.makeText(LocalContext.current, "Sucessfull Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
+-        }
+-        Log.d(TAG,"Successfull login,Directing to Welcome Screen")
++        db.collection("users")
++            .get()
++            .addOnSuccessListener {
++                    result ->
++                for(document in result) {
++                    var emailUser = document.data["email"].toString()
++                    emails.add(emailUser)
++                    for (email in emails.indices)
++                        if(SavedPreference.getEmail(context).toString() == emails[email]) {
++                            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
++                            Toast.makeText(current, "Successful Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
++                        }
++                        else if (SavedPreference.getEmail(context).toString() != emails[email]){
++                            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
++//                            Toast.makeText(current, "Successful Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
++
++                        }
++                }
++            }
+     }
+ }
+ 
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt
+new file mode 100644
+--- /dev/null	(date 1655081934921)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt	(date 1655081934921)
+@@ -0,0 +1,2 @@
++package com.example.gigi_ibuhamil.pages.historyscreen
++
