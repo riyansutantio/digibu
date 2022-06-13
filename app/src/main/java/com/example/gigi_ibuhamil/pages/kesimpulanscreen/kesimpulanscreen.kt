@@ -1,5 +1,7 @@
 package com.example.gigi_ibuhamil.pages.kesimpulanscreen
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,6 +25,11 @@ import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
+import com.example.gigi_ibuhamil.models.Result
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 @ExperimentalFoundationApi
@@ -61,7 +68,11 @@ fun KesimpulanTitle() {
 
 @Composable
 fun Isi(navController: NavController) {
+    val TAG = "Get user's data"
     val context = LocalContext.current
+    val db = Firebase.firestore
+    val resultCollection = db.collection("result")
+    val userCollection = db.collection("users")
     val nama = SavedPreference.getDisplayName(context = context).toString()
     val diagnosis = SavedPreference.getDiagnosis(context = context).toString()
     val email = SavedPreference.getEmail(context = context).toString()
@@ -72,10 +83,19 @@ fun Isi(navController: NavController) {
 
     var namaController by remember { mutableStateOf(TextFieldValue(nama)) }
     var emailController by remember { mutableStateOf(TextFieldValue(email)) }
-    var diagnosisController by remember { mutableStateOf(TextFieldValue(diagnosis)) }
+    var diagnosisController by remember { mutableStateOf(TextFieldValue( diagnosis)) }
     var bmiController by remember { mutableStateOf(TextFieldValue(bmi)) }
     var perilakuController by remember { mutableStateOf(TextFieldValue(perilaku)) }
     var polaController by remember { mutableStateOf(TextFieldValue(pola)) }
+
+    val diagResult = Result(
+        namaController.text,
+        emailController.text,
+        diagnosisController.text,
+        bmiController.text,
+        perilakuController.text,
+        polaController.text,
+    )
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
@@ -216,7 +236,42 @@ fun Isi(navController: NavController) {
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
                     Button(onClick = {
-                        dialogState = true
+                        try{
+                            userCollection.document(emailController.text).get()
+                                .addOnSuccessListener { document ->
+                                    if (document != null) {
+                                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                                    } else {
+                                        Log.d(TAG, "No such document")
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.d(TAG, "get failed with ", exception)
+                                }
+                        }
+                        catch (e: Exception){
+                            println("we catch something")
+                        }
+                    }) {
+                        Text(text = "Get Data usia and tahun lahir")
+                    }
+                    Button(onClick = {
+                        try {
+                            resultCollection.document(emailController.text)
+                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)), SetOptions.merge())
+                                .addOnSuccessListener {
+                                    Toast.makeText(context,
+                                        "Sucessfull add user's results",
+                                        Toast.LENGTH_SHORT).show()
+//                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                }.addOnFailureListener {
+                                    Toast.makeText(context,
+                                        "Failed add user's results",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                        } catch (e: Exception){
+                            println("we catch something")
+                        }
                     }) {
                         Text(text = "Back to home")
                     }
