@@ -104,6 +104,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
                     Log.d(TAG, "No such document")
                 }
             }
+
     }
 }
 

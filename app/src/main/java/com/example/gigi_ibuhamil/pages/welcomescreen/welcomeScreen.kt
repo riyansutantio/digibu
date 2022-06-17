@@ -93,7 +93,7 @@ fun GreetingSection() {
             style = MaterialTheme.typography.h3
         )
         Text(
-            text = "To DIGIBU, ",
+            text = "To Ibu Peri Cerita, ",
             style = MaterialTheme.typography.h6
         )
         Text(
