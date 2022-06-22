@@ -1,5 +1,13 @@
 package com.example.gigi_ibuhamil.pages.historyscreen
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.pdf.PdfDocument
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -20,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.models.listgejala
 import com.example.gigi_ibuhamil.models.settingModel
@@ -31,6 +40,9 @@ import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.example.gigi_ibuhamil.util.getGoogleSignInClient
 import com.example.gigi_ibuhamil.util.lists
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 @ExperimentalFoundationApi
 @Composable
