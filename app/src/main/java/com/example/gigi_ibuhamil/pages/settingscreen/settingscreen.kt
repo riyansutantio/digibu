@@ -1,5 +1,13 @@
 package com.example.gigi_ibuhamil.pages.settingscreen
 
+import android.Manifest
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -21,18 +29,168 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.FileProvider
 import androidx.navigation.NavController
-import com.example.gigi_ibuhamil.models.listgejala
+import com.example.gigi_ibuhamil.R
 import com.example.gigi_ibuhamil.models.settingModel
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.NoButton
 import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
-import com.example.gigi_ibuhamil.util.SavedPreference
-import com.example.gigi_ibuhamil.util.Screen
-import com.example.gigi_ibuhamil.util.getGoogleSignInClient
-import com.example.gigi_ibuhamil.util.lists
+import com.example.gigi_ibuhamil.util.*
+import java.io.File
+import android.content.ActivityNotFoundException
 
+import androidx.core.content.ContextCompat.startActivity
+
+import android.content.ClipData
+import androidx.core.content.ContextCompat
+import com.example.gigi_ibuhamil.models.Result
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import com.google.firebase.firestore.DocumentSnapshot
+
+import com.google.firebase.firestore.DocumentReference
+
+import com.google.firebase.firestore.CollectionReference
+
+import com.google.firebase.firestore.FirebaseFirestore
+
+
+
+
+
+private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+
+private fun foregroundPermissionApproved(context: Context): Boolean {
+    val writePermissionFlag = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+        context, Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    val readPermissionFlag = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+        context, Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
+    return writePermissionFlag && readPermissionFlag
+}
+
+private fun requestForegroundPermission(context: Context) {
+    val provideRationale = foregroundPermissionApproved(context = context)
+    if (provideRationale) {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        )
+    } else {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        )
+    }
+}
+
+@ExperimentalMaterialApi
+fun makeNotif(
+    context: Context,
+    channelId : String,
+    notificationId: Int,
+    textTitle: String,
+    textContent: String,
+    priority: Int = NotificationCompat.PRIORITY_HIGH
+){
+//    val intent = Intent(context, MainActivity::class.java).apply {
+//        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        Toast.makeText(context, "Successfully download pdf",Toast.LENGTH_SHORT).show()
+//        Log.d("Cetak PDF","Notification PDF")
+//    }
+    val file = File(Environment.getExternalStorageDirectory(), "Download/Hasil.xls")
+    Log.d("File Name", file.toString())
+
+    val uri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".provider", file)
+    Log.d("Path File", "" + uri);
+
+    val pdfOpenIntent = Intent(Intent.ACTION_VIEW)
+    pdfOpenIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    pdfOpenIntent.clipData = ClipData.newRawUri("", uri)
+    pdfOpenIntent.setDataAndType(uri, "application/*")
+    pdfOpenIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+    try {
+        context.startActivity(pdfOpenIntent)
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        Toast.makeText(context, "There is no app to load corresponding PDF", Toast.LENGTH_LONG).show()
+    }
+
+//    val intent = Intent(Intent.ACTION_VIEW)
+//    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+////    intent.setDataAndType()
+//    file.apply{
+//        if(this.exists())
+//            File(this, "Hasil_Diagnosis.pdf").apply {
+//                FileInputStream(this).apply {
+//                    Log.d("context", "ranodm")
+//                    val stringBuffer = StringBuffer()
+//                    var i: Int
+//                    while (this.read().also { i = it } != -1) {
+//                        stringBuffer.append(i.toChar())
+//                    }
+//                    close()
+//                }
+//            }else{
+//            Log.d("context", file.toString())
+//        }
+//    }
+
+    val pendingIntent : PendingIntent = PendingIntent.getActivity(context,0,pdfOpenIntent,0)
+
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.mipmap.logoapp)
+        .setContentTitle(textTitle)
+        .setContentText(textContent)
+        .setPriority(priority)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+    with(NotificationManagerCompat.from(context)){
+        notify(notificationId,builder.build())
+    }
+}
+fun createNotificationChannel(channelId: String, context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = "Ibu Peri Cerita"
+        val desc = "Sistem pakar diagnosis gigi dan mulut ibu hamil"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId, name, importance).apply {
+            description = desc
+        }
+        val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
+
+fun getData(context: Context){
+    val db = Firebase.firestore
+    db.collection("result").get().addOnSuccessListener {
+        document ->
+        if (document != null) {
+            Log.d("Get", "DocumentSnapshot data: ${document.documents[1].data?.get("history")}")
+            Toast.makeText(context, "Success get data", Toast.LENGTH_SHORT).show()
+        } else {
+            Log.d("Get", "No such document")
+        }
+    }.addOnFailureListener{
+        Toast.makeText(context, "Failed get data", Toast.LENGTH_SHORT).show()
+    }
+}
+
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun SettingScreen(navController: NavController) = Box(
@@ -74,10 +232,12 @@ fun SettingTitle(navController: NavController) {
 }
 
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun SettingsSection(items: List<settingModel>, navController: NavController) {
     val context = LocalContext.current
+    requestForegroundPermission(context)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,13 +263,20 @@ fun SettingsSection(items: List<settingModel>, navController: NavController) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun Settingitems(item: settingModel, navController: NavController) {
+    val context = LocalContext.current
+    val db = Firebase.firestore
+    val result = db.collection("result")
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
             .clip(RoundedCornerShape(10.dp))
     ) {
+        LaunchedEffect(Unit) {
+            createNotificationChannel("Ibu Peri Cerita", context )
+        }
         val context = LocalContext.current
         var dialogState by remember { mutableStateOf(false) }
         var dialogStateCetak by remember { mutableStateOf(false) }
@@ -183,6 +350,43 @@ fun Settingitems(item: settingModel, navController: NavController) {
                         colors = ButtonDefaults.buttonColors(YesButton),
                         onClick = {
                             dialogStateCetak = false
+                            getHistory()
+//                            val bmi = Result().bmi
+//                            Log.d("Get BMI", bmi)
+
+//                            var dataList: MutableList<Result> = mutableListOf()
+//                            result.addOnSuccessListener { result ->
+//                                for (doc in result.documents) {
+//                                    val riwayat = doc.data?.get("history") as List<*>
+//                                    val data = Gson().toJson(riwayat[0])
+//                                    val inData = Gson().fromJson<Result>(data, Result::class.java)
+//                                    dataList.add(inData)
+////                                    Log.d("riwayat", riwayat.toString())
+////                                    Log.d("Get data", data.toString())
+////                                    Log.d("Get indata", inData.toString())
+//
+//                                }
+//                                Log.d("Datalist", dataList.toString())
+//                            }
+//                            Log.d("DataList-2", dataList.toString())
+
+//                            val histori = getHistory(object: Callback{
+//                                override fun onCallback(value: ArrayList<*>) {
+//                                    Log.d("Get History", value.toString())
+//                                }
+//                            })
+//
+//                            Log.d("Get History0", histori.toString())
+
+//                            CreateCsv()
+//                            makeNotif(
+//                                context,
+//                                "Ibu Peri Cerita",
+//                                0,
+//                                "Successfully download PDF",
+//                                "Click to open file"
+//                            )
+//                            Toast.makeText(context,"Generating PDF, Check Notification", Toast.LENGTH_SHORT).show()
                         }) {
                         Text(fontSize = 15.sp, text = "Cetak", color = Color.White)
                     }
@@ -259,4 +463,8 @@ fun Settingitems(item: settingModel, navController: NavController) {
             )
         }
     }
+
+
+
 }
+

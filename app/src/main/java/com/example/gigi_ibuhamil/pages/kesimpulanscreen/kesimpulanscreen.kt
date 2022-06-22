@@ -270,7 +270,7 @@ fun Isi(navController: NavController) {
                     Button(onClick = {
                         try {
                             resultCollection.document(emailController.text)
-                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)), SetOptions.merge())
+                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)))
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
                                         "Sucessfull add user's results",
