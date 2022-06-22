@@ -268,26 +268,6 @@ fun Isi(navController: NavController) {
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
                     Button(onClick = {
-                        try{
-                            userCollection.document(emailController.text).get()
-                                .addOnSuccessListener { document ->
-                                    if (document != null) {
-                                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                    } else {
-                                        Log.d(TAG, "No such document")
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.d(TAG, "get failed with ", exception)
-                                }
-                        }
-                        catch (e: Exception){
-                            println("we catch something")
-                        }
-                    }) {
-                        Text(text = "Get Data usia and tahun lahir")
-                    }
-                    Button(onClick = {
                         try {
                             resultCollection.document(emailController.text)
                                 .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)))
