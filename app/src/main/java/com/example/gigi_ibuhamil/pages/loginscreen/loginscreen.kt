@@ -73,38 +73,34 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
             .get()
             .addOnSuccessListener {
                     result ->
-                for(document in result) {
-                    var emailUser = document.data["email"].toString()
-                    emails.add(emailUser)
-                    for (email in emails.indices)
-                        if(SavedPreference.getEmail(context).toString() == emails[email]) {
-                            SavedPreference.setAlamat(current,document.data["alamat"].toString())
-//                            SavedPreference.setDesa(current,it.email)
-//                            SavedPreference.setTahun(current,it.email)
-//                            SavedPreference.setUsia(current,it.email)
-//                            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
-                            Toast.makeText(current, "Successful Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
-                        }
-                        else if (SavedPreference.getEmail(context).toString() != emails[email]){
-                            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
-//                            Toast.makeText(current, "Successful Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
-                        }
+                for (i in result.documents){
+                    val email = i.data?.get("email")?.toString()
+                    Log.d("Saved", SavedPreference.getEmail(context).toString())
+                    Log.d("Email", email.toString())
+                    if(SavedPreference.getEmail(context).toString() != email) {
+                        navController.navigate(Screen.InformationScreen.route) { popUpTo(0) }
+                    }else{
+                        Toast.makeText(current, "Success Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
+                        navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) }
+                        break
+                    }
                 }
             }
-        db.collection("users").document(it.email.toString())
-            .addSnapshotListener { document, e ->
-                if (document != null) {
+        db.collection("users")
+            .document(it.email.toString())
+            .addSnapshotListener{
+                document, e ->
+                if(document != null){
                     val userData = document.toObject<User>()
                     SavedPreference.setAlamat(context, userData?.alamat)
                     SavedPreference.setUsia(context, userData?.usia_kelahiran)
                     SavedPreference.setTahun(context, userData?.tahun_kelahiran)
                     SavedPreference.setDesa(context, userData?.desa)
                     SavedPreference.setRole(context, userData?.role)
-                } else {
-                    Log.d(TAG, "No such document")
+                }else{
+                    Log.d(TAG, "No Such Document")
                 }
             }
-
     }
 }
 

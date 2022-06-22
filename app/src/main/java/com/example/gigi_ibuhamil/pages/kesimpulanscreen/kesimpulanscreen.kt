@@ -92,7 +92,6 @@ fun Isi(navController: NavController) {
     var usiaController by remember { mutableStateOf(TextFieldValue(usia)) }
     var tahunController by remember { mutableStateOf(TextFieldValue(tahun)) }
 
-
     val diagResult = Result(
         namaController.text,
         emailController.text,
@@ -291,7 +290,7 @@ fun Isi(navController: NavController) {
                     Button(onClick = {
                         try {
                             resultCollection.document(emailController.text)
-                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)), SetOptions.merge())
+                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)))
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
                                         "Sucessfull add user's results",

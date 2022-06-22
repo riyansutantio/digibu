@@ -192,9 +192,6 @@ fun Pertanyaan(item: listperilaku, navController: NavController) {
             Button(
                 onClick = {
                     total = total + item.point1
-                    Toast.makeText(context,
-                        total.toString(),
-                        Toast.LENGTH_SHORT).show()
                     cur = item.next
                     navController.navigate(Screen.PerilakuScreen.route)
                     Log.d(TAG,"Diagnosa Pilihan ${item.jawaban1}")
@@ -216,9 +213,6 @@ fun Pertanyaan(item: listperilaku, navController: NavController) {
                 onClick = {
                     cur = item.next
                     total = total + item.point2
-                    Toast.makeText(context,
-                        total.toString(),
-                        Toast.LENGTH_SHORT).show()
                     navController.navigate(Screen.PerilakuScreen.route)
                     Log.d(TAG,"Diagnosa Pilihan ${item.jawaban2}")
                 },
