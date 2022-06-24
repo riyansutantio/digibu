@@ -154,7 +154,6 @@ fun SecondMainMenu(navController: NavController) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(LightBlue)
                 .padding(10.dp)
-                .background(LightBlue)
                 .clickable {
                     navController.navigate(Screen.EbookScreen.route)
                 }
@@ -176,7 +175,6 @@ fun SecondMainMenu(navController: NavController) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(LightBlue)
                 .padding(10.dp)
-                .background(LightBlue)
                 .clickable {
                     navController.navigate(Screen.VideoScreen.route)
                 }

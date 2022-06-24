@@ -4,4 +4,5 @@ import com.example.gigi_ibuhamil.models.Result
 
 interface FirebaseCallback {
     fun onHistory(history: History)
+
 }

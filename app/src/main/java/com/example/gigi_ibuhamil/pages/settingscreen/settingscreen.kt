@@ -117,7 +117,6 @@ private suspend fun getData(){
         Log.d("Not Found", e.toString())
     }
 }
-
 @ExperimentalMaterialApi
 fun makeNotif(
     context: Context,
@@ -195,8 +194,6 @@ fun createNotificationChannel(channelId: String, context: Context) {
         notificationManager.createNotificationChannel(channel)
     }
 }
-
-
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
@@ -445,7 +442,7 @@ fun Settingitems(item: settingModel, navController: NavController) {
             )
         }
     }
-}
-suspend fun foo( coroutineScope: CoroutineScope, lambda : suspend CoroutineScope.() -> Unit){
-    lambda.invoke(coroutineScope)
+
+
+
 }
