@@ -99,6 +99,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
                     SavedPreference.setRole(context, userData?.role)
                 }else{
                     Log.d(TAG, "No Such Document")
+
                 }
             }
     }
