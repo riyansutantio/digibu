@@ -29,12 +29,5 @@ class MainActivity : AppCompatActivity() {
             Navigations()
         }
     }
-    fun getDirectory(): File {
-        val mediaDir = externalMediaDirs.firstOrNull()?.let {
-            File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
-//            it.copyTo(File("/storage/emulated/0/Download"))
-        }
-        return if (mediaDir != null && mediaDir.exists()) mediaDir else filesDir
-    }
 }
 

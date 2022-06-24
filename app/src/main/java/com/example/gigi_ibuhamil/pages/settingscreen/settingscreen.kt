@@ -48,7 +48,11 @@ import androidx.core.content.ContextCompat.startActivity
 
 import android.content.ClipData
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import com.example.gigi_ibuhamil.MainActivity
+import com.example.gigi_ibuhamil.models.HistoryViewModel
 import com.example.gigi_ibuhamil.models.Result
+import com.example.gigi_ibuhamil.models.historymodel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
@@ -62,9 +66,8 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.CollectionReference
 
 import com.google.firebase.firestore.FirebaseFirestore
-
-
-
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 
 
 private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
@@ -97,6 +100,23 @@ private fun requestForegroundPermission(context: Context) {
     }
 }
 
+ suspend fun getDataFromFirestore(): List<Result> {
+    val data = FirebaseFirestore.getInstance().collection("result").get().await()
+    return data.documents.mapNotNull{
+        doc -> doc.toObject(Result::class.java)
+    }
+}
+
+private suspend fun getData(){
+    try {
+        val data = getDataFromFirestore()
+        for (i in data.indices){
+            Log.d("Data", data[i].email)
+        }
+    } catch (e: Exception){
+        Log.d("Not Found", e.toString())
+    }
+}
 @ExperimentalMaterialApi
 fun makeNotif(
     context: Context,
@@ -174,22 +194,6 @@ fun createNotificationChannel(channelId: String, context: Context) {
         notificationManager.createNotificationChannel(channel)
     }
 }
-
-fun getData(context: Context){
-    val db = Firebase.firestore
-    db.collection("result").get().addOnSuccessListener {
-        document ->
-        if (document != null) {
-            Log.d("Get", "DocumentSnapshot data: ${document.documents[1].data?.get("history")}")
-            Toast.makeText(context, "Success get data", Toast.LENGTH_SHORT).show()
-        } else {
-            Log.d("Get", "No such document")
-        }
-    }.addOnFailureListener{
-        Toast.makeText(context, "Failed get data", Toast.LENGTH_SHORT).show()
-    }
-}
-
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
@@ -350,43 +354,18 @@ fun Settingitems(item: settingModel, navController: NavController) {
                         colors = ButtonDefaults.buttonColors(YesButton),
                         onClick = {
                             dialogStateCetak = false
-                            getHistory()
-//                            val bmi = Result().bmi
-//                            Log.d("Get BMI", bmi)
-
-//                            var dataList: MutableList<Result> = mutableListOf()
-//                            result.addOnSuccessListener { result ->
-//                                for (doc in result.documents) {
-//                                    val riwayat = doc.data?.get("history") as List<*>
-//                                    val data = Gson().toJson(riwayat[0])
-//                                    val inData = Gson().fromJson<Result>(data, Result::class.java)
-//                                    dataList.add(inData)
-////                                    Log.d("riwayat", riwayat.toString())
-////                                    Log.d("Get data", data.toString())
-////                                    Log.d("Get indata", inData.toString())
-//
-//                                }
-//                                Log.d("Datalist", dataList.toString())
-//                            }
-//                            Log.d("DataList-2", dataList.toString())
-
-//                            val histori = getHistory(object: Callback{
-//                                override fun onCallback(value: ArrayList<*>) {
-//                                    Log.d("Get History", value.toString())
-//                                }
-//                            })
-//
-//                            Log.d("Get History0", histori.toString())
-
-//                            CreateCsv()
-//                            makeNotif(
-//                                context,
-//                                "Ibu Peri Cerita",
-//                                0,
-//                                "Successfully download PDF",
-//                                "Click to open file"
-//                            )
-//                            Toast.makeText(context,"Generating PDF, Check Notification", Toast.LENGTH_SHORT).show()
+                            GlobalScope.launch (Dispatchers.Main) {
+                                getData()
+                                CreateCsv()
+                            }
+                            makeNotif(
+                                context,
+                                "Ibu Peri Cerita",
+                                0,
+                                "Successfully download PDF",
+                                "Click to open file"
+                            )
+                            Toast.makeText(context,"Generating PDF, Check Notification", Toast.LENGTH_SHORT).show()
                         }) {
                         Text(fontSize = 15.sp, text = "Cetak", color = Color.White)
                     }
@@ -467,4 +446,3 @@ fun Settingitems(item: settingModel, navController: NavController) {
 
 
 }
-

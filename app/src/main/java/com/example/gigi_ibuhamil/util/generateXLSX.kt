@@ -3,6 +3,7 @@ package com.example.gigi_ibuhamil.util
 import android.os.Environment
 import android.util.Log
 import com.example.gigi_ibuhamil.models.Result
+import com.example.gigi_ibuhamil.pages.settingscreen.getDataFromFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
@@ -18,10 +19,8 @@ import java.io.*
 import java.nio.file.Paths
 
 
-fun CreateCsv() {
-    val db = Firebase.firestore
-    val datas = mutableMapOf<String,Result>()
-    val result = db.collection("result").get()
+suspend fun CreateCsv() {
+    val data = getDataFromFirestore()
     val workbook = HSSFWorkbook()
     val xlws = workbook.createSheet()
     val rowNomor = xlws.createRow(0)
@@ -45,7 +44,28 @@ fun CreateCsv() {
     colPola.setCellValue("Pola Makan")
 
     //data hasil mulai dari sini
-
+    for (i in data.indices){
+        Log.d("Data", data[i].email)
+        val rowNomor = xlws.createRow(i+1)
+        val colNomor = rowNomor.createCell(0)
+        colNomor.setCellValue(i.toString())
+        val colNama = rowNomor.createCell(1)
+        colNama.setCellValue(data[i].name)
+        val colEmail = rowNomor.createCell(2)
+        colEmail.setCellValue(data[i].email)
+        val colTahun = rowNomor.createCell(3)
+        colTahun.setCellValue(data[i].tahun)
+        val colUsia = rowNomor.createCell(4)
+        colUsia.setCellValue(data[i].usia)
+        val colDiagnosis = rowNomor.createCell(5)
+        colDiagnosis.setCellValue(data[i].diagnosis)
+        val colBmi = rowNomor.createCell(6)
+        colBmi.setCellValue(data[i].bmi)
+        val colPerilaku = rowNomor.createCell(7)
+        colPerilaku.setCellValue(data[i].perilaku)
+        val colPola = rowNomor.createCell(8)
+        colPola.setCellValue(data[i].pola)
+    }
 
     try {
         val file = File(
