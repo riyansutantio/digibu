@@ -202,6 +202,10 @@ fun FormItems(navController: NavController) {
                             cursorColor = Color.White),
                     )
                     Button(onClick = {
+                        if(desaController.text == null ||alamatController.text == null ||usiaController.text == null ||tahunController.text == null ){
+                            Toast.makeText(context,"Mohon untuk tidak mengosongi input",
+                                Toast.LENGTH_SHORT).show()
+                        }else{
                         try {
                             db.collection("users").document(emailController.text)
                                 .set(user)
@@ -217,6 +221,7 @@ fun FormItems(navController: NavController) {
                                 }
                         } catch (e: Exception){
                             println("we catch something")
+                        }
                         }
                     }) {
                         Text(text = "Simpan ", color = Color.White, fontSize = 15.sp)
