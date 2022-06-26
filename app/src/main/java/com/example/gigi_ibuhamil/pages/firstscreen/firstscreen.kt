@@ -55,7 +55,7 @@ fun FirstTitle(navController: NavController) {
     ) {
         Row(Modifier.padding(start = 10.dp)) {
             Text(
-                text = "Personal Data",
+                text = "Fill Personal Data",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .padding(bottom = 30.dp)
@@ -211,12 +211,12 @@ fun FormItems(navController: NavController) {
                                 .set(user)
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
-                                        "Sucessfull add user's data",
+                                        "Berhasil menyimpan data",
                                         Toast.LENGTH_SHORT).show()
                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                 }.addOnFailureListener {
                                     Toast.makeText(context,
-                                        "Failed add user's data",
+                                        "Gagal menyimpan data",
                                         Toast.LENGTH_SHORT).show()
                                 }
                         } catch (e: Exception){
