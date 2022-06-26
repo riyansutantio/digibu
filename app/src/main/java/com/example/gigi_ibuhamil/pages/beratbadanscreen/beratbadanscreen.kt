@@ -146,9 +146,7 @@ fun FormItems(navController: NavController) {
                                 Toast.LENGTH_SHORT).show()
                         }else{
                             BMI = BBStr.toDouble() / (TBStr.toDouble() * TBStr.toDouble())
-                            Toast.makeText(context,TB.text,
-                                //BMI.toBigDecimal().setScale(2, RoundingMode.UP).toString(),
-                                Toast.LENGTH_SHORT).show()
+
                             dialogState = true
                             ResultReturn(BMI)
                             if (result <= 18.4) {

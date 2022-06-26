@@ -275,26 +275,6 @@ fun Isi(navController: NavController) {
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
                     Button(onClick = {
-                        try {
-                            resultCollection.document(emailController.text)
-                                .set(diagResult)
-                                .addOnSuccessListener {
-                                    Toast.makeText(context,
-                                        "Sucessfull add user's results",
-                                        Toast.LENGTH_SHORT).show()
-                                    navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) }
-                                }.addOnFailureListener {
-                                    Toast.makeText(context,
-                                        "Failed add user's results",
-                                        Toast.LENGTH_SHORT).show()
-                                }
-                        } catch (e: Exception) {
-                            println("we catch something")
-                        }
-                    }) {
-                        Text(text = "Back to home")
-                    }
-                    Button(onClick = {
                         fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
                             var ids = 0
                             ids += 1
@@ -314,8 +294,24 @@ fun Isi(navController: NavController) {
                             Log.d("Id History",ids.toString())
                         }
                         insertIntoDB(mHistoryViewModel)
+                        try {
+                            resultCollection.document(emailController.text)
+                                .set(diagResult)
+                                .addOnSuccessListener {
+                                    Toast.makeText(context,
+                                        "Sucessfull add user's results",
+                                        Toast.LENGTH_SHORT).show()
+                                    navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) }
+                                }.addOnFailureListener {
+                                    Toast.makeText(context,
+                                        "Failed add user's results",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                        } catch (e: Exception) {
+                            println("we catch something")
+                        }
                     }) {
-                        Text(text = "Save localy")
+                        Text(text = "Back to home")
                     }
                 }
             }
