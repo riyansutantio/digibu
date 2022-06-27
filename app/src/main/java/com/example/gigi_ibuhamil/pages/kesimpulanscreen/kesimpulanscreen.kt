@@ -70,6 +70,9 @@ fun KesimpulanTitle() {
 fun Isi(navController: NavController) {
     val TAG = "Get user's data"
     val context = LocalContext.current
+    val mHistoryViewModel: HistoryViewModel = viewModel(
+        factory = HistoryViewModelFactory(context.applicationContext as Application)
+    )
     val db = Firebase.firestore
     val resultCollection = db.collection("result")
     val userCollection = db.collection("users")
@@ -91,10 +94,6 @@ fun Isi(navController: NavController) {
     var polaController by remember { mutableStateOf(TextFieldValue(pola)) }
     var usiaController by remember { mutableStateOf(TextFieldValue(usia)) }
     var tahunController by remember { mutableStateOf(TextFieldValue(tahun)) }
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
 
     val diagResult = Result(
         namaController.text,
@@ -271,46 +270,41 @@ fun Isi(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
-<<<<<<<<< Temporary merge branch 1
                     Button(onClick = {
-                        try{
-                            userCollection.document(emailController.text).get()
-                                .addOnSuccessListener { document ->
-                                    if (document != null) {
-                                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                    } else {
-                                        Log.d(TAG, "No such document")
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.d(TAG, "get failed with ", exception)
-                                }
-                        }
-                        catch (e: Exception){
-                            println("we catch something")
-                        }
-                    }) {
-                        Text(text = "Get Data usia and tahun lahir")
-                    }
-=========
->>>>>>>>> Temporary merge branch 2
-                    Button(onClick = {
+                      fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
+                            var ids = 0
+                            ids += 1
+                            mHistoryViewModel.insertProduct(
+                                HistoryItem(
+                                    Id = ids,
+                                    Name = namaController.text,
+                                    Email = emailController.text,
+                                    Diagnosis = diagnosisController.text,
+                                    Bmi = bmiController.text,
+                                    Perilaku = perilakuController.text,
+                                    Pola = polaController.text,
+                                    Usia = usiaController.text,
+                                    Tahun = tahunController.text
+                                )
+                            )
+                            Log.d("Id History",ids.toString())}
                         try {
                             resultCollection.document(emailController.text)
                                 .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)))
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
-                                        "Sucessfull add user's results",
+                                        "Berhasil menyimpan hasil",
                                         Toast.LENGTH_SHORT).show()
                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                 }.addOnFailureListener {
                                     Toast.makeText(context,
-                                        "Failed add user's results",
+                                        "Gagal menyimpan hasil",
                                         Toast.LENGTH_SHORT).show()
                                 }
                         } catch (e: Exception){
                             println("we catch something")
                         }
+                        insertIntoDB(mHistoryViewModel)
                     }) {
                         Text(text = "Back to home")
                     }
