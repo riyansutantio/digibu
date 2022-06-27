@@ -126,14 +126,15 @@ fun AuthView(errorText:String?,onClick:() -> Unit) {
                     .padding(start = 10.dp, top = 10.dp)
             )
             Text(
-                text = "With Google",
+                text = "Dengan Google",
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier
                     .padding(start = 10.dp,bottom = 30.dp)
             )
             Spacer(modifier = Modifier.height(30.dp))
-            GoogleSignInButtonUi(text = "Sign In With Google",
-                loadingText = "Signing In....",
+            GoogleSignInButtonUi(text = "SignIn Dengan Google",
+                loadingText = "Mencoba Masuk....",
+
                 onClicked = {onClick()})
             errorText?.let {
                 Spacer(modifier = Modifier.height(30.dp))
