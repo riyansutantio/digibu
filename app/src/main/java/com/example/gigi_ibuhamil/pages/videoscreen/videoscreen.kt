@@ -85,6 +85,7 @@ fun VideoPlayer() {
             Arrangement.Center,
             Alignment.CenterHorizontally
         ) {
+            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
             Column(Modifier
                 .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
                 Text(
@@ -138,6 +139,7 @@ fun VideoPlayer() {
                     )
                 }
             }
+            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
         }
     }
 }

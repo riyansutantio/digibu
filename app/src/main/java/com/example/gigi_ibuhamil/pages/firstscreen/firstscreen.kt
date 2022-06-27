@@ -55,7 +55,7 @@ fun FirstTitle(navController: NavController) {
     ) {
         Row(Modifier.padding(start = 10.dp)) {
             Text(
-                text = "Personal Data",
+                text = "Fill Personal Data",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .padding(bottom = 30.dp)
@@ -202,21 +202,26 @@ fun FormItems(navController: NavController) {
                             cursorColor = Color.White),
                     )
                     Button(onClick = {
+                        if(desaController.text == null ||alamatController.text == null ||usiaController.text == null ||tahunController.text == null ){
+                            Toast.makeText(context,"Mohon untuk tidak mengosongi input",
+                                Toast.LENGTH_SHORT).show()
+                        }else{
                         try {
                             db.collection("users").document(emailController.text)
                                 .set(user)
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
-                                        "Sucessfull add user's data",
+                                        "Berhasil menyimpan data",
                                         Toast.LENGTH_SHORT).show()
                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                 }.addOnFailureListener {
                                     Toast.makeText(context,
-                                        "Failed add user's data",
+                                        "Gagal menyimpan data",
                                         Toast.LENGTH_SHORT).show()
                                 }
                         } catch (e: Exception){
                             println("we catch something")
+                        }
                         }
                     }) {
                         Text(text = "Simpan ", color = Color.White, fontSize = 15.sp)

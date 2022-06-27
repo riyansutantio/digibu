@@ -107,13 +107,13 @@ class lists {
             id = "Pt02",
             namapetunjuk = "Daftar Penyakit",
             descpetunjuk = "Menu Daftar Penyakit pada halaman utama berfungsi untuk menampilkan daftar penyakit pada sistem ini, serta menampilkan informasi detail dari penyakit",
-            iconId = R.mipmap.ic_penyakit
+            iconId = R.mipmap.ic_gejala
         ),
         listpetunjuk(
             id = "Pt03",
             namapetunjuk = "Daftar Gejala",
             descpetunjuk = "Menu Daftar Gejala pada halaman utama berfungsi untuk menampilkan daftar gejala penyakit gigi dan mulut",
-            iconId = R.mipmap.ic_gejala
+            iconId = R.mipmap.ic_penyakit
         ),
         listpetunjuk(
             id = "Pt04",
@@ -126,14 +126,14 @@ class lists {
         featured(
             id = "DP",
             title = "Daftar Penyakit",
-            R.mipmap.ic_penyakit,
+            R.mipmap.ic_gejala,
             BlueViolet1,
             BlueViolet2,
             BlueViolet3
         ), featured(
             id = "DG",
             title = "Daftar Gejala",
-            R.mipmap.ic_gejala,
+            R.mipmap.ic_penyakit,
             LightGreen1,
             LightGreen2,
             LightGreen3
@@ -141,16 +141,16 @@ class lists {
             id = "P",
             title = "Petunjuk",
             R.mipmap.ic_petunjuk,
-            OrangeYellow3,
-            OrangeYellow2,
-            OrangeYellow1
+            LightGreen1,
+            LightGreen2,
+            LightGreen3
         ), featured(
             id = "T",
             title = "Tentang",
             R.mipmap.ic_tentang,
-            Beige1,
-            Beige2,
-            Beige3
+            BlueViolet1,
+            BlueViolet2,
+            BlueViolet3
         )
     )
     val pertanyaanlist: List<listpertayaan> =listOf(
@@ -182,15 +182,14 @@ class lists {
     val tentangList: List<listTentang> = listOf(
         listTentang(
             iconId = R.mipmap.logoapp,
-            appname = "DentApp",
-            desc1 = "Aplikasi ini digunakan untuk memberikan pencerdasan kepada masyarakat tentang pentingnya kesehatan gigi dan mulut dengan memberikan informasi penyakit, gejala, dan informasi detail penyakit serta memiliki fungsi utama sebagai alat mendiagnosa kemungkinan penyakit gigi dan mulut.\n"+
-                    "\nPerlu diketahui bahwa sumber pengetahuan mengenai penyakit gigi dan mulut didapatkan dari proses wawancara dengan dokter gigi.",
-            desc2 ="PERHATIAN!!",
-            desc3 = "Fungsi diagnosa penyakit gigi dan mulut pada aplikasi ini tidak 100% akurat. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berffungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\n"+
-                    "\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.",
+            appname = "Ibu Peri Cerita",
+            desc1 = "Ibu Hamil Periksa Mandiri Cegah Karies dan Stunting Anak",
+            desc2 ="Aplikasi ini dibuat untuk pencerdasan kepada ibu hamil tentang bahaya penyakit karies gigi dan stunting anak",
+            desc3 = "Aplikasi ini tidak 100% akurat dan hanya menjadi kemungkinan saja. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berffungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\n"+
+                    "\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email perwakilan tim pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.",
             desc4 = "Terimakasih, \n" +
-                    "Pengembang.\n\n"+"Riyan Sutantio Bangkit Nugroho\n" +
-                    "Riyantio84@gmail.com",
+                    "Tim Pengembang.\n\n\n" +
+                    "CP : Riyantio84@gmail.com  ",
         )
     )
     val polamakanlist: List<listpolamakan> = listOf(
@@ -264,7 +263,7 @@ class lists {
         listperilaku(
             idpertanyaan = 0,
             soal = "Dalam sehari berapa kali anda menggosok gigi?",
-            jawaban1 = "     1x    ",
+            jawaban1 = "     1x    \n      ",
             jawaban2 = "Lebih dari 1x",
             point1 = 1,
             point2 = 3,

@@ -1,5 +1,15 @@
 package com.example.gigi_ibuhamil.pages.settingscreen
 
+import android.Manifest
+import android.app.*
+import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -21,18 +31,126 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.FileProvider
 import androidx.navigation.NavController
-import com.example.gigi_ibuhamil.models.listgejala
+import com.example.gigi_ibuhamil.R
+import com.example.gigi_ibuhamil.models.Result
 import com.example.gigi_ibuhamil.models.settingModel
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.NoButton
 import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
-import com.example.gigi_ibuhamil.util.SavedPreference
-import com.example.gigi_ibuhamil.util.Screen
-import com.example.gigi_ibuhamil.util.getGoogleSignInClient
-import com.example.gigi_ibuhamil.util.lists
+import com.example.gigi_ibuhamil.util.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import java.io.File
 
+
+private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+
+private fun foregroundPermissionApproved(context: Context): Boolean {
+    val writePermissionFlag = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+        context, Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    val readPermissionFlag = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+        context, Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
+    return writePermissionFlag && readPermissionFlag
+}
+
+private fun requestForegroundPermission(context: Context) {
+    val provideRationale = foregroundPermissionApproved(context = context)
+    if (provideRationale) {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        )
+    } else {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        )
+    }
+}
+
+ suspend fun getDataFromFirestore(): List<Result> {
+    val data = FirebaseFirestore.getInstance().collection("result").get().await()
+    return data.documents.mapNotNull{
+        doc -> doc.toObject(Result::class.java)
+    }
+}
+
+private suspend fun getData(){
+    try {
+        val data = getDataFromFirestore()
+        for (i in data.indices){
+            Log.d("Data", data[i].email)
+        }
+    } catch (e: Exception){
+        Log.d("Not Found", e.toString())
+    }
+}
+@ExperimentalMaterialApi
+fun makeNotif(
+    context: Context,
+    channelId : String,
+    notificationId: Int,
+    textTitle: String,
+    textContent: String,
+    priority: Int = NotificationCompat.PRIORITY_HIGH
+){
+    val file = File(Environment.getExternalStorageDirectory(), "Download/Hasil.xls")
+    Log.d("File Name", file.toString())
+
+    val uri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".provider", file)
+    Log.d("Path File", "" + uri);
+
+    val pdfOpenIntent = Intent(Intent.ACTION_VIEW)
+    pdfOpenIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    pdfOpenIntent.clipData = ClipData.newRawUri("", uri)
+    pdfOpenIntent.setDataAndType(uri, "application/*")
+    pdfOpenIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+    try {
+        context.startActivity(pdfOpenIntent)
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        Toast.makeText(context, "There is no app to load corresponding Excel", Toast.LENGTH_LONG).show()
+    }
+    val pendingIntent : PendingIntent = PendingIntent.getActivity(context,0,pdfOpenIntent,0)
+
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.mipmap.logoapp)
+        .setContentTitle(textTitle)
+        .setContentText(textContent)
+        .setPriority(priority)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+    with(NotificationManagerCompat.from(context)){
+        notify(notificationId,builder.build())
+    }
+}
+fun createNotificationChannel(channelId: String, context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = "Ibu Peri Cerita"
+        val desc = "Sistem pakar diagnosis gigi dan mulut ibu hamil"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId, name, importance).apply {
+            description = desc
+        }
+        val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun SettingScreen(navController: NavController) = Box(
@@ -58,7 +176,7 @@ fun SettingTitle(navController: NavController) {
         Row() {
             IconButton(
                 modifier = Modifier.weight(1f),
-                onClick = { navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)} }
+                onClick = { navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) } }
             ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
@@ -74,10 +192,12 @@ fun SettingTitle(navController: NavController) {
 }
 
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun SettingsSection(items: List<settingModel>, navController: NavController) {
     val context = LocalContext.current
+    requestForegroundPermission(context)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,13 +223,20 @@ fun SettingsSection(items: List<settingModel>, navController: NavController) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun Settingitems(item: settingModel, navController: NavController) {
+    val context = LocalContext.current
+    val db = Firebase.firestore
+    val result = db.collection("result")
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
             .clip(RoundedCornerShape(10.dp))
     ) {
+        LaunchedEffect(Unit) {
+            createNotificationChannel("Ibu Peri Cerita", context )
+        }
         val context = LocalContext.current
         var dialogState by remember { mutableStateOf(false) }
         var dialogStateCetak by remember { mutableStateOf(false) }
@@ -183,6 +310,18 @@ fun Settingitems(item: settingModel, navController: NavController) {
                         colors = ButtonDefaults.buttonColors(YesButton),
                         onClick = {
                             dialogStateCetak = false
+                            GlobalScope.launch (Dispatchers.Main) {
+                                getData()
+                                CreateCsv()
+                            }
+                            makeNotif(
+                                context,
+                                "Ibu Peri Cerita",
+                                0,
+                                "Successfully download Excel file",
+                                "Click to open file"
+                            )
+                            Toast.makeText(context,"Generating Excel File, Check Notification", Toast.LENGTH_SHORT).show()
                         }) {
                         Text(fontSize = 15.sp, text = "Cetak", color = Color.White)
                     }
@@ -259,4 +398,7 @@ fun Settingitems(item: settingModel, navController: NavController) {
             )
         }
     }
+
+
+
 }
