@@ -80,7 +80,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
                     if(SavedPreference.getEmail(context).toString() != email) {
                         navController.navigate(Screen.InformationScreen.route) { popUpTo(0) }
                     }else{
-                        Toast.makeText(current, "Berhasil Login, Mengarahkan ke halaman utama", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(current, "Success Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
                         navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) }
                         break
                     }
@@ -134,6 +134,7 @@ fun AuthView(errorText:String?,onClick:() -> Unit) {
             Spacer(modifier = Modifier.height(30.dp))
             GoogleSignInButtonUi(text = "SignIn Dengan Google",
                 loadingText = "Mencoba Masuk....",
+
                 onClicked = {onClick()})
             errorText?.let {
                 Spacer(modifier = Modifier.height(30.dp))

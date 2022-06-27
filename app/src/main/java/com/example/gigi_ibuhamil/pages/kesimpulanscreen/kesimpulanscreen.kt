@@ -1,6 +1,5 @@
 package com.example.gigi_ibuhamil.pages.kesimpulanscreen
 
-import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -21,11 +20,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.gigi_ibuhamil.database.HistoryItem
-import com.example.gigi_ibuhamil.database.HistoryViewModel
-import com.example.gigi_ibuhamil.database.HistoryViewModelFactory
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
@@ -80,6 +75,7 @@ fun Isi(navController: NavController) {
     )
     val db = Firebase.firestore
     val resultCollection = db.collection("result")
+    val userCollection = db.collection("users")
     val nama = SavedPreference.getDisplayName(context = context).toString()
     val diagnosis = SavedPreference.getDiagnosis(context = context).toString()
     val email = SavedPreference.getEmail(context = context).toString()
@@ -275,7 +271,7 @@ fun Isi(navController: NavController) {
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
                     Button(onClick = {
-                        fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
+                      fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
                             var ids = 0
                             ids += 1
                             mHistoryViewModel.insertProduct(
