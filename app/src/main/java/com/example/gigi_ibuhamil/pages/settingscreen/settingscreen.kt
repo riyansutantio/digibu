@@ -44,26 +44,10 @@ import com.example.gigi_ibuhamil.util.*
 import java.io.File
 import android.content.ActivityNotFoundException
 
-import androidx.core.content.ContextCompat.startActivity
-
 import android.content.ClipData
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import com.example.gigi_ibuhamil.MainActivity
-import com.example.gigi_ibuhamil.models.HistoryViewModel
 import com.example.gigi_ibuhamil.models.Result
-import com.example.gigi_ibuhamil.models.historymodel
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
-import com.google.firebase.firestore.DocumentSnapshot
-
-import com.google.firebase.firestore.DocumentReference
-
-import com.google.firebase.firestore.CollectionReference
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
