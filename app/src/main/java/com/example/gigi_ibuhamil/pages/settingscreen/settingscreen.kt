@@ -2,6 +2,8 @@ package com.example.gigi_ibuhamil.pages.settingscreen
 
 import android.Manifest
 import android.app.*
+import android.content.ActivityNotFoundException
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -35,23 +37,19 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.R
+import com.example.gigi_ibuhamil.models.Result
 import com.example.gigi_ibuhamil.models.settingModel
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.NoButton
 import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.*
-import java.io.File
-import android.content.ActivityNotFoundException
-
-import android.content.ClipData
-import com.example.gigi_ibuhamil.models.Result
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 
 private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
@@ -101,7 +99,6 @@ private suspend fun getData(){
         Log.d("Not Found", e.toString())
     }
 }
-
 @ExperimentalMaterialApi
 fun makeNotif(
     context: Context,
@@ -111,11 +108,6 @@ fun makeNotif(
     textContent: String,
     priority: Int = NotificationCompat.PRIORITY_HIGH
 ){
-//    val intent = Intent(context, MainActivity::class.java).apply {
-//        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        Toast.makeText(context, "Successfully download pdf",Toast.LENGTH_SHORT).show()
-//        Log.d("Cetak PDF","Notification PDF")
-//    }
     val file = File(Environment.getExternalStorageDirectory(), "Download/Hasil.xls")
     Log.d("File Name", file.toString())
 
@@ -131,29 +123,8 @@ fun makeNotif(
     try {
         context.startActivity(pdfOpenIntent)
     } catch (activityNotFoundException: ActivityNotFoundException) {
-        Toast.makeText(context, "There is no app to load corresponding PDF", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "There is no app to load corresponding Excel", Toast.LENGTH_LONG).show()
     }
-
-//    val intent = Intent(Intent.ACTION_VIEW)
-//    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-////    intent.setDataAndType()
-//    file.apply{
-//        if(this.exists())
-//            File(this, "Hasil_Diagnosis.pdf").apply {
-//                FileInputStream(this).apply {
-//                    Log.d("context", "ranodm")
-//                    val stringBuffer = StringBuffer()
-//                    var i: Int
-//                    while (this.read().also { i = it } != -1) {
-//                        stringBuffer.append(i.toChar())
-//                    }
-//                    close()
-//                }
-//            }else{
-//            Log.d("context", file.toString())
-//        }
-//    }
-
     val pendingIntent : PendingIntent = PendingIntent.getActivity(context,0,pdfOpenIntent,0)
 
     val builder = NotificationCompat.Builder(context, channelId)
@@ -179,8 +150,6 @@ fun createNotificationChannel(channelId: String, context: Context) {
         notificationManager.createNotificationChannel(channel)
     }
 }
-
-
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
@@ -349,10 +318,10 @@ fun Settingitems(item: settingModel, navController: NavController) {
                                 context,
                                 "Ibu Peri Cerita",
                                 0,
-                                "Successfully download PDF",
+                                "Successfully download Excel file",
                                 "Click to open file"
                             )
-                            Toast.makeText(context,"Generating PDF, Check Notification", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context,"Generating Excel File, Check Notification", Toast.LENGTH_SHORT).show()
                         }) {
                         Text(fontSize = 15.sp, text = "Cetak", color = Color.White)
                     }
@@ -429,7 +398,7 @@ fun Settingitems(item: settingModel, navController: NavController) {
             )
         }
     }
-}
-suspend fun foo( coroutineScope: CoroutineScope, lambda : suspend CoroutineScope.() -> Unit){
-    lambda.invoke(coroutineScope)
+
+
+
 }

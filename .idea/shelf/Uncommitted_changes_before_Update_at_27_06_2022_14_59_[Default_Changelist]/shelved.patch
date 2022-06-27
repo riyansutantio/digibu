@@ -1,0 +1,1705 @@
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/perilakuscreen/perilakuscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.perilakuscreen\r\n\r\nimport android.util.Log\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.models.listperilaku\r\nimport com.example.gigi_ibuhamil.models.listpolamakan\r\nimport com.example.gigi_ibuhamil.ui.YesButton\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.example.gigi_ibuhamil.util.lists\r\nimport java.math.RoundingMode\r\n\r\nval TAG = \"Pertanyaan Perilaku\"\r\nval ques:List<listperilaku> = lists().perilakulist\r\nvar total = 0\r\nvar cur = 0\r\nvar result = \"default\"\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun PerilakuScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        var dialogState by remember { mutableStateOf(false) }\r\n        val context = LocalContext.current\r\n        PerilakuTitle(navController)\r\n        Question(quest = ques, navController = navController)\r\n        if(cur == 2 ){\r\n            dialogState = true\r\n            if (dialogState == true){\r\n                if (total == 5) {\r\n                    result = \"Salah\"\r\n                }else if(total == 9 ){\r\n                    result = \"Kurang tepat\"\r\n                }else if(total== 7){\r\n                    result = \"Sudah tepat\"\r\n                }else if(total== 11){\r\n                    result = \"Sangat tepat\"\r\n                }\r\n                AlertDialog(\r\n                    modifier = Modifier.clip(RoundedCornerShape(15.dp)),\r\n                    onDismissRequest = { dialogState = false},\r\n                    title = {\r\n                        Text(\r\n                            fontSize = MaterialTheme.typography.h5.fontSize,\r\n                            textAlign = TextAlign.Center,\r\n                            text = \"Hasil Perhitungan Perilaku Kesgilut anda\"\r\n                        )\r\n                    },\r\n                    text = {\r\n                        if (total == 5) {\r\n                            Text(\r\n                                fontSize = 20.sp,\r\n                                textAlign = TextAlign.Center,\r\n                                text = \"Jumlah Skor anda : ${\r\n                                    total\r\n                                } \\nPerilaku kesehatan gigi dan mulut anda salah \"\r\n                            )\r\n                        }else if(total == 9 ){\r\n                            Text(\r\n                                fontSize = 20.sp,\r\n                                textAlign = TextAlign.Center,\r\n                                text = \"Jumlah Skor anda : ${\r\n                                    total\r\n                                } \\nPerilaku kesehatan gigi dan mulut anda kurang tepat \"\r\n                            )\r\n                        }else if(total== 7){\r\n                            Text(\r\n                                fontSize = 20.sp,\r\n                                textAlign = TextAlign.Center,\r\n                                text = \"Jumlah Skor anda : ${\r\n                                    total\r\n                                } \\nPerilaku kesehatan gigi dan mulut anda sudah tepat \"\r\n                            )\r\n                        }else if(total== 11){\r\n                            Text(\r\n                                fontSize = 20.sp,\r\n                                textAlign = TextAlign.Center,\r\n                                text = \"Jumlah Skor anda : ${\r\n                                    total\r\n                                } \\nPerilaku kesehatan gigi dan mulut anda sangat tepat \"\r\n                            )\r\n                        }\r\n                    },\r\n                    confirmButton = {\r\n                        Button(\r\n                            modifier = Modifier\r\n                                .fillMaxWidth(),\r\n                            onClick = {\r\n                                SavedPreference.setPerilaku(context, result)\r\n                                dialogState = false\r\n                                ResultReturn(\"Default\")\r\n                                CurReturn(0)\r\n                                total = 0\r\n                                navController.navigate(Screen.PerilakuScreen.route){popUpTo(0)}\r\n                            }) {\r\n                            Text(fontSize = 15.sp,text = \"Mengulang proses perhitungan\" )\r\n                        }\r\n                    },\r\n                    dismissButton = {\r\n                        Button(\r\n                            modifier = Modifier\r\n                                .fillMaxWidth(),\r\n                            onClick = {\r\n                                SavedPreference.setPerilaku(context, result)\r\n                                dialogState = false\r\n                                ResultReturn(\"Default\")\r\n                                CurReturn(0)\r\n                                total = 0\r\n                                navController.navigate(Screen.KesimpulanScreen.route){popUpTo(0)}\r\n                            }) {\r\n                            Text(fontSize = 15.sp,text = \"Lanjutkan Ke Halaman kesimpulan\")\r\n                        }\r\n                    }\r\n                )\r\n            }\r\n\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun PerilakuTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 30.dp)\r\n    ) {\r\n        Row(Modifier.padding(start = 10.dp)) {\r\n            Text(\r\n                text = \"Perilaku Kesgilut\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Question(quest:List<listperilaku>, navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(30.dp)\r\n    ) {\r\n        for (i in quest) {\r\n            if (i.idpertanyaan == cur) {\r\n                Pertanyaan(item = i, navController = navController)\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Pertanyaan(item: listperilaku, navController: NavController) {\r\n    val context = LocalContext.current\r\n    Column(\r\n        modifier = Modifier.fillMaxHeight(),\r\n        verticalArrangement = Arrangement.SpaceBetween\r\n    ) {\r\n        Text(\r\n            text = item.soal,\r\n            fontSize = 30.sp,\r\n            textAlign = TextAlign.Center,\r\n            modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 50.dp)\r\n        )\r\n        Row(){\r\n            Button(\r\n                onClick = {\r\n                    total = total + item.point1\r\n                    Toast.makeText(context,\r\n                        total.toString(),\r\n                        Toast.LENGTH_SHORT).show()\r\n                    cur = item.next\r\n                    navController.navigate(Screen.PerilakuScreen.route)\r\n                    Log.d(TAG,\"Diagnosa Pilihan ${item.jawaban1}\")\r\n                },\r\n                shape = RoundedCornerShape(10.dp),\r\n                colors = ButtonDefaults.buttonColors(YesButton),\r\n                modifier = Modifier\r\n                    .padding(10.dp)\r\n                    .weight(1f)\r\n            ) {\r\n                Text(\r\n                    text = item.jawaban1,\r\n                    color = Color.White,\r\n                    fontSize = 20.sp,\r\n                    modifier = Modifier.padding(10.dp)\r\n                )\r\n            }\r\n            Button(\r\n                onClick = {\r\n                    cur = item.next\r\n                    total = total + item.point2\r\n                    Toast.makeText(context,\r\n                        total.toString(),\r\n                        Toast.LENGTH_SHORT).show()\r\n                    navController.navigate(Screen.PerilakuScreen.route)\r\n                    Log.d(TAG,\"Diagnosa Pilihan ${item.jawaban2}\")\r\n                },\r\n                shape = RoundedCornerShape(10.dp),\r\n                colors = ButtonDefaults.buttonColors(YesButton),\r\n                modifier = Modifier\r\n                    .padding(10.dp)\r\n                    .weight(1f)\r\n            ) {\r\n                Text(\r\n                    text = item.jawaban2,\r\n                    color = Color.White,\r\n                    fontSize = 20.sp,\r\n                    modifier = Modifier.padding(10.dp)\r\n                )\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\nfun ResultReturn(item: String): String {\r\n    result = item\r\n    return result\r\n}\r\nfun CurReturn(item: Int): Int {\r\n    cur = item\r\n    return cur\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/perilakuscreen/perilakuscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/perilakuscreen/perilakuscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/perilakuscreen/perilakuscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/perilakuscreen/perilakuscreen.kt	(date 1656316609411)
+@@ -192,9 +192,6 @@
+             Button(
+                 onClick = {
+                     total = total + item.point1
+-                    Toast.makeText(context,
+-                        total.toString(),
+-                        Toast.LENGTH_SHORT).show()
+                     cur = item.next
+                     navController.navigate(Screen.PerilakuScreen.route)
+                     Log.d(TAG,"Diagnosa Pilihan ${item.jawaban1}")
+@@ -216,9 +213,6 @@
+                 onClick = {
+                     cur = item.next
+                     total = total + item.point2
+-                    Toast.makeText(context,
+-                        total.toString(),
+-                        Toast.LENGTH_SHORT).show()
+                     navController.navigate(Screen.PerilakuScreen.route)
+                     Log.d(TAG,"Diagnosa Pilihan ${item.jawaban2}")
+                 },
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59__Default_Changelist_.xml	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ /dev/null	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_13_06_2022_7_59_[Default_Changelist]" date="1655081984331" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 13/06/2022 7:59 [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/deploymentTargetDropDown.xml
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+deleted file mode 100644
+--- a/.idea/deploymentTargetDropDown.xml	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ /dev/null	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
+@@ -1,17 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="deploymentTargetDropDown">
+-    <targetSelectedWithDropDown>
+-      <Target>
+-        <type value="QUICK_BOOT_TARGET" />
+-        <deviceKey>
+-          <Key>
+-            <type value="VIRTUAL_DEVICE_PATH" />
+-            <value value="C:\Users\ASUS\.android\avd\Pixel_4_API_29.avd" />
+-          </Key>
+-        </deviceKey>
+-      </Target>
+-    </targetSelectedWithDropDown>
+-    <timeTargetWasSelectedWithDropDown value="2022-06-10T01:10:16.206084400Z" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_13_06_2022_7_59_[Default_Changelist]/shelved.patch	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ /dev/null	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
+@@ -1,77 +0,0 @@
+-Index: app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.gigi_ibuhamil.pages.loginscreen\r\n\r\nimport android.util.Log\r\nimport android.widget.Toast\r\nimport androidx.activity.compose.rememberLauncherForActivityResult\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.material.Colors\r\nimport androidx.compose.material.ExperimentalMaterialApi\r\nimport androidx.compose.material.MaterialTheme\r\nimport androidx.compose.material.Text\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.models.AuthViewModel\r\nimport com.example.gigi_ibuhamil.ui.GoogleSignInButtonUi\r\nimport com.example.gigi_ibuhamil.ui.*\r\nimport com.example.gigi_ibuhamil.util.AuthResultContract\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.google.android.gms.common.api.ApiException\r\nimport kotlinx.coroutines.launch\r\n\r\n\r\nprivate val TAG = \"AuthScreen\"\r\n@ExperimentalMaterialApi\r\n@Composable\r\nfun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {\r\n    val context = LocalContext.current\r\n    val coroutineScope = rememberCoroutineScope()\r\n    var text by remember { mutableStateOf<String?>(null) }\r\n    val user by remember(authViewModel){authViewModel.user}.collectAsState()\r\n    val signInRequestCode = 1\r\n    val authResultLauncher =\r\n        rememberLauncherForActivityResult(contract = AuthResultContract()){\r\n                task ->\r\n            try {\r\n                val account = task?.getResult(ApiException::class.java)\r\n                if (account==null){\r\n                    Toast.makeText(context,\"Google sign in failed\", Toast.LENGTH_SHORT).show()\r\n                    Log.d(TAG,\"Sign to Google Failed,There no account\")\r\n                }else{\r\n                    coroutineScope.launch {\r\n                        authViewModel.signIn(email = account.email, displayName = account.displayName)\r\n                    }\r\n                }\r\n            }catch (e: ApiException){\r\n                Toast.makeText(context,\"Google sign in failed\", Toast.LENGTH_SHORT).show()\r\n                Log.d(TAG,\"Sign to Google Failed,API Error\")\r\n            }\r\n        }\r\n    AuthView(\r\n        errorText = text,\r\n        onClick = {\r\n            text=null\r\n            authResultLauncher.launch(signInRequestCode)\r\n        }\r\n    )\r\n    user?.let{\r\n        SavedPreference.setDisplayName(LocalContext.current,it.displayName)\r\n        SavedPreference.setEmail(LocalContext.current,it.email)\r\n        if(SavedPreference.getFirst(context).toString()== \"true\"){\r\n            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}\r\n            Toast.makeText(LocalContext.current, \"Sucessfull Login, Directing to Home\", Toast.LENGTH_SHORT).show()\r\n        }else{\r\n            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}\r\n            Toast.makeText(LocalContext.current, \"Sucessfull Login, Directing to Information Data\", Toast.LENGTH_SHORT).show()\r\n        }\r\n        Log.d(TAG,\"Successfull login,Directing to Welcome Screen\")\r\n    }\r\n}\r\n\r\n@ExperimentalMaterialApi\r\n@Composable\r\nfun AuthView(errorText:String?,onClick:() -> Unit) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .background(gradbg)\r\n    ) {\r\n        Column(\r\n            modifier = Modifier.padding(40.dp),\r\n            verticalArrangement = Arrangement.Center,\r\n            horizontalAlignment = Alignment.CenterHorizontally\r\n        ) {\r\n            Text(\r\n                text = \"Login\",\r\n                style = MaterialTheme.typography.h1,\r\n                modifier = Modifier\r\n                    .padding(start = 10.dp, top = 10.dp)\r\n            )\r\n            Text(\r\n                text = \"With Google\",\r\n                style = MaterialTheme.typography.h6,\r\n                modifier = Modifier\r\n                    .padding(start = 10.dp,bottom = 30.dp)\r\n            )\r\n            Spacer(modifier = Modifier.height(30.dp))\r\n            GoogleSignInButtonUi(text = \"Sign In With Google\",\r\n                loadingText = \"Signing In....\",\r\n                onClicked = {onClick()})\r\n            errorText?.let {\r\n                Spacer(modifier = Modifier.height(30.dp))\r\n                Text(text = it)\r\n            }\r\n            Spacer(modifier = Modifier.height(50.dp))\r\n        }\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt
+---- a/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt	(revision 8c16d32afa32e1184c13537bf8d736fd368d453d)
+-+++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/loginscreen/loginscreen.kt	(date 1655081297980)
+-@@ -23,6 +23,8 @@
+- import com.example.gigi_ibuhamil.util.Screen
+- import com.google.android.gms.common.api.ApiException
+- import kotlinx.coroutines.launch
+-+import com.google.firebase.firestore.ktx.firestore
+-+import com.google.firebase.ktx.Firebase
+- 
+- 
+- private val TAG = "AuthScreen"
+-@@ -30,6 +32,8 @@
+- @Composable
+- fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
+-     val context = LocalContext.current
+-+    val emails = ArrayList<String>()
+-+    val db = Firebase.firestore
+-     val coroutineScope = rememberCoroutineScope()
+-     var text by remember { mutableStateOf<String?>(null) }
+-     val user by remember(authViewModel){authViewModel.user}.collectAsState()
+-@@ -60,16 +64,28 @@
+-         }
+-     )
+-     user?.let{
+-+        val current = LocalContext.current
+-         SavedPreference.setDisplayName(LocalContext.current,it.displayName)
+-         SavedPreference.setEmail(LocalContext.current,it.email)
+--        if(SavedPreference.getFirst(context).toString()== "true"){
+--            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+--            Toast.makeText(LocalContext.current, "Sucessfull Login, Directing to Home", Toast.LENGTH_SHORT).show()
+--        }else{
+--            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
+--            Toast.makeText(LocalContext.current, "Sucessfull Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
+--        }
+--        Log.d(TAG,"Successfull login,Directing to Welcome Screen")
+-+        db.collection("users")
+-+            .get()
+-+            .addOnSuccessListener {
+-+                    result ->
+-+                for(document in result) {
+-+                    var emailUser = document.data["email"].toString()
+-+                    emails.add(emailUser)
+-+                    for (email in emails.indices)
+-+                        if(SavedPreference.getEmail(context).toString() == emails[email]) {
+-+                            navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+-+                            Toast.makeText(current, "Successful Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
+-+                        }
+-+                        else if (SavedPreference.getEmail(context).toString() != emails[email]){
+-+                            navController.navigate(Screen.InformationScreen.route){popUpTo(0)}
+-+//                            Toast.makeText(current, "Successful Login, Directing to Information Data", Toast.LENGTH_SHORT).show()
+-+
+-+                        }
+-+                }
+-+            }
+-     }
+- }
+- 
+-Index: app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt
+-new file mode 100644
+---- /dev/null	(date 1655081934921)
+-+++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt	(date 1655081934921)
+-@@ -0,0 +1,2 @@
+-+package com.example.gigi_ibuhamil.pages.historyscreen
+-+
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/videoscreen/videoscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.videoscreen\r\n\r\nimport android.content.Intent\r\nimport android.net.Uri\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.*\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.ArrowBack\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.ui.DaftarColor\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.Screen\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun VideoScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        VideoTitle(navController)\r\n        VideoPlayer()\r\n\r\n    }\r\n}\r\n\r\n@Composable\r\nfun VideoTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 30.dp)\r\n    ) {\r\n        Row() {\r\n            IconButton(\r\n                modifier = Modifier.weight(1f),\r\n                onClick = { navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) } }\r\n            ) {\r\n                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = \"ArrowBack\")\r\n            }\r\n            Text(\r\n                text = \"Video\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n\r\n@Composable\r\nfun VideoPlayer() {\r\n    val context = LocalContext.current\r\n    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse(\"https://youtu.be/zhawF9_lpM0\")) }\r\n    val intent2 = remember { Intent(Intent.ACTION_VIEW, Uri.parse(\"https://youtu.be/9C7FGC-ibY4\")) }\r\n    val intent3 = remember { Intent(Intent.ACTION_VIEW, Uri.parse(\"https://youtu.be/k7kzc3Nof08\")) }\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(7.5.dp)\r\n            .clip(RoundedCornerShape(10.dp))\r\n            .background(DaftarColor)\r\n            .fillMaxWidth()\r\n    ) {\r\n        Column(\r\n            Modifier\r\n                .fillMaxSize(),\r\n            Arrangement.Center,\r\n            Alignment.CenterHorizontally\r\n        ) {\r\n            Column(Modifier\r\n                .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {\r\n                Text(\r\n                    text = \"Untuk pergi ke video pertama klik tombol di bawah\",\r\n                    textAlign = TextAlign.Center,\r\n                    fontSize = 20.sp,\r\n                    color = Color.White,\r\n                )\r\n                Button(onClick = { context.startActivity(intent1) }) {\r\n                    Text(\r\n                        text = \"Navigate to video 1!\",\r\n                        textAlign = TextAlign.Center,\r\n                        fontSize = 15.sp,\r\n                        color = Color.White,\r\n                    )\r\n                }\r\n            }\r\n            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))\r\n            Column(Modifier\r\n                .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {\r\n                Text(\r\n                    text = \"Untuk pergi ke video kedua klik tombol di bawah\",\r\n                    textAlign = TextAlign.Center,\r\n                    fontSize = 20.sp,\r\n                    color = Color.White,\r\n                )\r\n                Button(onClick = { context.startActivity(intent2) }) {\r\n                    Text(\r\n                        text = \"Navigate to video 2!\",\r\n                        textAlign = TextAlign.Center,\r\n                        fontSize = 15.sp,\r\n                        color = Color.White,\r\n                    )\r\n                }\r\n            }\r\n            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))\r\n            Column(Modifier\r\n                .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {\r\n                Text(\r\n                    text = \"Untuk pergi ke video ketiga klik tombol di bawah\",\r\n                    textAlign = TextAlign.Center,\r\n                    fontSize = 20.sp,\r\n                    color = Color.White,\r\n                )\r\n                Button(onClick = { context.startActivity(intent3) }) {\r\n                    Text(\r\n                        text = \"Navigate to video 3!\",\r\n                        textAlign = TextAlign.Center,\r\n                        fontSize = 15.sp,\r\n                        color = Color.White,\r\n                    )\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/videoscreen/videoscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/videoscreen/videoscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/videoscreen/videoscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/videoscreen/videoscreen.kt	(date 1656316609333)
+@@ -85,6 +85,7 @@
+             Arrangement.Center,
+             Alignment.CenterHorizontally
+         ) {
++            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
+             Column(Modifier
+                 .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
+                 Text(
+@@ -138,6 +139,7 @@
+                     )
+                 }
+             }
++            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
+         }
+     }
+ }
+Index: app/src/main/java/com/example/gigi_ibuhamil/util/GeneratePdf.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/util/GeneratePdf.kt b/app/src/main/java/com/example/gigi_ibuhamil/util/GeneratePdf.kt
+new file mode 100644
+--- /dev/null	(date 1656316609341)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/util/GeneratePdf.kt	(date 1656316609341)
+@@ -0,0 +1,84 @@
++package com.example.gigi_ibuhamil.util
++
++import android.content.Context
++import android.graphics.Bitmap
++import android.graphics.Canvas
++import android.graphics.Paint
++import android.graphics.Typeface
++import android.graphics.drawable.BitmapDrawable
++import android.graphics.drawable.Drawable
++import android.graphics.pdf.PdfDocument
++import android.widget.Toast
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.platform.LocalContext
++import androidx.core.content.ContextCompat
++import com.example.gigi_ibuhamil.R
++import com.google.firebase.firestore.ktx.firestore
++import com.google.firebase.ktx.Firebase
++import java.io.File
++import java.io.FileOutputStream
++import java.io.IOException
++
++fun generatePDF(context: Context, directory: File){
++    val db = Firebase.firestore
++    val pageHeight = 1120
++    val pageWidth = 792
++    val pdfDocument = PdfDocument()
++    val paint = Paint()
++    val title = Paint()
++    val divider = Paint()
++    val myPageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create()
++    val myPage = pdfDocument.startPage(myPageInfo)
++    val canvas: Canvas = myPage.canvas
++    val bitmap: Bitmap? = drawableToBitmap(context.resources.getDrawable(R.mipmap.logoapp))
++    val scaleBitmap: Bitmap? = Bitmap.createScaledBitmap(bitmap!!, 120, 120, false)
++    val no = Paint()
++    canvas.drawBitmap(scaleBitmap!!, 40f, 40f, paint)
++    title.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
++    title.textSize = 25f
++    title.color = ContextCompat.getColor(context, R.color.purple_200)
++    canvas.drawText("Ibu Peri Cerita", 200f, 120f, title)
++    canvas.drawText("Hasil kesimpulan user ", 200f, 80f, title)
++    title.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
++    title.color = ContextCompat.getColor(context, R.color.purple_200)
++    title.textSize = 15f
++    title.textAlign = Paint.Align.CENTER
++    divider.textSize = 20f
++    divider.color = ContextCompat.getColor(context, R.color.black)
++    canvas.drawLine(50f,200f,740f,200f,divider)
++    no.typeface = Typeface.create(Typeface.DEFAULT,Typeface.NORMAL)
++    no.textSize = 20f
++    no.color = ContextCompat.getColor(context, R.color.black)
++    canvas.drawText("No",50f,250f,no)
++    canvas.drawText("Nama",100f,250f,no)
++//    canvas.drawText("Email",180f,250f,no)
++    canvas.drawText("Tahun",290f,250f,no)
++    canvas.drawText("Usia",380f,250f,no)
++    canvas.drawText("Diagnosis",440f,250f,no)
++    canvas.drawText("BMI",550f,250f,no)
++    canvas.drawText("Pola",610f,250f,no)
++    canvas.drawText("Perilaku",670f,250f,no)
++    canvas.drawLine(50f,280f,740f,280f,divider)
++
++
++    pdfDocument.finishPage(myPage)
++    val file = File(directory, "Hasil_Diagnosis.pdf")
++
++    try {
++        pdfDocument.writeTo(FileOutputStream(file))
++    } catch(ex : IOException){
++        ex.printStackTrace()
++    }
++    pdfDocument.close()
++}
++
++fun drawableToBitmap(drawable: Drawable): Bitmap? {
++    if (drawable is BitmapDrawable) {
++        return drawable.bitmap
++    }
++    val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
++    val canvas = Canvas(bitmap)
++    drawable.setBounds(0, 0, canvas.width, canvas.height)
++    drawable.draw(canvas)
++    return bitmap
++}
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/welcomescreen/welcomeScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.welcomescreen\r\n\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.*\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.lazy.GridCells\r\nimport androidx.compose.foundation.lazy.LazyVerticalGrid\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.*\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.ArrowForward\r\nimport androidx.compose.material.icons.filled.Settings\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.geometry.Offset\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.graphics.Path\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.res.painterResource\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.ui.*\r\nimport com.example.gigi_ibuhamil.R\r\nimport com.example.gigi_ibuhamil.models.featured\r\nimport com.example.gigi_ibuhamil.util.*\r\n\r\n\r\n@ExperimentalMaterialApi\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun WelcomeScreen(navController: NavController) {\r\n    Box(\r\n        modifier = Modifier\r\n            .background(gradbg)\r\n            .padding(start = 5.dp, end = 5.dp, top = 5.dp)\r\n    ) {\r\n        Column {\r\n            LogoutButton(navController)\r\n            GreetingSection()\r\n            MainMenu(navController)\r\n            SecondMainMenu(navController)\r\n            FeatureSection(\r\n                features = lists().menulist,navController)\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun LogoutButton(navController: NavController) {\r\n    Row(\r\n        horizontalArrangement = Arrangement.End\r\n    ) {\r\n        Text(text = \"\", modifier = Modifier.weight(3f))\r\n        PopUpLogout(navController)\r\n    }\r\n}\r\n\r\n@Composable\r\nfun PopUpLogout(navController: NavController) {\r\n    Column(\r\n    ) {\r\n        Row(\r\n            horizontalArrangement = Arrangement.SpaceBetween,\r\n            verticalAlignment = Alignment.CenterVertically\r\n        ) {\r\n            Icon(\r\n                imageVector = Icons.Filled.Settings,\r\n                contentDescription = \"setting\",\r\n                modifier = Modifier\r\n                    .size(60.dp)\r\n                    .padding(10.dp)\r\n                    .clickable {\r\n                        navController.navigate(Screen.SettingScreen.route)\r\n                    },\r\n            )\r\n        }\r\n    }\r\n}\r\n@ExperimentalMaterialApi\r\n@Composable\r\nfun GreetingSection() {\r\n    val context = LocalContext.current\r\n    val name = SavedPreference.getDisplayName(context).toString()\r\n    Column(\r\n        modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)\r\n    ) {\r\n        Text(\r\n            text = \"Welcome\",\r\n            style = MaterialTheme.typography.h3\r\n        )\r\n        Text(\r\n            text = \"To DIGIBU, \",\r\n            style = MaterialTheme.typography.h6\r\n        )\r\n        Text(\r\n            text = name,\r\n            style = MaterialTheme.typography.h6\r\n        )\r\n    }\r\n\r\n}\r\n\r\n@Composable\r\nfun MainMenu(navController: NavController) {\r\n    Column(\r\n        modifier = Modifier\r\n            .padding(start = 15.dp, end = 15.dp, top = 15.dp)\r\n            .fillMaxWidth()\r\n            .clickable {\r\n                navController.navigate(Screen.DiagnosisScreen.route)\r\n            }\r\n    ) {\r\n        Row(\r\n            verticalAlignment = Alignment.CenterVertically,\r\n            horizontalArrangement = Arrangement.SpaceBetween,\r\n            modifier = Modifier\r\n                .clip(RoundedCornerShape(10.dp))\r\n                .background(LightRed)\r\n                .padding(horizontal = 15.dp, vertical = 20.dp)\r\n                .fillMaxWidth()\r\n\r\n        ){\r\n            Column(\r\n            ) {\r\n                Text(\r\n                    text = \"Diagnosis\",\r\n                    style = MaterialTheme.typography.h4\r\n                )\r\n                Text(\r\n                    text = \"Tekan Untuk Memulai Diagnosis\",\r\n                    style = MaterialTheme.typography.body1\r\n                )\r\n            }\r\n            Image(\r\n                painter = painterResource(id = R.mipmap.ic_diagnosis),\r\n                contentDescription =\"Menu Gejala\"\r\n            )\r\n\r\n        }\r\n    }\r\n}\r\n@Composable\r\nfun SecondMainMenu(navController: NavController) {\r\n    Row(\r\n        modifier = Modifier\r\n            .padding(start = 15.dp, end = 15.dp, top = 15.dp)\r\n    ) {\r\n        Column(\r\n            modifier = Modifier\r\n                .clip(RoundedCornerShape(10.dp))\r\n                .background(LightBlue)\r\n                .padding(10.dp)\r\n                .background(LightBlue)\r\n                .clickable {\r\n                    navController.navigate(Screen.EbookScreen.route)\r\n                }\r\n                .weight(1f)\r\n\r\n        ){\r\n            Text(\r\n                text = \"E-Book\",\r\n                style = MaterialTheme.typography.h5\r\n            )\r\n            Text(\r\n                text = \"Tekan Untuk Melihat Modul\",\r\n                style = MaterialTheme.typography.body2\r\n            )\r\n        }\r\n        Spacer(modifier = Modifier.width(10.dp))\r\n        Column(\r\n            modifier = Modifier\r\n                .clip(RoundedCornerShape(10.dp))\r\n                .background(LightBlue)\r\n                .padding(10.dp)\r\n                .background(LightBlue)\r\n                .clickable {\r\n                    navController.navigate(Screen.VideoScreen.route)\r\n                }\r\n                .weight(1f)\r\n\r\n        ){\r\n            Text(\r\n                text = \"Video\",\r\n                style = MaterialTheme.typography.h5\r\n            )\r\n            Text(\r\n                text = \"Tekan Untuk Melihat Video\",\r\n                style = MaterialTheme.typography.body2\r\n            )\r\n        }\r\n    }\r\n}\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun FeatureSection(features: List<featured>,navController: NavController) {\r\n    Column(modifier = Modifier.fillMaxWidth()) {\r\n        Text(\r\n            text = \"Features\",\r\n            style = MaterialTheme.typography.h3,\r\n            modifier = Modifier.padding(15.dp)\r\n        )\r\n        LazyVerticalGrid(\r\n            cells = GridCells.Fixed(2),\r\n            contentPadding = PaddingValues(start = 7.dp,end = 7.dp,bottom = 10.dp),\r\n            modifier = Modifier.fillMaxHeight(),\r\n            content = {\r\n                items(features.size){\r\n                    FeaturedItems(feature = features[it],navController)\r\n                }\r\n            }\r\n        )\r\n    }\r\n}\r\n\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun FeaturedItems(feature: featured,navController: NavController) {\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(5.dp)\r\n            .aspectRatio(1f)\r\n            .clip(RoundedCornerShape(10.dp))\r\n            .background(feature.darkColor)\r\n            .clickable {\r\n                when (feature.id) {\r\n                    \"DG\" -> navController.navigate(Screen.GejalaScreen.route)\r\n                    \"DP\" -> navController.navigate(Screen.PenyakitScreen.route)\r\n                    \"P\" -> navController.navigate(Screen.PetunjukScreen.route)\r\n                    \"T\" -> navController.navigate(Screen.TentangScreen.route)\r\n                }\r\n            },\r\n    ) {\r\n        val width = constraints.maxWidth\r\n        val height = constraints.maxHeight\r\n\r\n        //medium color path\r\n        val mediumColoredPath1 = Offset(0f, height * 0.3f)\r\n        val mediumColoredPath2 = Offset(width * 0.1f, height * 0.35f)\r\n        val mediumColoredPath3 = Offset(width * 0.4f, height * 0.05f)\r\n        val mediumColoredPath4 = Offset(width * 0.75f, height * 0.7f)\r\n        val mediumColoredPath5 = Offset(width * 1.4f, -height.toFloat())\r\n\r\n        val mediumColoredPath = Path().apply {\r\n            moveTo(mediumColoredPath1.x, mediumColoredPath1.y)\r\n            standardQuadFromTo(mediumColoredPath1, mediumColoredPath2)\r\n            standardQuadFromTo(mediumColoredPath2, mediumColoredPath3)\r\n            standardQuadFromTo(mediumColoredPath3, mediumColoredPath4)\r\n            standardQuadFromTo(mediumColoredPath4, mediumColoredPath5)\r\n            lineTo(width.toFloat() + 100f, height.toFloat() + 100f)\r\n            lineTo(-100f, height.toFloat() + 100f)\r\n            close()\r\n        }\r\n\r\n        //light color path\r\n        val lightColoredPath1 = Offset(0f, height * 0.35f)\r\n        val lightColoredPath2 = Offset(width * 0.1f, height * 0.4f)\r\n        val lightColoredPath3 = Offset(width * 0.3f, height * 0.35f)\r\n        val lightColoredPath4 = Offset(width * 0.65f, height.toFloat())\r\n        val lightColoredPath5 = Offset(width * 1.4f, -height.toFloat() / 3f)\r\n\r\n        val lightColoredPath = Path().apply {\r\n            moveTo(mediumColoredPath1.x, mediumColoredPath1.y)\r\n            standardQuadFromTo(lightColoredPath1, lightColoredPath2)\r\n            standardQuadFromTo(lightColoredPath2, lightColoredPath3)\r\n            standardQuadFromTo(lightColoredPath3, lightColoredPath4)\r\n            standardQuadFromTo(lightColoredPath4, lightColoredPath5)\r\n            lineTo(width.toFloat() + 100f, height.toFloat() + 100f)\r\n            lineTo(-100f, height.toFloat() + 100f)\r\n            close()\r\n        }\r\n        Canvas(modifier = Modifier.fillMaxSize()) {\r\n            drawPath(\r\n                path = mediumColoredPath,\r\n                color = feature.mediumColor\r\n            )\r\n            drawPath(\r\n                path = lightColoredPath,\r\n                color = feature.lightColor\r\n            )\r\n        }\r\n        Box(\r\n            modifier = Modifier\r\n                .fillMaxSize()\r\n                .padding(15.dp)\r\n        ) {\r\n            Text(\r\n                text = feature.title,\r\n                style = MaterialTheme.typography.h5,\r\n                lineHeight = 25.sp,\r\n                modifier = Modifier.align(Alignment.TopStart)\r\n            )\r\n            Image(\r\n                painter = painterResource(id = feature.iconId),\r\n                contentDescription = feature.title,\r\n                modifier = Modifier.align(Alignment.BottomStart)\r\n            )\r\n            Icon(\r\n                imageVector = Icons.Filled.ArrowForward,\r\n                contentDescription = \"arrow\",\r\n                modifier = Modifier\r\n                    .align(Alignment.BottomEnd)\r\n                    .clip(RoundedCornerShape(10.dp))\r\n                    .background(ButtonBlue)\r\n                    .padding(vertical = 5.dp, horizontal = 10.dp),\r\n                tint = Color.White\r\n            )\r\n            /*Text(\r\n                text = \"Start\",\r\n                color = Color.White,\r\n                fontSize = 25.sp,\r\n                fontWeight = FontWeight.Bold,\r\n                modifier = Modifier\r\n                    .clickable {\r\n                        when (feature.id) {\r\n                            \"DG\" -> navController.navigate(Screen.GejalaScreen.route)\r\n                            \"DP\" -> navController.navigate(Screen.PenyakitScreen.route)\r\n                            \"P\" -> navController.navigate(Screen.PetunjukScreen.route)\r\n                            \"T\" -> navController.navigate(Screen.TentangScreen.route)\r\n                        }\r\n                    }\r\n                    .align(Alignment.BottomEnd)\r\n                    .clip(RoundedCornerShape(10.dp))\r\n                    .background(ButtonBlue)\r\n                    .padding(vertical = 5.dp, horizontal = 10.dp)\r\n            )*/\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/welcomescreen/welcomeScreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/welcomescreen/welcomeScreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/welcomescreen/welcomeScreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/welcomescreen/welcomeScreen.kt	(date 1656316609338)
+@@ -89,11 +89,11 @@
+         modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
+     ) {
+         Text(
+-            text = "Welcome",
++            text = "Selamat Datang",
+             style = MaterialTheme.typography.h3
+         )
+         Text(
+-            text = "To DIGIBU, ",
++            text = "Di Ibu Peri Cerita, ",
+             style = MaterialTheme.typography.h6
+         )
+         Text(
+@@ -154,7 +154,6 @@
+                 .clip(RoundedCornerShape(10.dp))
+                 .background(LightBlue)
+                 .padding(10.dp)
+-                .background(LightBlue)
+                 .clickable {
+                     navController.navigate(Screen.EbookScreen.route)
+                 }
+@@ -176,7 +175,6 @@
+                 .clip(RoundedCornerShape(10.dp))
+                 .background(LightBlue)
+                 .padding(10.dp)
+-                .background(LightBlue)
+                 .clickable {
+                     navController.navigate(Screen.VideoScreen.route)
+                 }
+@@ -199,7 +197,7 @@
+ fun FeatureSection(features: List<featured>,navController: NavController) {
+     Column(modifier = Modifier.fillMaxWidth()) {
+         Text(
+-            text = "Features",
++            text = "Fitur",
+             style = MaterialTheme.typography.h3,
+             modifier = Modifier.padding(15.dp)
+         )
+@@ -309,25 +307,6 @@
+                     .padding(vertical = 5.dp, horizontal = 10.dp),
+                 tint = Color.White
+             )
+-            /*Text(
+-                text = "Start",
+-                color = Color.White,
+-                fontSize = 25.sp,
+-                fontWeight = FontWeight.Bold,
+-                modifier = Modifier
+-                    .clickable {
+-                        when (feature.id) {
+-                            "DG" -> navController.navigate(Screen.GejalaScreen.route)
+-                            "DP" -> navController.navigate(Screen.PenyakitScreen.route)
+-                            "P" -> navController.navigate(Screen.PetunjukScreen.route)
+-                            "T" -> navController.navigate(Screen.TentangScreen.route)
+-                        }
+-                    }
+-                    .align(Alignment.BottomEnd)
+-                    .clip(RoundedCornerShape(10.dp))
+-                    .background(ButtonBlue)
+-                    .padding(vertical = 5.dp, horizontal = 10.dp)
+-            )*/
+         }
+     }
+ }
+Index: app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDatabase.kt b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDatabase.kt
+new file mode 100644
+--- /dev/null	(date 1656316609310)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDatabase.kt	(date 1656316609310)
+@@ -0,0 +1,35 @@
++package com.example.gigi_ibuhamil.database
++
++import android.content.Context
++import androidx.room.Database
++import androidx.room.Room
++import androidx.room.RoomDatabase
++
++@Database(entities = [HistoryItem::class], version = 1, exportSchema = false)
++abstract class HistoryDatabase : RoomDatabase() {
++    abstract fun historyDatabaseDao(): HistoryDatabaseDao
++
++    companion object {
++
++        private var INSTANCE: HistoryDatabase? = null
++
++        fun getInstance(context: Context): HistoryDatabase {
++            synchronized(this) {
++                var instance = INSTANCE
++
++                if (instance == null) {
++                    instance = Room.databaseBuilder(
++                        context.applicationContext,
++                        HistoryDatabase::class.java,
++                        "history_database"
++                    ).fallbackToDestructiveMigration()
++                        .build()
++
++                    INSTANCE = instance
++                }
++
++                return instance
++            }
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/xml/file_path.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/xml/file_path.xml b/app/src/main/res/xml/file_path.xml
+new file mode 100644
+--- /dev/null	(date 1656316609347)
++++ b/app/src/main/res/xml/file_path.xml	(date 1656316609347)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<paths xmlns:android="http://schemas.android.com/apk/res/android">
++    <external-path
++        name="external_files"
++        path="."/>
++</paths>
+\ No newline at end of file
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.historyscreen\r\n\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.clickable\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.lazy.GridCells\r\nimport androidx.compose.foundation.lazy.LazyVerticalGrid\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.*\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.ArrowBack\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.models.listgejala\r\nimport com.example.gigi_ibuhamil.models.settingModel\r\nimport com.example.gigi_ibuhamil.ui.DaftarColor\r\nimport com.example.gigi_ibuhamil.ui.NoButton\r\nimport com.example.gigi_ibuhamil.ui.YesButton\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.example.gigi_ibuhamil.util.getGoogleSignInClient\r\nimport com.example.gigi_ibuhamil.util.lists\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun HistoryScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        HistoryTitle(navController)\r\n        HistorySection(items = lists().listsetting, navController = navController)\r\n    }\r\n}\r\n\r\n@Composable\r\nfun HistoryTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 50.dp)\r\n    ) {\r\n        Row() {\r\n            IconButton(\r\n                modifier = Modifier.weight(1f),\r\n                onClick = { navController.navigate(Screen.SettingScreen.route){popUpTo(0)} }\r\n            ) {\r\n                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = \"ArrowBack\")\r\n            }\r\n            Text(\r\n                text = \"History\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun HistorySection(items:List<settingModel>,navController: NavController) {\r\n    Column(\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(10.dp)\r\n    ) {\r\n        LazyVerticalGrid(\r\n            cells = GridCells.Fixed(1),\r\n            contentPadding = PaddingValues(5.dp),\r\n            modifier = Modifier\r\n                .fillMaxHeight(),\r\n            content = {\r\n                items(items.size){\r\n                    Historyitems(item = items[it], navController)\r\n                }\r\n            }\r\n        )\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Historyitems(item: settingModel,navController: NavController) {\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(7.5.dp)\r\n            .clip(RoundedCornerShape(10.dp))\r\n    ) {val context = LocalContext.current\r\n        var dialogState by remember { mutableStateOf(false) }\r\n        Box(\r\n            modifier = Modifier\r\n                .fillMaxSize()\r\n                .background(DaftarColor)\r\n                .clickable {\r\n                    when (item.id) {\r\n                        \"S01\" -> navController.navigate(Screen.AkunScreen.route)\r\n                        \"S02\" -> navController.navigate(Screen.PenyakitScreen.route)\r\n                        \"S03\" -> dialogState = true\r\n                        \"S04\" -> navController.navigate(Screen.TentangScreen.route)\r\n                    }\r\n                }\r\n        ){\r\n            Text(\r\n                text = item.setting,\r\n                textAlign = TextAlign.Center,\r\n                fontSize = 25.sp,\r\n                color = Color.White,\r\n                modifier = Modifier\r\n                    .align(Alignment.Center)\r\n                    .padding(5.dp)\r\n                    .clip(RoundedCornerShape(10.dp))\r\n            )\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/historyscreen/historyscreen.kt	(date 1656316609325)
+@@ -1,17 +1,31 @@
+ package com.example.gigi_ibuhamil.pages.historyscreen
+ 
++import android.app.Application
++import android.content.Context
++import android.graphics.Bitmap
++import android.graphics.Canvas
++import android.graphics.Paint
++import android.graphics.Typeface
++import android.graphics.drawable.BitmapDrawable
++import android.graphics.drawable.Drawable
++import android.graphics.pdf.PdfDocument
+ import android.widget.Toast
+ import androidx.compose.foundation.ExperimentalFoundationApi
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.lazy.GridCells
++import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.lazy.LazyVerticalGrid
++import androidx.compose.foundation.lazy.items
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material.*
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.ArrowBack
++import androidx.compose.material.icons.filled.Delete
+ import androidx.compose.runtime.*
++import androidx.compose.runtime.livedata.observeAsState
++import androidx.compose.runtime.saveable.rememberSaveable
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+@@ -20,7 +34,12 @@
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
++import androidx.core.content.ContextCompat
++import androidx.lifecycle.viewmodel.compose.viewModel
+ import androidx.navigation.NavController
++import com.example.gigi_ibuhamil.database.HistoryItem
++import com.example.gigi_ibuhamil.database.HistoryViewModel
++import com.example.gigi_ibuhamil.database.HistoryViewModelFactory
+ import com.example.gigi_ibuhamil.models.listgejala
+ import com.example.gigi_ibuhamil.models.settingModel
+ import com.example.gigi_ibuhamil.ui.DaftarColor
+@@ -31,7 +50,11 @@
+ import com.example.gigi_ibuhamil.util.Screen
+ import com.example.gigi_ibuhamil.util.getGoogleSignInClient
+ import com.example.gigi_ibuhamil.util.lists
++import java.io.File
++import java.io.FileOutputStream
++import java.io.IOException
+ 
++@ExperimentalMaterialApi
+ @ExperimentalFoundationApi
+ @Composable
+ fun HistoryScreen(navController: NavController) = Box(
+@@ -39,9 +62,14 @@
+         .background(gradbg)
+         .fillMaxSize()
+ ) {
++    val context = LocalContext.current
++    val mTodoViewModel: HistoryViewModel = viewModel(
++        factory = HistoryViewModelFactory(context.applicationContext as Application)
++    )
++    val items = mTodoViewModel.readAllData.observeAsState(listOf()).value
+     Column {
+         HistoryTitle(navController)
+-        HistorySection(items = lists().listsetting, navController = navController)
++        HistorySection(list = items, mTodoViewModel)
+     }
+ }
+ 
+@@ -57,7 +85,7 @@
+         Row() {
+             IconButton(
+                 modifier = Modifier.weight(1f),
+-                onClick = { navController.navigate(Screen.SettingScreen.route){popUpTo(0)} }
++                onClick = { navController.navigate(Screen.SettingScreen.route) { popUpTo(0) } }
+             ) {
+                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
+             }
+@@ -73,59 +101,315 @@
+ }
+ 
+ 
++@ExperimentalMaterialApi
+ @ExperimentalFoundationApi
+ @Composable
+-fun HistorySection(items:List<settingModel>,navController: NavController) {
++fun HistorySection(list: List<HistoryItem>, mTodoViewModel: HistoryViewModel) {
++    val context = LocalContext.current
++    var dialogState by remember { mutableStateOf(false) }
+     Column(
+         modifier = Modifier
+             .fillMaxWidth()
+             .padding(10.dp)
+     ) {
+-        LazyVerticalGrid(
+-            cells = GridCells.Fixed(1),
+-            contentPadding = PaddingValues(5.dp),
+-            modifier = Modifier
+-                .fillMaxHeight(),
+-            content = {
+-                items(items.size){
+-                    Historyitems(item = items[it], navController)
+-                }
+-            }
+-        )
++        if (dialogState) {
++            AlertDialog(
++                modifier = Modifier.clip(RoundedCornerShape(15.dp)),
++                title = {},
++                onDismissRequest = {
++                    dialogState = false
++                },
++                text = {
++                    Text(
++                        fontSize = 20.sp,
++                        textAlign = TextAlign.Center,
++                        text = "Apakah anda yakin untuk menghapus semua history? \n Semua data tidak akan bisa anda lihat kembali"
++                    )
++                },
++                confirmButton = {
++                    Button(
++                        modifier = Modifier
++                            .fillMaxWidth(),
++                        shape = RoundedCornerShape(10.dp),
++                        colors = ButtonDefaults.buttonColors(YesButton),
++                        onClick = {
++                            dialogState = false
++                        }) {
++                        Text(fontSize = 15.sp, text = "Tidak", color = Color.White)
++                    }
++                },
++                dismissButton = {
++                    Button(
++                        modifier = Modifier
++                            .fillMaxWidth(),
++                        shape = RoundedCornerShape(10.dp),
++                        colors = ButtonDefaults.buttonColors(NoButton),
++                        onClick = {
++                            mTodoViewModel.deleteAllHistory()
++                            Toast.makeText(context, "History dihapus", Toast.LENGTH_SHORT).show()
++                        }) {
++                        Text(fontSize = 15.sp, text = "Ya", color = Color.White)
++                    }
++                }
++            )
++        }
++        Row(
++            horizontalArrangement = Arrangement.Center
++        ) {
++            Button(onClick = {
++                dialogState = true
++            }) {
++                Text(text = "Delete all history")
++            }
++        }
++        LazyColumn() {
++            val i = 0
++            items(list) { history ->
++                Historyitems(item = history)
++            }
++        }
+     }
+ }
+ 
+ @Composable
+-fun Historyitems(item: settingModel,navController: NavController) {
++fun Historyitems(item: HistoryItem) {
+     BoxWithConstraints(
+         modifier = Modifier
+             .padding(7.5.dp)
+             .clip(RoundedCornerShape(10.dp))
+-    ) {val context = LocalContext.current
++    ) {
++        val context = LocalContext.current
+         var dialogState by remember { mutableStateOf(false) }
+         Box(
+             modifier = Modifier
+                 .fillMaxSize()
+                 .background(DaftarColor)
+-                .clickable {
+-                    when (item.id) {
+-                        "S01" -> navController.navigate(Screen.AkunScreen.route)
+-                        "S02" -> navController.navigate(Screen.PenyakitScreen.route)
+-                        "S03" -> dialogState = true
+-                        "S04" -> navController.navigate(Screen.TentangScreen.route)
+-                    }
++        ) {
++            Row {
++                Column() {
++                    Text(
++                        text = "Nama",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "Email",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "Tahun Lahir",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "Usia Kehamilan",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "Diagnosis",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "BMI",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "Pola Makan",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = "Perilaku Kesgilut",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
+                 }
+-        ){
+-            Text(
+-                text = item.setting,
+-                textAlign = TextAlign.Center,
+-                fontSize = 25.sp,
+-                color = Color.White,
+-                modifier = Modifier
+-                    .align(Alignment.Center)
+-                    .padding(5.dp)
+-                    .clip(RoundedCornerShape(10.dp))
+-            )
+-        }
+-    }
+-}
++                Column() {
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = " : ",
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                }
++                Column() {
++                    Text(
++                        text = item.Name,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Email,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Tahun,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Usia,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Diagnosis,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Bmi,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Pola,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                    Text(
++                        text = item.Perilaku,
++                        textAlign = TextAlign.Center,
++                        fontSize = 15.sp,
++                        color = Color.White,
++                        modifier = Modifier
++                            .padding(5.dp)
++                            .clip(RoundedCornerShape(10.dp))
++                    )
++                }
++
++            }
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/ebookscreen/ebookscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.ebookscreen\r\n\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.clickable\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.*\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.ArrowBack\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.text.font.FontWeight\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.ui.DaftarColor\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.PdfViewer\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.example.gigi_ibuhamil.R\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun EbookScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        EbookTitle(navController)\r\n        Isi()\r\n    }\r\n}\r\n\r\n@Composable\r\nfun EbookTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 30.dp)\r\n    ) {\r\n        Row() {\r\n            IconButton(\r\n                modifier = Modifier.weight(1f),\r\n                onClick = { navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)} }\r\n            ) {\r\n                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = \"ArrowBack\")\r\n            }\r\n            Text(\r\n                text = \"E-Book\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Isi() {\r\n    Column() {\r\n        EbookItems()\r\n    }\r\n}\r\n@Composable\r\nfun EbookItems() {\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(7.5.dp)\r\n            .clip(RoundedCornerShape(10.dp))\r\n    ) {\r\n        Box(\r\n            modifier = Modifier\r\n                .fillMaxWidth()\r\n                .background(DaftarColor)\r\n        ){\r\n            Column(\r\n                verticalArrangement = Arrangement.Center,\r\n                horizontalAlignment = Alignment.Start,\r\n                modifier = Modifier\r\n                    .padding(15.dp)\r\n            ) {\r\n                ComposePDFViewer()\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@OptIn(ExperimentalFoundationApi::class)\r\n@Composable\r\nfun ComposePDFViewer() {\r\n    var isLoading by remember { mutableStateOf(false) }\r\n    var currentLoadingPage by remember { mutableStateOf<Int?>(null) }\r\n    var pageCount by remember { mutableStateOf<Int?>(null) }\r\n\r\n    Box {\r\n        PdfViewer(\r\n            modifier = Modifier.fillMaxSize(),\r\n            pdfResId = R.raw.sample,//letak pdf\r\n            loadingListener = { loading, currentPage, maxPage ->\r\n                isLoading = loading\r\n                if (currentPage != null) currentLoadingPage = currentPage\r\n                if (maxPage != null) pageCount = maxPage\r\n            }\r\n        )\r\n        if (isLoading) {\r\n            Column(\r\n                modifier = Modifier.fillMaxSize(),\r\n                verticalArrangement = Arrangement.Center\r\n            ) {\r\n                LinearProgressIndicator(\r\n                    modifier = Modifier\r\n                        .fillMaxWidth()\r\n                        .padding(horizontal = 30.dp),\r\n                    progress = if (currentLoadingPage == null || pageCount == null) 0f\r\n                    else currentLoadingPage!!.toFloat() / pageCount!!.toFloat()\r\n                )\r\n                Text(\r\n                    modifier = Modifier\r\n                        .align(Alignment.End)\r\n                        .padding(top = 5.dp)\r\n                        .padding(horizontal = 30.dp),\r\n                    text = \"${currentLoadingPage ?: \"-\"} pages loaded/${pageCount ?: \"-\"} total pages\"\r\n                )\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/ebookscreen/ebookscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/ebookscreen/ebookscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/ebookscreen/ebookscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/ebookscreen/ebookscreen.kt	(date 1656316609318)
+@@ -1,5 +1,7 @@
+ package com.example.gigi_ibuhamil.pages.ebookscreen
+ 
++import android.content.Intent
++import android.net.Uri
+ import androidx.compose.foundation.ExperimentalFoundationApi
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+@@ -13,8 +15,11 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.text.font.FontWeight
++import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.unit.dp
++import androidx.compose.ui.unit.sp
+ import androidx.navigation.NavController
+ import com.example.gigi_ibuhamil.ui.DaftarColor
+ import com.example.gigi_ibuhamil.ui.gradbg
+@@ -70,6 +75,8 @@
+ }
+ @Composable
+ fun EbookItems() {
++    val context = LocalContext.current
++    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/zhawF9_lpM0")) }
+     BoxWithConstraints(
+         modifier = Modifier
+             .padding(7.5.dp)
+@@ -86,6 +93,17 @@
+                 modifier = Modifier
+                     .padding(15.dp)
+             ) {
++                Column(Modifier
++                    .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
++                    Button(onClick = { context.startActivity(intent1) }) {
++                        Text(
++                            text = "Unduh Modul",
++                            textAlign = TextAlign.Center,
++                            fontSize = 15.sp,
++                            color = Color.White,
++                        )
++                    }
++                }
+                 ComposePDFViewer()
+             }
+         }
+@@ -111,7 +129,9 @@
+         )
+         if (isLoading) {
+             Column(
+-                modifier = Modifier.fillMaxSize(),
++                modifier = Modifier.fillMaxSize().background(
++                    Color.Gray
++                ),
+                 verticalArrangement = Arrangement.Center
+             ) {
+                 LinearProgressIndicator(
+Index: app/src/main/java/com/example/gigi_ibuhamil/database/HistoryRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryRepository.kt b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryRepository.kt
+new file mode 100644
+--- /dev/null	(date 1656316609312)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryRepository.kt	(date 1656316609312)
+@@ -0,0 +1,24 @@
++package com.example.gigi_ibuhamil.database
++
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.MutableLiveData
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.Dispatchers
++
++class HistoryRepository(private val historyDatabaseDao: HistoryDatabaseDao) {
++    val searchResults = MutableLiveData<List<HistoryItem>>()
++    private val coroutineScope = CoroutineScope(Dispatchers.Main)
++    val readAllData: LiveData<List<HistoryItem>> = historyDatabaseDao.getAll()
++
++    fun insertHistory(historyItem: HistoryItem){
++        historyDatabaseDao.insert(historyItem)
++    }
++
++    suspend fun deleteHistory(historyItem: HistoryItem) {
++        historyDatabaseDao.delete(historyItem)
++    }
++
++    suspend fun deleteAllHistory() {
++        historyDatabaseDao.deleteAllHistory()
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/gigi_ibuhamil/database/HistoryItem.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryItem.kt b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryItem.kt
+new file mode 100644
+--- /dev/null	(date 1656316609312)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryItem.kt	(date 1656316609312)
+@@ -0,0 +1,39 @@
++package com.example.gigi_ibuhamil.database
++
++import androidx.room.ColumnInfo
++import androidx.room.Entity
++import androidx.room.PrimaryKey
++
++@Entity(tableName = "history")
++class HistoryItem(
++
++    @PrimaryKey(autoGenerate = true)
++    var Id: Int,
++
++    @ColumnInfo(name = "Name")
++    var Name: String,
++
++    @ColumnInfo(name = "Email")
++    var Email: String,
++
++    @ColumnInfo(name = "Diagnosis")
++    var Diagnosis: String,
++
++    @ColumnInfo(name = "Bmi")
++    var Bmi: String,
++
++    @ColumnInfo(name = "Perilaku")
++    var Perilaku: String,
++
++    @ColumnInfo(name = "Pola")
++    var Pola: String,
++
++    @ColumnInfo(name = "Usia")
++    var Usia: String,
++
++    @ColumnInfo(name = "Tahun")
++    var Tahun: String,
++) {
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/gigi_ibuhamil/util/generateXLSX.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/util/generateXLSX.kt b/app/src/main/java/com/example/gigi_ibuhamil/util/generateXLSX.kt
+new file mode 100644
+--- /dev/null	(date 1656316609344)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/util/generateXLSX.kt	(date 1656316609344)
+@@ -0,0 +1,97 @@
++package com.example.gigi_ibuhamil.util
++
++import android.os.Environment
++import android.util.Log
++import com.example.gigi_ibuhamil.models.Result
++import com.example.gigi_ibuhamil.pages.settingscreen.getDataFromFirestore
++import com.google.firebase.firestore.ktx.firestore
++import com.google.firebase.firestore.ktx.toObjects
++import com.google.firebase.ktx.Firebase
++import com.google.gson.Gson
++import com.google.gson.JsonObject
++import org.apache.commons.csv.CSVFormat
++import org.apache.commons.csv.CSVParser
++import org.apache.poi.hssf.usermodel.HSSFWorkbook
++import org.apache.poi.ss.usermodel.Workbook
++import org.apache.poi.ss.usermodel.WorkbookFactory
++import org.apache.poi.xssf.usermodel.XSSFWorkbook
++import java.io.*
++import java.nio.file.Paths
++
++
++suspend fun CreateCsv() {
++    val data = getDataFromFirestore()
++    val workbook = HSSFWorkbook()
++    val xlws = workbook.createSheet()
++    val rowNomor = xlws.createRow(0)
++    val colNomor = rowNomor.createCell(0)
++    colNomor.setCellValue("Nomor")
++    val colNama = rowNomor.createCell(1)
++    colNama.setCellValue("Nama")
++    val colEmail = rowNomor.createCell(2)
++    colEmail.setCellValue("Email")
++    val colTahun = rowNomor.createCell(3)
++    colTahun.setCellValue("Tahun Lahir")
++    val colUsia = rowNomor.createCell(4)
++    colUsia.setCellValue("Usia Kehamilan")
++    val colDiagnosis = rowNomor.createCell(5)
++    colDiagnosis.setCellValue("Diagnosis")
++    val colBmi = rowNomor.createCell(6)
++    colBmi.setCellValue("BMI")
++    val colPerilaku = rowNomor.createCell(7)
++    colPerilaku.setCellValue("Perilaku Kesgilut")
++    val colPola = rowNomor.createCell(8)
++    colPola.setCellValue("Pola Makan")
++
++    //data hasil mulai dari sini
++    for (i in data.indices){
++        Log.d("Data", data[i].email)
++        val rowNomor = xlws.createRow(i+1)
++        val colNomor = rowNomor.createCell(0)
++        colNomor.setCellValue(i.toString())
++        val colNama = rowNomor.createCell(1)
++        colNama.setCellValue(data[i].name)
++        val colEmail = rowNomor.createCell(2)
++        colEmail.setCellValue(data[i].email)
++        val colTahun = rowNomor.createCell(3)
++        colTahun.setCellValue(data[i].tahun)
++        val colUsia = rowNomor.createCell(4)
++        colUsia.setCellValue(data[i].usia)
++        val colDiagnosis = rowNomor.createCell(5)
++        colDiagnosis.setCellValue(data[i].diagnosis)
++        val colBmi = rowNomor.createCell(6)
++        colBmi.setCellValue(data[i].bmi)
++        val colPerilaku = rowNomor.createCell(7)
++        colPerilaku.setCellValue(data[i].perilaku)
++        val colPola = rowNomor.createCell(8)
++        colPola.setCellValue(data[i].pola)
++    }
++
++    try {
++        val file = File(
++            Environment.getExternalStoragePublicDirectory(
++                Environment.DIRECTORY_DOWNLOADS
++            ), "Hasil.xls"
++        )
++        val outputStream: FileOutputStream = FileOutputStream(
++            file
++        )
++        workbook.write(outputStream)
++        workbook.close()
++        Log.d("Write xlsx file", "File generated")
++        if (file.exists()) {
++            Log.d("File Exist", "File exist")
++            file.setExecutable(true)
++            file.setReadable(true)
++            file.setWritable(true)
++        } else {
++            Log.d("file not exist", "file not exist")
++        }
++    } catch (e: FileNotFoundException) {
++        e.printStackTrace()
++        Log.d("FileNotFoundException", "FileNotFoundException")
++    } catch (e: IOException) {
++        e.printStackTrace()
++        Log.d("IOException", "IOException")
++    }
++}
+\ No newline at end of file
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nbuildscript {\r\n    ext {\r\n        compose_version = '1.1.0'\r\n    }\r\n    repositories {\r\n        google()\r\n        mavenCentral()\r\n        maven{\r\n            url 'https://jitpack.io'\r\n        }\r\n    }\r\n    dependencies {\r\n        classpath \"com.android.tools.build:gradle:7.0.2\"\r\n        classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21\"\r\n        classpath \"androidx.navigation:navigation-safe-args-gradle-plugin:2.4.0-beta02\"\r\n        classpath 'com.google.gms:google-services:4.3.10'\r\n\r\n        // NOTE: Do not place your application dependencies here; they belong\r\n        // in the individual module build.gradle files\r\n    }\r\n}\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle b/build.gradle
+--- a/build.gradle	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/build.gradle	(date 1656316609349)
+@@ -9,6 +9,7 @@
+         maven{
+             url 'https://jitpack.io'
+         }
++        maven { url "https://repository.aspose.com/repo/" }
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:7.0.2"
+Index: app/src/main/java/com/example/gigi_ibuhamil/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil\r\n\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport androidx.activity.compose.setContent\r\nimport androidx.appcompat.app.AppCompatDelegate\r\nimport androidx.compose.animation.ExperimentalAnimationApi\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.material.ExperimentalMaterialApi\r\nimport com.example.gigi_ibuhamil.util.Navigations\r\nimport kotlinx.coroutines.ExperimentalCoroutinesApi\r\n\r\n@ExperimentalMaterialApi\r\nclass MainActivity : AppCompatActivity() {\r\n    @ExperimentalFoundationApi\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)\r\n        setContent{\r\n            Navigations()\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/MainActivity.kt b/app/src/main/java/com/example/gigi_ibuhamil/MainActivity.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/MainActivity.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/MainActivity.kt	(date 1656316609308)
+@@ -1,5 +1,9 @@
+ package com.example.gigi_ibuhamil
+ 
++import android.Manifest
++import android.app.Activity
++import android.content.Context
++import android.content.pm.PackageManager
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
+ import androidx.activity.compose.setContent
+@@ -7,8 +11,13 @@
+ import androidx.compose.animation.ExperimentalAnimationApi
+ import androidx.compose.foundation.ExperimentalFoundationApi
+ import androidx.compose.material.ExperimentalMaterialApi
++import androidx.core.app.ActivityCompat
+ import com.example.gigi_ibuhamil.util.Navigations
+ import kotlinx.coroutines.ExperimentalCoroutinesApi
++import java.io.File
++
++
++
+ 
+ @ExperimentalMaterialApi
+ class MainActivity : AppCompatActivity() {
+@@ -20,4 +29,5 @@
+             Navigations()
+         }
+     }
+-}
+\ No newline at end of file
++}
++
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.gigi_ibuhamil\">\r\n    <uses-permission android:name=\"android.permission.INTERNET\"/>\r\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\r\n    <application\r\n        android:name=\"androidx.multidex.MultiDexApplication\"\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/logoapp\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/logoapp\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.Gigi_IbuHamil\">\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:windowSoftInputMode=\"adjustResize\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/AndroidManifest.xml	(date 1656316609307)
+@@ -3,6 +3,8 @@
+     package="com.example.gigi_ibuhamil">
+     <uses-permission android:name="android.permission.INTERNET"/>
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     <application
+         android:name="androidx.multidex.MultiDexApplication"
+         android:allowBackup="true"
+@@ -21,5 +23,15 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
++
++        <provider
++            android:name="androidx.core.content.FileProvider"
++            android:authorities="${applicationId}.provider"
++            android:exported="false"
++            android:grantUriPermissions="true">
++            <meta-data
++                android:name="android.support.FILE_PROVIDER_PATHS"
++                android:resource="@xml/file_path" />
++        </provider>
+     </application>
+ </manifest>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/ASUS/AndroidStudioProjects/gigiibuhamil/app/src/main/res/layout/youtube.xml\" value=\"0.3423913043478261\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/.idea/misc.xml	(date 1656316609304)
+@@ -4,6 +4,7 @@
+     <option name="filePathToZoomLevelMap">
+       <map>
+         <entry key="..\:/Users/ASUS/AndroidStudioProjects/gigiibuhamil/app/src/main/res/layout/youtube.xml" value="0.3423913043478261" />
++        <entry key="..\:/Users/rezaa/Projects/digibu/app/src/main/res/layout/activity_main.xml" value="0.1" />
+       </map>
+     </option>
+   </component>
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/firstscreen/firstscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.firstscreen\r\n\r\nimport android.util.Log\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.rememberScrollState\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.foundation.text.KeyboardOptions\r\nimport androidx.compose.foundation.verticalScroll\r\nimport androidx.compose.material.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.TextStyle\r\nimport androidx.compose.ui.text.input.ImeAction\r\nimport androidx.compose.ui.text.input.KeyboardType\r\nimport androidx.compose.ui.text.input.TextFieldValue\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.models.User\r\nimport com.example.gigi_ibuhamil.ui.DaftarColor\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.google.firebase.firestore.ktx.firestore\r\nimport com.google.firebase.ktx.Firebase\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun FirstScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        FirstTitle(navController)\r\n        Isi(navController)\r\n    }\r\n}\r\n\r\n@Composable\r\nfun FirstTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 30.dp)\r\n    ) {\r\n        Row(Modifier.padding(start = 10.dp)) {\r\n            Text(\r\n                text = \"Personal Data\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Isi(navController: NavController) {\r\n    Column() {\r\n        FormItems(navController)\r\n    }\r\n}\r\n\r\n@Composable\r\nfun FormItems(navController: NavController) {\r\n    val TAG = \"add user's data\"\r\n    val context = LocalContext.current\r\n    val db = Firebase.firestore\r\n    val name = SavedPreference.getDisplayName(context).toString()\r\n    val email = SavedPreference.getEmail(context).toString()\r\n    var namaController by remember { mutableStateOf(TextFieldValue(name)) }\r\n    var emailController by remember { mutableStateOf(TextFieldValue(email)) }\r\n    var tahunController by remember { mutableStateOf(TextFieldValue()) }\r\n    var usiaController by remember { mutableStateOf(TextFieldValue()) }\r\n    var alamatController by remember { mutableStateOf(TextFieldValue(\"\")) }\r\n    var desaController by remember { mutableStateOf(TextFieldValue(\"\")) }\r\n    val user = User(\r\n        namaController.text,\r\n        emailController.text,\r\n        tahunController.text,\r\n        usiaController.text,\r\n        alamatController.text,\r\n        desaController.text,\r\n        \"user\")\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(7.5.dp)\r\n            .clip(RoundedCornerShape(10.dp))\r\n    ) {\r\n        Box(\r\n            modifier = Modifier\r\n                .fillMaxSize()\r\n                .background(DaftarColor)\r\n        ) {\r\n            Column() {\r\n                Column(\r\n                    verticalArrangement = Arrangement.Center,\r\n                    horizontalAlignment = Alignment.CenterHorizontally,\r\n                    modifier = Modifier\r\n                        .padding(15.dp)\r\n                        .verticalScroll(rememberScrollState())\r\n                        .weight(1f, false)\r\n                ) {\r\n                    OutlinedTextField(\r\n                        value = namaController,\r\n                        onValueChange = { namaController = it },\r\n                        enabled = false,\r\n                        label = { Text(\"Nama\", color = Color.White) },\r\n                        singleLine = true,\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White),\r\n                        modifier = Modifier.fillMaxWidth()\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = emailController,\r\n                        onValueChange = { emailController = it },\r\n                        enabled = false,\r\n                        label = { Text(\"Email\", color = Color.White) },\r\n                        singleLine = true,\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = tahunController,\r\n                        label = { Text(text = \"Tahun Kelahiran\", color = Color.White) },\r\n                        onValueChange = {\r\n                            tahunController = it\r\n                        },\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Number,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,\r\n                        ),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = usiaController,\r\n                        label = { Text(text = \"Usia Kehamilan (minggu)\", color = Color.White) },\r\n                        singleLine = true,\r\n                        onValueChange = {\r\n                            usiaController = it\r\n                        },\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Number,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = alamatController,\r\n                        label = { Text(text = \"Alamat\", color = Color.White) },\r\n                        singleLine = true,\r\n                        onValueChange = {\r\n                            alamatController = it\r\n                        },\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = desaController,\r\n                        label = { Text(text = \"Desa\", color = Color.White) },\r\n                        singleLine = true,\r\n                        onValueChange = {\r\n                            desaController = it\r\n                        },\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White),\r\n                    )\r\n                    Button(onClick = {\r\n                        try {\r\n                            db.collection(\"users\").document(emailController.text)\r\n                                .set(user)\r\n                                .addOnSuccessListener {\r\n                                    Toast.makeText(context,\r\n                                        \"Sucessfull add user's data\",\r\n                                        Toast.LENGTH_SHORT).show()\r\n                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}\r\n                                }.addOnFailureListener {\r\n                                    Toast.makeText(context,\r\n                                        \"Failed add user's data\",\r\n                                        Toast.LENGTH_SHORT).show()\r\n                                }\r\n                        } catch (e: Exception){\r\n                            println(\"we catch something\")\r\n                        }\r\n                    }) {\r\n                        Text(text = \"Simpan \", color = Color.White, fontSize = 15.sp)\r\n                    }\r\n                }\r\n\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/firstscreen/firstscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/firstscreen/firstscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/firstscreen/firstscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/firstscreen/firstscreen.kt	(date 1656316609322)
+@@ -55,7 +55,7 @@
+     ) {
+         Row(Modifier.padding(start = 10.dp)) {
+             Text(
+-                text = "Personal Data",
++                text = "Fill Personal Data",
+                 style = MaterialTheme.typography.h4,
+                 modifier = Modifier
+                     .padding(bottom = 30.dp)
+@@ -202,22 +202,27 @@
+                             cursorColor = Color.White),
+                     )
+                     Button(onClick = {
++                        if(desaController.text == null ||alamatController.text == null ||usiaController.text == null ||tahunController.text == null ){
++                            Toast.makeText(context,"Mohon untuk tidak mengosongi input",
++                                Toast.LENGTH_SHORT).show()
++                        }else{
+                         try {
+                             db.collection("users").document(emailController.text)
+                                 .set(user)
+                                 .addOnSuccessListener {
+                                     Toast.makeText(context,
+-                                        "Sucessfull add user's data",
++                                        "Berhasil menyimpan data",
+                                         Toast.LENGTH_SHORT).show()
+                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                 }.addOnFailureListener {
+                                     Toast.makeText(context,
+-                                        "Failed add user's data",
++                                        "Gagal menyimpan data",
+                                         Toast.LENGTH_SHORT).show()
+                                 }
+                         } catch (e: Exception){
+                             println("we catch something")
+                         }
++                        }
+                     }) {
+                         Text(text = "Simpan ", color = Color.White, fontSize = 15.sp)
+                     }
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+new file mode 100644
+--- /dev/null	(date 1656316609303)
++++ b/.idea/inspectionProfiles/Project_Default.xml	(date 1656316609303)
+@@ -0,0 +1,20 @@
++<component name="InspectionProjectProfileManager">
++  <profile version="1.0">
++    <option name="myName" value="Project Default" />
++    <inspection_tool class="PreviewAnnotationInFunctionWithParameters" enabled="true" level="ERROR" enabled_by_default="true">
++      <option name="previewFile" value="true" />
++    </inspection_tool>
++    <inspection_tool class="PreviewDimensionRespectsLimit" enabled="true" level="WARNING" enabled_by_default="true">
++      <option name="previewFile" value="true" />
++    </inspection_tool>
++    <inspection_tool class="PreviewMultipleParameterProviders" enabled="true" level="ERROR" enabled_by_default="true">
++      <option name="previewFile" value="true" />
++    </inspection_tool>
++    <inspection_tool class="PreviewMustBeTopLevelFunction" enabled="true" level="ERROR" enabled_by_default="true">
++      <option name="previewFile" value="true" />
++    </inspection_tool>
++    <inspection_tool class="PreviewNeedsComposableAnnotation" enabled="true" level="ERROR" enabled_by_default="true">
++      <option name="previewFile" value="true" />
++    </inspection_tool>
++  </profile>
++</component>
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n    id 'kotlin-android'\r\n    id \"org.jetbrains.kotlin.kapt\"\r\n    id \"androidx.navigation.safeargs.kotlin\"\r\n    id 'com.google.gms.google-services'\r\n}\r\n\r\nandroid {\r\n    compileSdkVersion 31\r\n\r\n    defaultConfig {\r\n        applicationId \"com.example.gigi_ibuhamil\"\r\n        minSdkVersion 21\r\n        targetSdkVersion 31\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        multiDexEnabled true\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = '1.8'\r\n    }\r\n    buildFeatures {\r\n        compose true\r\n    }\r\n    composeOptions {\r\n        kotlinCompilerExtensionVersion '1.0.4'\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation 'androidx.core:core-ktx:1.7.0'\r\n    implementation 'androidx.appcompat:appcompat:1.4.1'\r\n    implementation 'com.google.android.material:material:1.5.0'\r\n    implementation \"androidx.compose.ui:ui:$compose_version\"\r\n    implementation \"androidx.compose.material:material:$compose_version\"\r\n    implementation \"androidx.compose.ui:ui-tooling-preview:$compose_version\"\r\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'\r\n    implementation 'androidx.activity:activity-compose:1.4.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'\r\n    implementation 'com.google.android.gms:play-services-auth:20.1.0'\r\n    implementation 'com.google.firebase:firebase-firestore:24.1.0'\r\n    testImplementation 'junit:junit:4.+'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\r\n\r\n    //Firebase\r\n    implementation 'com.google.firebase:firebase-auth:21.0.3'\r\n    implementation \"com.google.firebase:firebase-analytics:20.1.2\"\r\n    implementation platform('com.google.firebase:firebase-bom:30.1.0')\r\n    implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'\r\n    implementation 'com.google.firebase:firebase-database-ktx:20.0.4'\r\n    implementation 'com.google.firebase:firebase-analytics-ktx'\r\n    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'\r\n\r\n\r\n    //compose dependencies\r\n    implementation \"androidx.compose.compiler:compiler:1.2.0-alpha06\"\r\n    implementation \"androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-alpha05\"\r\n    implementation \"androidx.navigation:navigation-compose:2.5.0-alpha03\"\r\n    implementation \"com.google.accompanist:accompanist-flowlayout:0.17.0\"\r\n\r\n    // Kotlin\r\n    implementation(\"androidx.fragment:fragment-ktx:1.4.1\")\r\n    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)\r\n    implementation(\"androidx.compose.foundation:foundation:$compose_version\")\r\n    // Material design icons\r\n    implementation(\"androidx.compose.material:material-icons-core:$compose_version\")\r\n    implementation(\"androidx.compose.material:material-icons-extended:$compose_version\")\r\n    // Integration with observables\r\n    implementation(\"androidx.compose.runtime:runtime:1.2.0-alpha06\")\r\n    implementation(\"androidx.compose.runtime:runtime-livedata:$compose_version\")\r\n    implementation(\"androidx.compose.runtime:runtime-rxjava2:$compose_version\")\r\n    // UI Tests\r\n    androidTestImplementation(\"androidx.compose.ui:ui-test-junit4:$compose_version\")\r\n    implementation(\"androidx.cardview:cardview:1.0.0\")\r\n    // When using a MDC theme\r\n    implementation \"com.google.android.material:compose-theme-adapter:1.1.6\"\r\n    //Gson\r\n    implementation \"com.google.code.gson:gson:2.8.6\"\r\n    // When using a AppCompat theme\r\n    implementation \"com.google.accompanist:accompanist-appcompat-theme:0.16.0\"\r\n    implementation \"androidx.activity:activity-compose:1.4.0\"\r\n    implementation \"com.siddroid:holi:0.0.7\"\r\n    implementation \"androidx.navigation:navigation-compose:2.5.0-alpha03\"\r\n    implementation(\"androidx.activity:activity-compose:1.4.0\")\r\n\r\n\r\n    //ksp dependencies\r\n    implementation(\"com.google.devtools.ksp:symbol-processing-api:1.5.30-1.0.0-beta09\")\r\n\r\n    implementation 'com.android.support:multidex:1.0.3'\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/build.gradle	(date 1656316609305)
+@@ -32,12 +32,15 @@
+     }
+     kotlinOptions {
+         jvmTarget = '1.8'
++        freeCompilerArgs +=  "-Xjvm-default=all"
+     }
+     buildFeatures {
++        viewBinding true
+         compose true
+     }
+     composeOptions {
+         kotlinCompilerExtensionVersion '1.0.4'
++        kotlinCompilerVersion '1.6.10'
+     }
+ }
+ 
+@@ -101,6 +104,53 @@
+ 
+     //ksp dependencies
+     implementation("com.google.devtools.ksp:symbol-processing-api:1.5.30-1.0.0-beta09")
++    //Room dependencies
++    implementation("androidx.room:room-runtime:2.3.0")
++    implementation("androidx.room:room-ktx:2.3.0")
++    annotationProcessor("androidx.room:room-compiler:2.3.0")
++    androidTestImplementation("androidx.room:room-ktx:2.3.0")
++    kapt("androidx.room:room-compiler:2.3.0")
++    //kotlin component
++    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.0"
++    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
++    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
++    //extension
++    // optional - Kotlin Extensions and Coroutines support for Room
++    implementation("androidx.room:room-ktx:2.3.0")
++
++    // optional - RxJava2 support for Room
++    implementation("androidx.room:room-rxjava2:2.3.0")
++
++    // optional - RxJava3 support for Room
++    implementation("androidx.room:room-rxjava3:2.3.0")
++
++    // optional - Guava support for Room, including Optional and ListenableFuture
++    implementation("androidx.room:room-guava:2.3.0")
++
++    // optional - Test helpers
++    testImplementation("androidx.room:room-testing:2.3.0")
++
++    // optional - Paging 3 Integration
++    implementation("androidx.room:room-paging:2.4.0-beta02")
++
++    // MOSHI
++    implementation "com.squareup.moshi:moshi:1.12.0"
++    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
++    //compose new
++    implementation("androidx.compose.runtime:runtime:1.2.0-alpha04")
++    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha04")
++    implementation("androidx.compose.runtime:runtime-rxjava2:1.2.0-alpha04")
+ 
+     implementation 'com.android.support:multidex:1.0.3'
++
++    implementation 'org.apache.poi:poi:5.2.2'
++    implementation 'org.apache.poi:poi-ooxml:5.2.2'
++    implementation 'org.apache.commons:commons-csv:1.5'
++
++    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
++    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.2.1'
++
++    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
++    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
++    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha02"
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDAO.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDAO.kt b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDAO.kt
+new file mode 100644
+--- /dev/null	(date 1656316609309)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/database/HistoryDAO.kt	(date 1656316609309)
+@@ -0,0 +1,26 @@
++package com.example.gigi_ibuhamil.database
++
++import androidx.lifecycle.LiveData
++import androidx.room.*
++import kotlin.collections.List
++
++@Dao
++interface HistoryDatabaseDao{
++    @Query("SELECT * FROM history")
++    fun getAll(): LiveData<List<HistoryItem>>
++
++    @Query("SELECT * FROM history WHERE Id = :id")
++    fun getById(id: Int): HistoryItem?
++
++    @Insert
++    fun insert(item:HistoryItem)
++
++    @Update
++    fun update(item: HistoryItem)
++
++    @Delete
++    fun delete(item: HistoryItem)
++
++    @Query("DELETE FROM history")
++    fun deleteAllHistory()
++}
+\ No newline at end of file
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">Diagnosis Gigi Ibu Hamil</string>\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/res/values/strings.xml	(date 1656316609346)
+@@ -1,3 +1,3 @@
+ <resources>
+-    <string name="app_name">Diagnosis Gigi Ibu Hamil</string>
++    <string name="app_name">Ibu Peri Cerita</string>
+ </resources>
+\ No newline at end of file
+Index: app/src/main/java/com/example/gigi_ibuhamil/ui/colors.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.ui\r\n\r\nimport androidx.compose.ui.graphics.Color\r\nimport com.siddroid.holi.brushes.GradientMixer\r\nimport com.siddroid.holi.colors.MaterialColor\r\n\r\nval TextWhite = Color(0xffeeeeee)\r\nval DeepBlue = Color(0xff06164c)\r\nval ButtonBlue = Color(0xff505cf3)\r\nval DarkerButtonBlue = Color(0xff566894)\r\nval LightRed = Color(0xfffc879a)\r\nval LightBlue = Color(0xffc2fcf4)\r\nval AquaBlue = Color(0xff9aa5c4)\r\nval OrangeYellow1 = Color(0xfff0bd28)\r\nval OrangeYellow2 = Color(0xfff1c746)\r\nval OrangeYellow3 = Color(0xfff4cf65)\r\nval Beige1 = Color(0xfffdbda1)\r\nval Beige2 = Color(0xfffcaf90)\r\nval Beige3 = Color(0xfff9a27b)\r\nval LightGreen1 = Color(0xff54e1b6)\r\nval LightGreen2 = Color(0xff36ddab)\r\nval LightGreen3 = Color(0xff11d79b)\r\nval BlueViolet1 = Color(0xffaeb4fd)\r\nval BlueViolet2 = Color(0xff9fa5fe)\r\nval BlueViolet3 = Color(0xff8f98fd)\r\nval NoButton = Color(0xffd9534f)\r\nval ResetButton = Color(0xff09a2a7)\r\nval YesButton = Color(0xff24a0ed)\r\nval HomeButton = Color(0xff2b6478)\r\nval DaftarColor = Color(0xff7579E7)\r\nval gradStart = Color(0xffA3D8F4)\r\nval gradStop = Color(0xffD6ECF8)\r\nval gradbg = GradientMixer.bottomLeftToTopRight(gradStart, gradStop)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/ui/colors.kt b/app/src/main/java/com/example/gigi_ibuhamil/ui/colors.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/ui/colors.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/ui/colors.kt	(date 1656316609340)
+@@ -8,8 +8,8 @@
+ val DeepBlue = Color(0xff06164c)
+ val ButtonBlue = Color(0xff505cf3)
+ val DarkerButtonBlue = Color(0xff566894)
+-val LightRed = Color(0xfffc879a)
+-val LightBlue = Color(0xffc2fcf4)
++val LightRed = Color(0xfff2538e)
++val LightBlue = Color(0xfffaafc3)
+ val AquaBlue = Color(0xff9aa5c4)
+ val OrangeYellow1 = Color(0xfff0bd28)
+ val OrangeYellow2 = Color(0xfff1c746)
+@@ -25,7 +25,7 @@
+ val BlueViolet3 = Color(0xff8f98fd)
+ val NoButton = Color(0xffd9534f)
+ val ResetButton = Color(0xff09a2a7)
+-val YesButton = Color(0xff24a0ed)
++val YesButton = Color(0xff11d79b)
+ val HomeButton = Color(0xff2b6478)
+ val DaftarColor = Color(0xff7579E7)
+ val gradStart = Color(0xffA3D8F4)
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/akunscreen/akunscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.akunscreen\r\n\r\nimport android.util.Log\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.rememberScrollState\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.foundation.text.KeyboardOptions\r\nimport androidx.compose.foundation.verticalScroll\r\nimport androidx.compose.material.*\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.ArrowBack\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.TextStyle\r\nimport androidx.compose.ui.text.input.ImeAction\r\nimport androidx.compose.ui.text.input.KeyboardType\r\nimport androidx.compose.ui.text.input.TextFieldValue\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.models.User\r\nimport com.example.gigi_ibuhamil.ui.DaftarColor\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport com.google.firebase.firestore.SetOptions\r\nimport com.google.firebase.firestore.ktx.firestore\r\nimport com.google.firebase.firestore.ktx.toObject\r\nimport com.google.firebase.ktx.Firebase\r\n\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun AkunScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        AkunTitle(navController)\r\n        Isi(navController)\r\n    }\r\n}\r\n\r\n@Composable\r\nfun AkunTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 30.dp)\r\n    ) {\r\n        Row() {\r\n            IconButton(\r\n                modifier = Modifier.weight(1f),\r\n                onClick = {\r\n                    navController.navigate(Screen.SettingScreen.route){popUpTo(0)\r\n                    }\r\n                }\r\n            ) {\r\n                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = \"ArrowBack\")\r\n            }\r\n            Text(\r\n                text = \"Akun\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Isi(navController: NavController) {\r\n    Column() {\r\n        FormItems(navController)\r\n    }\r\n}\r\n@Composable\r\nfun FormItems(navController: NavController) {\r\n    val TAG = \"AKUN STREAM\"\r\n    val context = LocalContext.current\r\n    val db = Firebase.firestore\r\n    val savedNama = SavedPreference.getDisplayName(context).toString()\r\n    val savedEmail = SavedPreference.getEmail(context).toString()\r\n    val savedAlamat = SavedPreference.getAlamat(context).toString()\r\n    val savedDesa = SavedPreference.getDesa(context).toString()\r\n    val savedUsia = SavedPreference.getUsia(context).toString()\r\n    val savedTahun = SavedPreference.getTahun(context).toString()\r\n    var nama by remember { mutableStateOf(TextFieldValue(savedNama)) }\r\n    var email by remember { mutableStateOf(TextFieldValue(savedEmail)) }\r\n    var alamat by remember { mutableStateOf(TextFieldValue(savedAlamat)) }\r\n    var desa by remember { mutableStateOf(TextFieldValue(savedDesa)) }\r\n    var tahun_kelahiran by remember { mutableStateOf(TextFieldValue(savedTahun)) }\r\n    var usia_kelahiran by remember { mutableStateOf(TextFieldValue(savedUsia)) }\r\n    var dialogState by remember { mutableStateOf(false) }\r\n    val user = User(\r\n        nama.text,\r\n        email.text,\r\n        tahun_kelahiran.text,\r\n        usia_kelahiran.text,\r\n        alamat.text,\r\n        desa.text,\r\n        \"user\")\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(7.5.dp)\r\n            .clip(RoundedCornerShape(10.dp))\r\n    ) {\r\n        Box(\r\n            modifier = Modifier\r\n                .fillMaxSize()\r\n                .background(DaftarColor)\r\n        ){\r\n            Column() {\r\n                Column(\r\n                    verticalArrangement = Arrangement.Center,\r\n                    horizontalAlignment = Alignment.CenterHorizontally,\r\n                    modifier = Modifier\r\n                        .padding(15.dp)\r\n                        .verticalScroll(rememberScrollState())\r\n                        .weight(1f, false)\r\n                ) {\r\n                    OutlinedTextField(\r\n                        value = nama,\r\n                        label = { Text(text = \"Nama\", color = Color.White) },\r\n                        onValueChange = {\r\n                            nama = it\r\n                        },\r\n                        enabled = false,\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Text,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = email,\r\n                        label = { Text(text = \"E-Mail\", color = Color.White) },\r\n                        onValueChange = {\r\n                            email = it\r\n                        },\r\n                        enabled = false,\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Text,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = alamat,\r\n                        label = { Text(text = \"Alamat\", color = Color.White) },\r\n                        onValueChange = {\r\n                            alamat = it\r\n                        },\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Text,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = desa,\r\n                        label = { Text(text = \"Desa\", color = Color.White) },\r\n                        onValueChange = {\r\n                            desa = it\r\n                        },\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Text,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = tahun_kelahiran,\r\n                        label = { Text(text = \"Tahun kelahiran\", color = Color.White) },\r\n                        onValueChange = {\r\n                            tahun_kelahiran = it\r\n                        },\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Number,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = usia_kelahiran,\r\n                        label = { Text(text = \"Usia Kehamilan\", color = Color.White) },\r\n                        onValueChange = {\r\n                            usia_kelahiran = it\r\n                        },\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Number,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    Button(onClick = {\r\n                        if(nama.text == \"\" || email.text == \"\" ||\r\n                            alamat.text == \"\" || desa.text == \"\" ||\r\n                            tahun_kelahiran.text == \"\" || usia_kelahiran.text == \"\"){\r\n                            Toast.makeText(context,\"Mohon untuk tidak mengosongi input\",\r\n                                Toast.LENGTH_SHORT).show()\r\n                        }else{\r\n                            dialogState = true\r\n                        }\r\n                    }) {\r\n                        Text(text = \"Simpan Data\", color = Color.White, fontSize = 15.sp)\r\n                    }\r\n                    if(dialogState == true){\r\n                        AlertDialog(\r\n                            modifier = Modifier.clip(RoundedCornerShape(15.dp)),\r\n                            onDismissRequest = { dialogState = false},\r\n                            title = {\r\n                                Text(\r\n                                    fontSize = MaterialTheme.typography.h5.fontSize,\r\n                                    textAlign = TextAlign.Center,\r\n                                    text = \"Mohon cek ulang data anda\"\r\n                                )\r\n                            },\r\n                            text = {\r\n                                Text(\r\n                                    fontSize = 20.sp,\r\n                                    textAlign = TextAlign.Center,\r\n                                    text = \"Pastikan anda telah memasukan data yang sesuai dengan identitas anda\"\r\n                                )\r\n                            },\r\n                            confirmButton = {\r\n                                Button(\r\n                                    modifier = Modifier\r\n                                        .fillMaxWidth(),\r\n                                    onClick = {\r\n                                        dialogState = false\r\n                                    }) {\r\n                                    Text(fontSize = 15.sp,text = \"Kembali\" )\r\n                                }\r\n                            },\r\n                            dismissButton = {\r\n                                Button(\r\n                                    modifier = Modifier\r\n                                        .fillMaxWidth(),\r\n                                    onClick = {\r\n                                        //tempat buat update data ke firestore\r\n                                        try {\r\n                                            db.collection(\"users\").document(email.text)\r\n                                                .set(user)\r\n                                                .addOnSuccessListener {\r\n                                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}\r\n                                                    Toast.makeText(context,\r\n                                                        \"Sucessfull update user's data\",\r\n                                                        Toast.LENGTH_SHORT).show()\r\n                                                }.addOnFailureListener {\r\n                                                    Toast.makeText(context,\r\n                                                        \"Failed add user's data\",\r\n                                                        Toast.LENGTH_SHORT).show()\r\n                                                }\r\n                                        } catch (e: Exception){\r\n                                            println(\"we catch something\")\r\n                                        }\r\n                                    }) {\r\n                                    Text(fontSize = 15.sp,text = \"Simpan Data\")\r\n                                }\r\n                            }\r\n                        )\r\n                    }\r\n                }\r\n\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/akunscreen/akunscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/akunscreen/akunscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/akunscreen/akunscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/akunscreen/akunscreen.kt	(date 1656316609459)
+@@ -111,6 +111,7 @@
+         alamat.text,
+         desa.text,
+         "user")
++
+     BoxWithConstraints(
+         modifier = Modifier
+             .padding(7.5.dp)
+@@ -250,7 +251,7 @@
+                             dialogState = true
+                         }
+                     }) {
+-                        Text(text = "Simpan Data", color = Color.White, fontSize = 15.sp)
++                        Text(text = "Update Data", color = Color.White, fontSize = 15.sp)
+                     }
+                     if(dialogState == true){
+                         AlertDialog(
+@@ -292,11 +293,11 @@
+                                                 .addOnSuccessListener {
+                                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                                     Toast.makeText(context,
+-                                                        "Sucessfull update user's data",
++                                                        "Berhasil mengupdate data user",
+                                                         Toast.LENGTH_SHORT).show()
+                                                 }.addOnFailureListener {
+                                                     Toast.makeText(context,
+-                                                        "Failed add user's data",
++                                                        "Gagal mengupdate data user",
+                                                         Toast.LENGTH_SHORT).show()
+                                                 }
+                                         } catch (e: Exception){
+Index: app/src/main/java/com/example/gigi_ibuhamil/pages/beratbadanscreen/beratbadanscreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.pages.beratbadanscreen\r\n\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.ExperimentalFoundationApi\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.rememberScrollState\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.foundation.text.KeyboardOptions\r\nimport androidx.compose.foundation.verticalScroll\r\nimport androidx.compose.material.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.draw.clip\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.TextStyle\r\nimport androidx.compose.ui.text.input.ImeAction\r\nimport androidx.compose.ui.text.input.KeyboardType\r\nimport androidx.compose.ui.text.input.TextFieldValue\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport androidx.navigation.NavController\r\nimport com.example.gigi_ibuhamil.ui.DaftarColor\r\nimport com.example.gigi_ibuhamil.ui.gradbg\r\nimport com.example.gigi_ibuhamil.util.AmountOrMessageVisualTransformation\r\nimport com.example.gigi_ibuhamil.util.SavedPreference\r\nimport com.example.gigi_ibuhamil.util.Screen\r\nimport java.math.RoundingMode\r\n\r\nvar result = 0.0\r\nvar bmi = \"default\"\r\n@ExperimentalFoundationApi\r\n@Composable\r\nfun BeratBadanScreen(navController: NavController) = Box(\r\n    modifier = Modifier\r\n        .background(gradbg)\r\n        .fillMaxSize()\r\n) {\r\n    Column {\r\n        BeratBadanTitle(navController)\r\n        Isi(navController)\r\n    }\r\n}\r\n\r\n@Composable\r\nfun BeratBadanTitle(navController: NavController) {\r\n    Column(\r\n        verticalArrangement = Arrangement.Center,\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        modifier = Modifier\r\n            .fillMaxWidth()\r\n            .padding(top = 30.dp)\r\n    ) {\r\n        Row(Modifier.padding(start = 10.dp)) {\r\n            Text(\r\n                text = \"Perhitungan BMI\",\r\n                style = MaterialTheme.typography.h4,\r\n                modifier = Modifier\r\n                    .padding(bottom = 30.dp)\r\n                    .weight(3f)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Isi(navController: NavController) {\r\n    Column() {\r\n        FormItems(navController)\r\n    }\r\n}\r\n@Composable\r\nfun FormItems(navController: NavController) {\r\n    val context = LocalContext.current\r\n    var TB by remember { mutableStateOf(TextFieldValue()) }\r\n    var BB by remember { mutableStateOf(TextFieldValue()) }\r\n    val BBStr : String = BB.text.toString()\r\n    val TBStr : String = TB.text.toString()\r\n    var BMI  = 0.0\r\n    var dialogState by remember { mutableStateOf(false) }\r\n    val mMaxLength1 = 3\r\n    val mMaxLength2 = 4\r\n    BoxWithConstraints(\r\n        modifier = Modifier\r\n            .padding(7.5.dp)\r\n            .clip(RoundedCornerShape(10.dp))\r\n    ) {\r\n        Box(\r\n            modifier = Modifier\r\n                .fillMaxSize()\r\n                .background(DaftarColor)\r\n        ){\r\n            Column() {\r\n                Column(\r\n                    verticalArrangement = Arrangement.Center,\r\n                    horizontalAlignment = Alignment.CenterHorizontally,\r\n                    modifier = Modifier\r\n                        .padding(15.dp)\r\n                        .verticalScroll(rememberScrollState())\r\n                        .weight(1f, false)\r\n                ) {\r\n                    OutlinedTextField(\r\n                        value = BB,\r\n                        label = { Text(text = \"Berat badan setelah hamil (Kg)\", color = Color.White) },\r\n                        onValueChange = {\r\n                            if (it.text.length <= mMaxLength1) BB = it\r\n                        },\r\n                        singleLine = true,\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Number,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White,),\r\n                    )\r\n                    OutlinedTextField(\r\n                        value = TB,\r\n                        label = { Text(text = \"berapa tinggi badan setelah hamil (meter)\", color = Color.White) },\r\n                        singleLine = true,\r\n                        visualTransformation = AmountOrMessageVisualTransformation(),\r\n                        keyboardOptions = KeyboardOptions(\r\n                            keyboardType = KeyboardType.Number,\r\n                            imeAction = ImeAction.Done\r\n                        ),\r\n                        onValueChange = {\r\n                            if (it.text.length <= mMaxLength2) TB = it\r\n                        },\r\n                        modifier = Modifier.fillMaxWidth(),\r\n                        textStyle = TextStyle(color = Color.White),\r\n                        colors = TextFieldDefaults.outlinedTextFieldColors(\r\n                            focusedBorderColor = Color.White,\r\n                            unfocusedBorderColor = Color.White,\r\n                            cursorColor = Color.White),\r\n                    )\r\n                    Button(onClick = {\r\n                        if(BB.text.isEmpty() || TB.text.isEmpty()){\r\n                            Toast.makeText(context,\r\n                                \"Harap isi kedua isian dengan benar\",\r\n                                Toast.LENGTH_SHORT).show()\r\n                        }else{\r\n                            BMI = BBStr.toDouble() / (TBStr.toDouble() * TBStr.toDouble())\r\n                            Toast.makeText(context,TB.text,\r\n                                //BMI.toBigDecimal().setScale(2, RoundingMode.UP).toString(),\r\n                                Toast.LENGTH_SHORT).show()\r\n                            dialogState = true\r\n                            ResultReturn(BMI)\r\n                            if (result <= 18.4) {\r\n                                BmiReturn(\"Underweight\")\r\n                            }else if(result >= 18.5 && result <= 25.0){\r\n                                BmiReturn(\"Normal\")\r\n                            }else if(result >= 25.1 && result <= 27.0){\r\n                                BmiReturn(\"Overweight\")\r\n                            }else if(result >= 27.1){\r\n                                BmiReturn(\"Obesitas\")\r\n                            }\r\n                        }\r\n                        }) {\r\n                        Text(text = \"Hitung BMI\", color = Color.White, fontSize = 15.sp)\r\n                    }\r\n                    if(dialogState == true){\r\n                        AlertDialog(\r\n                            modifier = Modifier.clip(RoundedCornerShape(15.dp)),\r\n                            onDismissRequest = { dialogState = false},\r\n                            title = {\r\n                                Text(\r\n                                    fontSize = MaterialTheme.typography.h5.fontSize,\r\n                                    textAlign = TextAlign.Center,\r\n                                    text = \"Hasil Perhitungan BMI\"\r\n                                )\r\n                            },\r\n                            text = {\r\n                                if (result <= 18.4) {\r\n                                    Text(\r\n                                        fontSize = 20.sp,\r\n                                        textAlign = TextAlign.Center,\r\n                                        text = \"${\r\n                                            result.toBigDecimal().setScale(2, RoundingMode.UP)\r\n                                                .toString()\r\n                                        } \\nUnderweight (Berat badan anda termasuk kedalam kategori kekurangan berat badan)\"\r\n                                    )\r\n                                }else if(result >= 18.5 && result <= 25.0){\r\n                                    Text(\r\n                                        fontSize = 20.sp,\r\n                                        textAlign = TextAlign.Center,\r\n                                        text = \"${\r\n                                            result.toBigDecimal().setScale(2, RoundingMode.UP)\r\n                                                .toString()\r\n                                        } \\nNormal (Berat badan anda termasuk kedalam kategori normal)\"\r\n                                    )\r\n                                }else if(result >= 25.1 && result <= 27.0){\r\n                                    Text(\r\n                                        fontSize = 20.sp,\r\n                                        textAlign = TextAlign.Center,\r\n                                        text = \"${\r\n                                            result.toBigDecimal().setScale(2, RoundingMode.UP)\r\n                                                .toString()\r\n                                        } \\nOverweight (Berat badan anda termasuk kedalam kategori kelebihan berat badan ringan)\"\r\n                                    )\r\n                                }else if(result >= 27.1){\r\n                                    Text(\r\n                                        fontSize = 20.sp,\r\n                                        textAlign = TextAlign.Center,\r\n                                        text = \"${\r\n                                            result.toBigDecimal().setScale(2, RoundingMode.UP)\r\n                                                .toString()\r\n                                        } \\nObesitas (Berat badan anda termasuk kedalam kategori kelebihan berat badan ringan)\"\r\n                                    )\r\n                                }\r\n                            },\r\n                            confirmButton = {\r\n                                Button(\r\n                                    modifier = Modifier\r\n                                        .fillMaxWidth(),\r\n                                    onClick = {\r\n                                        SavedPreference.setBMI(context, bmi)\r\n                                        dialogState = false\r\n                                        ResultReturn(0.0)\r\n                                        BmiReturn(\"Default\")\r\n                                        navController.navigate(Screen.BeratBadanScreen.route){popUpTo(0)}\r\n                                    }) {\r\n                                    Text(fontSize = 15.sp,text = \"Mengulang proses perhitungan\" )\r\n                                }\r\n                            },\r\n                            dismissButton = {\r\n                                Button(\r\n                                    modifier = Modifier\r\n                                        .fillMaxWidth(),\r\n                                    onClick = {\r\n                                        SavedPreference.setBMI(context, bmi)\r\n                                        dialogState = false\r\n                                        ResultReturn(0.0)\r\n                                        BmiReturn(\"Default\")\r\n                                        navController.navigate(Screen.PolaMakanScreen.route){popUpTo(0)}\r\n                                    }) {\r\n                                    Text(fontSize = 15.sp,text = \"Lanjutkan Assessment\")\r\n                                }\r\n                            }\r\n                        )\r\n                    }\r\n                }\r\n\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n\r\nfun ResultReturn(item: Double): Double {\r\n    result = item\r\n    return result\r\n}\r\nfun BmiReturn(item: String): String {\r\n    bmi = item\r\n    return bmi\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/pages/beratbadanscreen/beratbadanscreen.kt b/app/src/main/java/com/example/gigi_ibuhamil/pages/beratbadanscreen/beratbadanscreen.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/pages/beratbadanscreen/beratbadanscreen.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/pages/beratbadanscreen/beratbadanscreen.kt	(date 1656316609443)
+@@ -146,9 +146,7 @@
+                                 Toast.LENGTH_SHORT).show()
+                         }else{
+                             BMI = BBStr.toDouble() / (TBStr.toDouble() * TBStr.toDouble())
+-                            Toast.makeText(context,TB.text,
+-                                //BMI.toBigDecimal().setScale(2, RoundingMode.UP).toString(),
+-                                Toast.LENGTH_SHORT).show()
++
+                             dialogState = true
+                             ResultReturn(BMI)
+                             if (result <= 18.4) {
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"GRADLE\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"Android Studio default JDK\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/.idea/gradle.xml	(date 1656316609301)
+@@ -7,7 +7,7 @@
+         <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleJvm" value="Android Studio default JDK" />
++        <option name="gradleJvm" value="JDK" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+Index: app/src/main/java/com/example/gigi_ibuhamil/util/Lists.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.gigi_ibuhamil.util\r\n\r\nimport com.example.gigi_ibuhamil.R\r\nimport com.example.gigi_ibuhamil.models.*\r\nimport com.example.gigi_ibuhamil.ui.*\r\n\r\nclass lists {\r\n    val penyakitllist: List<listpenyakit> =listOf(\r\n        listpenyakit(\r\n            id = \"P01\",\r\n            namaPenyakit = \"Karies Gigi\",\r\n            deskripsi = \"Sering disebut dengan gigi berlubang merupakan Proses remineralisasi dan demineraslisasi mineral-mineral penyusun \"+\r\n                    \"gigi serta ketidakseimbangan antara penyusunan dan pembuangan mineral gigi.\",\r\n            gejala = \"G01 - Sakit gigi \\n\" +\r\n                    \"G02 - Gigi terasa ngilu \\n\" +\r\n                    \"G03  - Sakit gigi sampai pusing\",\r\n            penyebab = \"makanan yang manis, lengket, berkarbohidrat, makanan asam  dan  mengosok \"+\r\n                    \"gigi dengan metode dan frekuensi yang salah.\",\r\n            penanganan = \"Berkumur dengan air garam dan meminum obat penahan nyeri (ponstan, paracetamol, dll)\",\r\n            pencegahan = \"Sikat gigi teratur serta menggunakan metode dan frekuensi yang baik.\",\r\n            perawatan = \"Pembersihan gigi, penambalan gigi dan perawatan saluran akar gigi.\"\r\n        ),\r\n        listpenyakit(\r\n            id = \"P02\",\r\n            namaPenyakit = \"Gingivitis\",\r\n            deskripsi = \"Gusi mengalami pembengkakan/peradangan yang disebabkan oleh sisa makanan \"+\r\n                    \"yang mengeras/Karang gigi dan bakteri.\",\r\n            gejala = \"G04 - Berdarah ketika menyikat gigi   \\n\" +\r\n                    \"G05 - Gusi mengalami pembekakan  \\n\"+\r\n                    \"G06 - Gusi terasa sakit \\n\" +\r\n                    \"G07 - Gusi berwarna merah sampai kebiruan\",\r\n            penyebab = \"Gingivitis disebabkan oleh bakteri/ karang gigi.\",\r\n            penanganan = \"Meminum obat anti radang\",\r\n            pencegahan = \"Menggosokgigi dengan frekuensi dan teknik yang tepat.\",\r\n            perawatan = \"Scaling dan root Planning (Pembersihan karang gigi) dab pemberian \"+\r\n                    \"obat-obatan anti raadang, antibiotik, sampai operasi gusi.\"\r\n        ),\r\n        listpenyakit(\r\n            id = \"P03\",\r\n            namaPenyakit = \"Periodontitis\",\r\n            deskripsi = \"Peradangan pada jaringan penyokong gigi.\",\r\n            gejala = \"G02 - Gigi terasa ngilu \\n\" +\r\n                    \"G08 - Gigi terasa ngilu yang menyebar  \\n\"+\r\n                    \"G09 - Gigi terasa ngilu saat mengunyah \\n\"+\r\n                    \"G10 - Gigi terlihat memanjang \\n\" +\r\n                    \"G11 - Gigi goyah\",\r\n            penyebab = \"Trauma gigitan, Tambalan berlebih, usia lanjut, karang gigi, karies gigi.\",\r\n            penanganan = \"Meminum obat penahan nyeri dan anti radang\",\r\n            pencegahan = \"Menggosokgigi dengan frekuensi dan teknik yang tepat dan scaling teratur setidaknya 6 bulan sekali.\",\r\n            perawatan = \"Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan.\"\r\n        ),\r\n    )\r\n    val gejalalist: List<listgejala> = listOf(\r\n        listgejala(\r\n            id = \"G01\",\r\n            namagejala = \"Sakit Gigi\"\r\n        ),\r\n        listgejala(\r\n            id = \"G02\",\r\n            namagejala = \"Gigi Terasa Ngilu\"\r\n        ),\r\n        listgejala(\r\n            id = \"G03\",\r\n            namagejala = \"Sakit Gigi Sampai Pusing \"\r\n        ),\r\n        listgejala(\r\n            id = \"G04\",\r\n            namagejala = \"Berdarah ketika menyikat gigi\"\r\n        ),\r\n        listgejala(\r\n            id = \"P05\",\r\n            namagejala = \"Gusi mengalami pembekakan\"\r\n        ),\r\n        listgejala(\r\n            id = \"G06\",\r\n            namagejala = \"Gusi terasa sakit\"\r\n        ),\r\n        listgejala(\r\n            id = \"G07\",\r\n            namagejala = \"Gusi berwarna merah sampai kebiruan\"\r\n        ),\r\n        listgejala(\r\n            id = \"G08\",\r\n            namagejala = \"Gigi terasa ngilu yang menyebar\"\r\n        ),\r\n        listgejala(\r\n            id = \"G09\",\r\n            namagejala = \"Gigi terasa ngilu saat mengunyah\"\r\n        ),\r\n        listgejala(\r\n            id = \"G10\",\r\n            namagejala = \"Gigi terlihat memanjang\"\r\n        ),\r\n        listgejala(\r\n            id = \"G11\",\r\n            namagejala = \"Gigi goyah\"\r\n        ),\r\n    )\r\n    val petunjuklist: List<listpetunjuk> = listOf(\r\n        listpetunjuk(\r\n            id = \"Pt01\",\r\n            namapetunjuk = \"Diagnosis\",\r\n            descpetunjuk = \"Menu Diagnosis pada halaman utama berfungsi untuk memulai diagnosa. Anda diminta untuk menjawab beebrapa pertanyaan yang akan ditampilkan hanya dengan tombol 'Ya' atau 'Tidak'. Kemudian sistem akan mengolah dan menampilkan hasil perkiraan diagnosis dari jawaban anda. Serta Hasil dari diagnosis anda akan direkam dan data pribadi anda akan dirahasiakan untuk tujuan penelitian\",\r\n            iconId = R.mipmap.ic_diagnosis\r\n        ),\r\n        listpetunjuk(\r\n            id = \"Pt02\",\r\n            namapetunjuk = \"Daftar Penyakit\",\r\n            descpetunjuk = \"Menu Daftar Penyakit pada halaman utama berfungsi untuk menampilkan daftar penyakit pada sistem ini, serta menampilkan informasi detail dari penyakit\",\r\n            iconId = R.mipmap.ic_penyakit\r\n        ),\r\n        listpetunjuk(\r\n            id = \"Pt03\",\r\n            namapetunjuk = \"Daftar Gejala\",\r\n            descpetunjuk = \"Menu Daftar Gejala pada halaman utama berfungsi untuk menampilkan daftar gejala penyakit gigi dan mulut\",\r\n            iconId = R.mipmap.ic_gejala\r\n        ),\r\n        listpetunjuk(\r\n            id = \"Pt04\",\r\n            namapetunjuk = \"Tentang\",\r\n            descpetunjuk = \"Menu Tentang pada halaman utama berfungsi untuk menampilkan informasi terkait aplikasi\",\r\n            iconId = R.mipmap.ic_tentang\r\n        ),\r\n    )\r\n    val menulist: List<featured> = listOf(\r\n        featured(\r\n            id = \"DP\",\r\n            title = \"Daftar Penyakit\",\r\n            R.mipmap.ic_penyakit,\r\n            BlueViolet1,\r\n            BlueViolet2,\r\n            BlueViolet3\r\n        ), featured(\r\n            id = \"DG\",\r\n            title = \"Daftar Gejala\",\r\n            R.mipmap.ic_gejala,\r\n            LightGreen1,\r\n            LightGreen2,\r\n            LightGreen3\r\n        ), featured(\r\n            id = \"P\",\r\n            title = \"Petunjuk\",\r\n            R.mipmap.ic_petunjuk,\r\n            OrangeYellow3,\r\n            OrangeYellow2,\r\n            OrangeYellow1\r\n        ), featured(\r\n            id = \"T\",\r\n            title = \"Tentang\",\r\n            R.mipmap.ic_tentang,\r\n            Beige1,\r\n            Beige2,\r\n            Beige3\r\n        )\r\n    )\r\n    val pertanyaanlist: List<listpertayaan> =listOf(\r\n        listpertayaan(\r\n            idpertanyaan = \"Q01\",\r\n            soal = \"Apakah gigi anda terasa ngilu saat mengunyah?\",\r\n            jawaban1 = \"Q02\",\r\n            jawaban0 = \"Q04\"\r\n        ),\r\n        listpertayaan(\r\n            idpertanyaan = \"Q02\",\r\n            soal = \"Apakah anda merasakah gigi ngilu yang menyebar saat mengunyah dan gigi tampak memanjang serta goyah\",\r\n            jawaban1 = \"Penyakit Periodintitis\",\r\n            jawaban0 = \"Q03\"\r\n        ),\r\n        listpertayaan(\r\n            idpertanyaan = \"Q03\",\r\n            soal = \"Apakah gigi anda terasa sakit hingga merasakan pusing?\",\r\n            jawaban1 = \"Penyakit Karies Gigi\",\r\n            jawaban0 = \"Penyakit Karies Gigi atau Periodontitis\"\r\n        ),\r\n        listpertayaan(\r\n            idpertanyaan = \"Q04\",\r\n            soal = \"Apakah gusi anda terlihat membengkak dan sakit serta berwarna merah hingga kebiruan?\",\r\n            jawaban1 = \"Penyakit Gingivitis\",\r\n            jawaban0 = \"Sehat\"\r\n        ),\r\n    )\r\n    val tentangList: List<listTentang> = listOf(\r\n        listTentang(\r\n            iconId = R.mipmap.logoapp,\r\n            appname = \"DentApp\",\r\n            desc1 = \"Aplikasi ini digunakan untuk memberikan pencerdasan kepada masyarakat tentang pentingnya kesehatan gigi dan mulut dengan memberikan informasi penyakit, gejala, dan informasi detail penyakit serta memiliki fungsi utama sebagai alat mendiagnosa kemungkinan penyakit gigi dan mulut.\\n\"+\r\n                    \"\\nPerlu diketahui bahwa sumber pengetahuan mengenai penyakit gigi dan mulut didapatkan dari proses wawancara dengan dokter gigi.\",\r\n            desc2 =\"PERHATIAN!!\",\r\n            desc3 = \"Fungsi diagnosa penyakit gigi dan mulut pada aplikasi ini tidak 100% akurat. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berffungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\\n\"+\r\n                    \"\\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.\",\r\n            desc4 = \"Terimakasih, \\n\" +\r\n                    \"Pengembang.\\n\\n\"+\"Riyan Sutantio Bangkit Nugroho\\n\" +\r\n                    \"Riyantio84@gmail.com\",\r\n        )\r\n    )\r\n    val polamakanlist: List<listpolamakan> = listOf(\r\n        listpolamakan(\r\n            idpertanyaan = 0,\r\n            soal = \"Dalam 1 minggu berapa kali anda mengkonsumsi sayur?\",\r\n            jawaban1 = \"   7x  \",\r\n            jawaban2 = \"5x - 6x\",\r\n            jawaban3 = \"2x - 4x\",\r\n            jawaban4 = \"   1x  \",\r\n            point1 = 4,\r\n            point2 = 3,\r\n            point3 = 2,\r\n            point4 = 1,\r\n            next = 1\r\n        ),\r\n        listpolamakan(\r\n            idpertanyaan = 1,\r\n            soal = \"Dalam 1 minggu berapa kali anda mengkonsumsi buah?\",\r\n            jawaban1 = \"   7x  \",\r\n            jawaban2 = \"5x - 6x\",\r\n            jawaban3 = \"2x - 4x\",\r\n            jawaban4 = \"   1x  \",\r\n            point1 = 4,\r\n            point2 = 3,\r\n            point3 = 2,\r\n            point4 = 1,\r\n            next = 2\r\n        ),\r\n        listpolamakan(\r\n            idpertanyaan = 2,\r\n            soal = \"Dalam 1 minggu berapa kali anda mengkonsumsi olahan susu?\",\r\n            jawaban1 = \"   7x  \",\r\n            jawaban2 = \"5x - 6x\",\r\n            jawaban3 = \"2x - 4x\",\r\n            jawaban4 = \"   1x  \",\r\n            point1 = 4,\r\n            point2 = 3,\r\n            point3 = 2,\r\n            point4 = 1,\r\n            next = 3\r\n        ),\r\n        listpolamakan(\r\n            idpertanyaan = 3,\r\n            soal = \"Dalam 1 minggu berapa kali anda mengkonsumsi snack/kue/cemilan manis?\",\r\n            jawaban1 = \"   7x  \",\r\n            jawaban2 = \"5x - 6x\",\r\n            jawaban3 = \"2x - 4x\",\r\n            jawaban4 = \"   1x  \",\r\n            point1 = 1,\r\n            point2 = 2,\r\n            point3 = 3,\r\n            point4 = 4,\r\n            next = 4\r\n        ),\r\n        listpolamakan(\r\n            idpertanyaan = 4,\r\n            soal = \"Dalam 1 minggu berapa kali anda mengkonsumsi minuman-minuman manis?\",\r\n            jawaban1 = \"   7x  \",\r\n            jawaban2 = \"5x - 6x\",\r\n            jawaban3 = \"2x - 4x\",\r\n            jawaban4 = \"   1x  \",\r\n            point1 = 1,\r\n            point2 = 2,\r\n            point3 = 3,\r\n            point4 = 4,\r\n            next = 5\r\n        ),\r\n    )\r\n    val perilakulist = listOf(\r\n        listperilaku(\r\n            idpertanyaan = 0,\r\n            soal = \"Dalam sehari berapa kali anda menggosok gigi?\",\r\n            jawaban1 = \"     1x    \",\r\n            jawaban2 = \"Lebih dari 1x\",\r\n            point1 = 1,\r\n            point2 = 3,\r\n            next = 1\r\n        ),\r\n        listperilaku(\r\n            idpertanyaan = 1,\r\n            soal = \"Dalam 6 bulan berapa kali anda datang ke dokter gigi?\",\r\n            jawaban1 = \"Tidak pernah\",\r\n            jawaban2 = \" 1x / Lebih \",\r\n            point1 = 4,\r\n            point2 = 8,\r\n            next = 2\r\n        )\r\n    )\r\n    val listsetting = listOf(\r\n        settingModel(\r\n            id = \"S01\",\r\n            setting = \"Akun\"\r\n        ),\r\n        settingModel(\r\n            id = \"S02\",\r\n            setting = \"History\"\r\n        ),\r\n        settingModel(\r\n            id = \"S03\",\r\n            setting = \"Log Out\"\r\n        ),\r\n        settingModel(\r\n            id = \"S04\",\r\n            setting = \"Cetak History\"\r\n        ),\r\n        settingModel(\r\n            id = \"S05\",\r\n            setting = \"Add Admin\"\r\n        ),\r\n    )\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/util/Lists.kt b/app/src/main/java/com/example/gigi_ibuhamil/util/Lists.kt
+--- a/app/src/main/java/com/example/gigi_ibuhamil/util/Lists.kt	(revision 38f6ec7c4e1fc40c39ac23b3a7ca40ee42bbbc99)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/util/Lists.kt	(date 1656316609394)
+@@ -107,13 +107,13 @@
+             id = "Pt02",
+             namapetunjuk = "Daftar Penyakit",
+             descpetunjuk = "Menu Daftar Penyakit pada halaman utama berfungsi untuk menampilkan daftar penyakit pada sistem ini, serta menampilkan informasi detail dari penyakit",
+-            iconId = R.mipmap.ic_penyakit
++            iconId = R.mipmap.ic_gejala
+         ),
+         listpetunjuk(
+             id = "Pt03",
+             namapetunjuk = "Daftar Gejala",
+             descpetunjuk = "Menu Daftar Gejala pada halaman utama berfungsi untuk menampilkan daftar gejala penyakit gigi dan mulut",
+-            iconId = R.mipmap.ic_gejala
++            iconId = R.mipmap.ic_penyakit
+         ),
+         listpetunjuk(
+             id = "Pt04",
+@@ -126,14 +126,14 @@
+         featured(
+             id = "DP",
+             title = "Daftar Penyakit",
+-            R.mipmap.ic_penyakit,
++            R.mipmap.ic_gejala,
+             BlueViolet1,
+             BlueViolet2,
+             BlueViolet3
+         ), featured(
+             id = "DG",
+             title = "Daftar Gejala",
+-            R.mipmap.ic_gejala,
++            R.mipmap.ic_penyakit,
+             LightGreen1,
+             LightGreen2,
+             LightGreen3
+@@ -141,16 +141,16 @@
+             id = "P",
+             title = "Petunjuk",
+             R.mipmap.ic_petunjuk,
+-            OrangeYellow3,
+-            OrangeYellow2,
+-            OrangeYellow1
++            LightGreen1,
++            LightGreen2,
++            LightGreen3
+         ), featured(
+             id = "T",
+             title = "Tentang",
+             R.mipmap.ic_tentang,
+-            Beige1,
+-            Beige2,
+-            Beige3
++            BlueViolet1,
++            BlueViolet2,
++            BlueViolet3
+         )
+     )
+     val pertanyaanlist: List<listpertayaan> =listOf(
+@@ -182,15 +182,14 @@
+     val tentangList: List<listTentang> = listOf(
+         listTentang(
+             iconId = R.mipmap.logoapp,
+-            appname = "DentApp",
+-            desc1 = "Aplikasi ini digunakan untuk memberikan pencerdasan kepada masyarakat tentang pentingnya kesehatan gigi dan mulut dengan memberikan informasi penyakit, gejala, dan informasi detail penyakit serta memiliki fungsi utama sebagai alat mendiagnosa kemungkinan penyakit gigi dan mulut.\n"+
+-                    "\nPerlu diketahui bahwa sumber pengetahuan mengenai penyakit gigi dan mulut didapatkan dari proses wawancara dengan dokter gigi.",
+-            desc2 ="PERHATIAN!!",
+-            desc3 = "Fungsi diagnosa penyakit gigi dan mulut pada aplikasi ini tidak 100% akurat. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berffungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\n"+
+-                    "\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.",
++            appname = "Ibu Peri Cerita",
++            desc1 = "Ibu Hamil Periksa Mandiri Cegah Karies dan Stunting Anak",
++            desc2 ="Aplikasi ini dibuat untuk pencerdasan kepada ibu hamil tentang bahaya penyakit karies gigi dan stunting anak",
++            desc3 = "Aplikasi ini tidak 100% akurat dan hanya menjadi kemungkinan saja. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berffungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\n"+
++                    "\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email perwakilan tim pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.",
+             desc4 = "Terimakasih, \n" +
+-                    "Pengembang.\n\n"+"Riyan Sutantio Bangkit Nugroho\n" +
+-                    "Riyantio84@gmail.com",
++                    "Tim Pengembang.\n\n\n" +
++                    "CP : Riyantio84@gmail.com  ",
+         )
+     )
+     val polamakanlist: List<listpolamakan> = listOf(
+@@ -264,7 +263,7 @@
+         listperilaku(
+             idpertanyaan = 0,
+             soal = "Dalam sehari berapa kali anda menggosok gigi?",
+-            jawaban1 = "     1x    ",
++            jawaban1 = "     1x    \n      ",
+             jawaban2 = "Lebih dari 1x",
+             point1 = 1,
+             point2 = 3,
+Index: app/src/main/java/com/example/gigi_ibuhamil/database/ViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/gigi_ibuhamil/database/ViewModel.kt b/app/src/main/java/com/example/gigi_ibuhamil/database/ViewModel.kt
+new file mode 100644
+--- /dev/null	(date 1656316609313)
++++ b/app/src/main/java/com/example/gigi_ibuhamil/database/ViewModel.kt	(date 1656316609313)
+@@ -0,0 +1,44 @@
++package com.example.gigi_ibuhamil.database
++
++import android.app.Application
++import androidx.lifecycle.*
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.launch
++
++class HistoryViewModel(application: Application) : AndroidViewModel(application) {
++
++    val readAllData: LiveData<List<HistoryItem>>
++    private val repository: HistoryRepository
++
++    init {
++        val historyDao = HistoryDatabase.getInstance(application).historyDatabaseDao()
++        repository = HistoryRepository(historyDao)
++        readAllData =repository.readAllData
++    }
++    fun insertProduct(history: HistoryItem) {
++        viewModelScope.launch(Dispatchers.IO) {
++            repository.insertHistory(historyItem = history)
++        }
++    }
++    fun deleteHistory(historyItem: HistoryItem) {
++        viewModelScope.launch(Dispatchers.IO) {
++            repository.deleteHistory(historyItem = historyItem)
++        }
++    }
++
++    fun deleteAllHistory() {
++        viewModelScope.launch(Dispatchers.IO) {
++            repository.deleteAllHistory()
++        }
++    }
++}
++
++class HistoryViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
++    override fun <T : ViewModel> create(modelClass: Class<T>): T {
++        @Suppress("UNCHECKED_CAST")
++        if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
++            return HistoryViewModel(application) as T
++        }
++        throw IllegalArgumentException("Unknown ViewModel class")
++    }
++}

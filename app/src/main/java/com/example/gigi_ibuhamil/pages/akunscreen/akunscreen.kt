@@ -251,7 +251,7 @@ fun FormItems(navController: NavController) {
                             dialogState = true
                         }
                     }) {
-                        Text(text = "Simpan Data", color = Color.White, fontSize = 15.sp)
+                        Text(text = "Update Data", color = Color.White, fontSize = 15.sp)
                     }
                     if(dialogState == true){
                         AlertDialog(
@@ -293,11 +293,11 @@ fun FormItems(navController: NavController) {
                                                 .addOnSuccessListener {
                                                     navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
                                                     Toast.makeText(context,
-                                                        "Sucessfull update user's data",
+                                                        "Berhasil mengupdate data user",
                                                         Toast.LENGTH_SHORT).show()
                                                 }.addOnFailureListener {
                                                     Toast.makeText(context,
-                                                        "Failed add user's data",
+                                                        "Gagal mengupdate data user",
                                                         Toast.LENGTH_SHORT).show()
                                                 }
                                         } catch (e: Exception){

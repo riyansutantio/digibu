@@ -89,11 +89,11 @@ fun GreetingSection() {
         modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
     ) {
         Text(
-            text = "Welcome",
+            text = "Selamat Datang",
             style = MaterialTheme.typography.h3
         )
         Text(
-            text = "To DIGIBU, ",
+            text = "Di Ibu Peri Cerita, ",
             style = MaterialTheme.typography.h6
         )
         Text(
@@ -154,7 +154,6 @@ fun SecondMainMenu(navController: NavController) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(LightBlue)
                 .padding(10.dp)
-                .background(LightBlue)
                 .clickable {
                     navController.navigate(Screen.EbookScreen.route)
                 }
@@ -176,7 +175,6 @@ fun SecondMainMenu(navController: NavController) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(LightBlue)
                 .padding(10.dp)
-                .background(LightBlue)
                 .clickable {
                     navController.navigate(Screen.VideoScreen.route)
                 }
@@ -199,7 +197,7 @@ fun SecondMainMenu(navController: NavController) {
 fun FeatureSection(features: List<featured>,navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "Features",
+            text = "Fitur",
             style = MaterialTheme.typography.h3,
             modifier = Modifier.padding(15.dp)
         )
@@ -309,25 +307,6 @@ fun FeaturedItems(feature: featured,navController: NavController) {
                     .padding(vertical = 5.dp, horizontal = 10.dp),
                 tint = Color.White
             )
-            /*Text(
-                text = "Start",
-                color = Color.White,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .clickable {
-                        when (feature.id) {
-                            "DG" -> navController.navigate(Screen.GejalaScreen.route)
-                            "DP" -> navController.navigate(Screen.PenyakitScreen.route)
-                            "P" -> navController.navigate(Screen.PetunjukScreen.route)
-                            "T" -> navController.navigate(Screen.TentangScreen.route)
-                        }
-                    }
-                    .align(Alignment.BottomEnd)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(ButtonBlue)
-                    .padding(vertical = 5.dp, horizontal = 10.dp)
-            )*/
         }
     }
 }

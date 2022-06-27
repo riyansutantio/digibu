@@ -1,5 +1,7 @@
 package com.example.gigi_ibuhamil.pages.ebookscreen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.gradbg
@@ -70,6 +75,8 @@ fun Isi() {
 }
 @Composable
 fun EbookItems() {
+    val context = LocalContext.current
+    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/zhawF9_lpM0")) }
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
@@ -86,6 +93,17 @@ fun EbookItems() {
                 modifier = Modifier
                     .padding(15.dp)
             ) {
+                Column(Modifier
+                    .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
+                    Button(onClick = { context.startActivity(intent1) }) {
+                        Text(
+                            text = "Unduh Modul",
+                            textAlign = TextAlign.Center,
+                            fontSize = 15.sp,
+                            color = Color.White,
+                        )
+                    }
+                }
                 ComposePDFViewer()
             }
         }
@@ -111,7 +129,9 @@ fun ComposePDFViewer() {
         )
         if (isLoading) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(
+                    Color.Gray
+                ),
                 verticalArrangement = Arrangement.Center
             ) {
                 LinearProgressIndicator(
