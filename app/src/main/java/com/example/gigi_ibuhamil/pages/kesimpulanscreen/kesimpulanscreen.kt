@@ -1,5 +1,6 @@
 package com.example.gigi_ibuhamil.pages.kesimpulanscreen
 
+import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -20,7 +21,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.gigi_ibuhamil.database.HistoryItem
+import com.example.gigi_ibuhamil.database.HistoryViewModel
+import com.example.gigi_ibuhamil.database.HistoryViewModelFactory
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
@@ -94,10 +99,6 @@ fun Isi(navController: NavController) {
     var polaController by remember { mutableStateOf(TextFieldValue(pola)) }
     var usiaController by remember { mutableStateOf(TextFieldValue(usia)) }
     var tahunController by remember { mutableStateOf(TextFieldValue(tahun)) }
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
 
     val diagResult = Result(
         namaController.text,
@@ -274,29 +275,6 @@ fun Isi(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
-<<<<<<<<< Temporary merge branch 1
-                    Button(onClick = {
-                        try{
-                            userCollection.document(emailController.text).get()
-                                .addOnSuccessListener { document ->
-                                    if (document != null) {
-                                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                    } else {
-                                        Log.d(TAG, "No such document")
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.d(TAG, "get failed with ", exception)
-                                }
-                        }
-                        catch (e: Exception){
-                            println("we catch something")
-                        }
-                    }) {
-                        Text(text = "Get Data usia and tahun lahir")
-                    }
-=========
->>>>>>>>> Temporary merge branch 2
                     Button(onClick = {
                       fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
                             var ids = 0
