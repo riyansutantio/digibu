@@ -8,7 +8,6 @@ import android.preference.PreferenceManager
 object SavedPreference {
     const val EMAIL= "DefaultEmail"
     const val DISPLAYNAME="DefaultName"
-    const val FIRST="false"
     const val DIAGOSIS = "DefaultResult"
     const val BMI = "0.0"
     const val POLAMAKAN = "DefaultPola"
@@ -153,13 +152,6 @@ object SavedPreference {
             "DefaultEmail"
         )
     }
-    fun setDefaultFirst(context: Context){
-        editor(
-            context,
-            FIRST,
-            "false"
-        )
-    }
     fun setDefaultDiagnosis(context: Context){
         editor(
             context,
@@ -186,6 +178,13 @@ object SavedPreference {
             context,
             PERILAKU,
             "DefaultPerilaku"
+        )
+    }
+    fun setDefaultRole(context: Context){
+        editor(
+            context,
+            ROLE,
+            "DefaultRole"
         )
     }
 }

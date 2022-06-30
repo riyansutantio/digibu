@@ -90,7 +90,7 @@ fun GreetingSection() {
     ) {
         Text(
             text = "Selamat Datang",
-            style = MaterialTheme.typography.h3
+            style = MaterialTheme.typography.h4
         )
         Text(
             text = "Di Ibu Peri Cerita, ",
@@ -127,11 +127,11 @@ fun MainMenu(navController: NavController) {
             Column(
             ) {
                 Text(
-                    text = "Diagnosis",
+                    text = "Assessment",
                     style = MaterialTheme.typography.h4
                 )
                 Text(
-                    text = "Tekan Untuk Memulai Diagnosis",
+                    text = "Tekan Untuk Memulai Assessment",
                     style = MaterialTheme.typography.body1
                 )
             }
@@ -161,7 +161,7 @@ fun SecondMainMenu(navController: NavController) {
 
         ){
             Text(
-                text = "E-Book",
+                text = "Modul",
                 style = MaterialTheme.typography.h5
             )
             Text(

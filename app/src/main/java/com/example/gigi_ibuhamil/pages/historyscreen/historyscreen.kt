@@ -145,6 +145,7 @@ fun HistorySection(list: List<HistoryItem>, mTodoViewModel: HistoryViewModel) {
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(NoButton),
                         onClick = {
+                            dialogState = false
                             mTodoViewModel.deleteAllHistory()
                             Toast.makeText(context, "History dihapus", Toast.LENGTH_SHORT).show()
                         }) {

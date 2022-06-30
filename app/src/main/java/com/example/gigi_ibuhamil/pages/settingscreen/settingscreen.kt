@@ -181,7 +181,7 @@ fun SettingTitle(navController: NavController) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
             Text(
-                text = "Settings",
+                text = "Pengaturan",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .padding(bottom = 30.dp)
@@ -228,6 +228,7 @@ fun SettingsSection(items: List<settingModel>, navController: NavController) {
 fun Settingitems(item: settingModel, navController: NavController) {
     val context = LocalContext.current
     val db = Firebase.firestore
+    val user = db.collection("users")
     val result = db.collection("result")
     BoxWithConstraints(
         modifier = Modifier
@@ -280,6 +281,11 @@ fun Settingitems(item: settingModel, navController: NavController) {
                                     .show()
                                 SavedPreference.setDefaultEmail(context)
                                 SavedPreference.setDefaultName(context)
+                                SavedPreference.setDefaultRole(context)
+                                SavedPreference.setDefaultPerilaku(context)
+                                SavedPreference.setDefaultBMI(context)
+                                SavedPreference.setDefaultDiagnosis(context)
+                                SavedPreference.setDefaultPolaMakan(context)
                                 navController.navigate(Screen.LoginScreen.route) { popUpTo(0) }
                             }
                         }) {
@@ -364,7 +370,33 @@ fun Settingitems(item: settingModel, navController: NavController) {
                         colors = ButtonDefaults.buttonColors(YesButton),
                         onClick = {
                             dialogStateAddAdmin = false
+                            Log.d("Email Controller", emailController.text)
+                            user.document(emailController.text).update("role", "admin")
+                                .addOnSuccessListener{
+                                    Log.d("Success", "Role successfully updated!")
+                                    Toast.makeText(context, "Berhasil menambahkan admin", Toast.LENGTH_SHORT).show()
+                                }.addOnFailureListener{
+                                        e -> Log.w("Failed", "Error updating role", e)
+                                    Toast.makeText(context, "Gagal menambahkan admin", Toast.LENGTH_SHORT).show()
+                                }
 
+//                            user.get().addOnSuccessListener{
+//                                task ->
+//                                for (doc in task.documents){
+//                                    val email = doc.data?.get("email")
+//                                    Log.d("Email", email.toString())
+//                                    if(emailController.text != email.toString()){
+//                                        Toast.makeText(context, "No Email Matched", Toast.LENGTH_SHORT).show()
+//                                    }else{
+//                                        user.document(emailController.text).update("role", "admin")
+//                                            .addOnSuccessListener{
+//                                                Log.d("Success", "Role successfully updated!")
+//                                            }.addOnFailureListener{
+//                                                    e -> Log.w("Failed", "Error updating role", e)
+//                                            }
+//                                    }
+//                                }
+//                            }
                         }) {
                         Text(fontSize = 15.sp, text = "Add Admin", color = Color.White)
                     }
