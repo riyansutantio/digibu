@@ -282,15 +282,15 @@ class lists {
     val listsetting = listOf(
         settingModel(
             id = "S01",
-            setting = "Akun"
+            setting = "Ubah Data Akun"
         ),
         settingModel(
             id = "S02",
-            setting = "History"
+            setting = "Histori"
         ),
         settingModel(
             id = "S03",
-            setting = "Log Out"
+            setting = "Keluar"
         ),
         settingModel(
             id = "S04",

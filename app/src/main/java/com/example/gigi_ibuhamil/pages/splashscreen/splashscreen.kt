@@ -42,12 +42,12 @@ fun Splash(navController: NavController) {
     // Animation
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue = 3f,
+            targetValue = 0.5f,
             // tween Animation
             animationSpec = tween(
                 durationMillis = 800,
                 easing = {
-                    OvershootInterpolator(5f).getInterpolation(it)
+                    OvershootInterpolator(0.8f).getInterpolation(it)
                 }))
         // Customize the delay time
         delay(2000L)
@@ -61,7 +61,7 @@ fun Splash(navController: NavController) {
             .background(gradbg))
     {
         // Change the logo
-        Image(painter = painterResource(id = R.mipmap.logoapp),
+        Image(painter = painterResource(id = R.drawable.logoss),
             contentDescription = "Logo",
             modifier = Modifier.scale(scale.value)
         )

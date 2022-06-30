@@ -1,5 +1,6 @@
 package com.example.gigi_ibuhamil.pages.kesimpulanscreen
 
+import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -20,7 +21,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.gigi_ibuhamil.database.HistoryItem
+import com.example.gigi_ibuhamil.database.HistoryViewModel
+import com.example.gigi_ibuhamil.database.HistoryViewModelFactory
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
@@ -290,7 +295,7 @@ fun Isi(navController: NavController) {
                             Log.d("Id History",ids.toString())}
                         try {
                             resultCollection.document(emailController.text)
-                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)))
+                                .set(diagResult)
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
                                         "Berhasil menyimpan hasil",
