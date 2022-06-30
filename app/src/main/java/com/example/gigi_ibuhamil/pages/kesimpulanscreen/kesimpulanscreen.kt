@@ -295,7 +295,7 @@ fun Isi(navController: NavController) {
                             Log.d("Id History",ids.toString())}
                         try {
                             resultCollection.document(emailController.text)
-                                .set(hashMapOf("history" to FieldValue.arrayUnion(diagResult)))
+                                .set(diagResult)
                                 .addOnSuccessListener {
                                     Toast.makeText(context,
                                         "Berhasil menyimpan hasil",

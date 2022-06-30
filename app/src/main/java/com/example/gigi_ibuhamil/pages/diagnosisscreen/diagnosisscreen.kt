@@ -241,7 +241,7 @@ fun ShowDiagnose(item:String,navController: NavController) {
             )
         },
         text = {
-            if (cur != "SEHAT") {
+            if (cur != "Sehat") {
                 Text(
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
