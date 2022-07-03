@@ -32,7 +32,6 @@ import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.example.gigi_ibuhamil.models.Result
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -80,7 +79,6 @@ fun Isi(navController: NavController) {
     )
     val db = Firebase.firestore
     val resultCollection = db.collection("result")
-    val userCollection = db.collection("users")
     val nama = SavedPreference.getDisplayName(context = context).toString()
     val diagnosis = SavedPreference.getDiagnosis(context = context).toString()
     val email = SavedPreference.getEmail(context = context).toString()

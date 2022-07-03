@@ -99,8 +99,11 @@ class lists {
     val petunjuklist: List<listpetunjuk> = listOf(
         listpetunjuk(
             id = "Pt01",
-            namapetunjuk = "Diagnosis",
-            descpetunjuk = "Menu Diagnosis pada halaman utama berfungsi untuk memulai diagnosa. Anda diminta untuk menjawab beebrapa pertanyaan yang akan ditampilkan hanya dengan tombol 'Ya' atau 'Tidak'. Kemudian sistem akan mengolah dan menampilkan hasil perkiraan diagnosis dari jawaban anda. Serta Hasil dari diagnosis anda akan direkam dan data pribadi anda akan dirahasiakan untuk tujuan penelitian",
+            namapetunjuk = "Assessment",
+            descpetunjuk = "Menu Assessment pada halaman utama berfungsi untuk memulai beberapa proses pertanyaan. " +
+                    "Anda diminta untuk menjawab beberapa pertanyaan yang akan ditampilkan hanya dengan tombol 'Ya' " +
+                    "atau 'Tidak' untuk menentukan diagnosis penyakit. Kemudian anda akan diminta untuk mengisi BB dan TB untuk menentukan BMI anda." +
+                    "Selanjutnya anda akan diminta untuk menjawab beberapa pertanyaan yang ditampilkan dan anda diminta untuk menjawab sesuai dengan kondisi anda. ",
             iconId = R.mipmap.ic_diagnosis
         ),
         listpetunjuk(
