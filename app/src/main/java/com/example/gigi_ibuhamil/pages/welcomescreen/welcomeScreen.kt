@@ -198,7 +198,7 @@ fun FeatureSection(features: List<featured>,navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "Fitur",
-            style = MaterialTheme.typography.h3,
+            style = MaterialTheme.typography.h4,
             modifier = Modifier.padding(15.dp)
         )
         LazyVerticalGrid(
