@@ -104,6 +104,8 @@ fun PerilakuScreen(navController: NavController) = Box(
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(YesButton),
                             onClick = {
                                 SavedPreference.setPerilaku(context, result)
                                 dialogState = false
@@ -112,13 +114,15 @@ fun PerilakuScreen(navController: NavController) = Box(
                                 total = 0
                                 navController.navigate(Screen.PerilakuScreen.route){popUpTo(0)}
                             }) {
-                            Text(fontSize = 15.sp,text = "Mengulang proses perhitungan" )
+                            Text(fontSize = 15.sp,text = "Mengulang proses perhitungan", color = Color.White )
                         }
                     },
                     dismissButton = {
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(YesButton),
                             onClick = {
                                 SavedPreference.setPerilaku(context, result)
                                 dialogState = false
@@ -127,7 +131,7 @@ fun PerilakuScreen(navController: NavController) = Box(
                                 total = 0
                                 navController.navigate(Screen.KesimpulanScreen.route){popUpTo(0)}
                             }) {
-                            Text(fontSize = 15.sp,text = "Lanjutkan Ke Halaman kesimpulan")
+                            Text(fontSize = 15.sp,text = "Lanjutkan Ke Halaman kesimpulan", color = Color.White)
                         }
                     }
                 )

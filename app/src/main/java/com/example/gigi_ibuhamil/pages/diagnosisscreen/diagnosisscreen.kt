@@ -131,8 +131,8 @@ fun Disclaimer(navController: NavController) {
                     Text(
                         fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        text = "Hasil diagnosis akan direkam untuk kepentingan pengumpulan data " +
-                                "dan Data pribadi anda akan dirahasiakan"
+                        text = "Hasil diagnosis akan direkam ke dalam database untuk kepentingan pengumpulan data " +
+                                "dan data pribadi anda akan dirahasiakan"
                     )
                 },
                 confirmButton = {
@@ -259,6 +259,8 @@ fun ShowDiagnose(item:String,navController: NavController) {
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(YesButton),
                 onClick = {
                     SavedPreference.setDiagnosis(context,cur)
                     Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
@@ -266,13 +268,15 @@ fun ShowDiagnose(item:String,navController: NavController) {
                     CurReturn()
                     navController.navigate(Screen.DiagnosisScreen.route){popUpTo(0)}
                 }) {
-                Text(fontSize = 15.sp,text = "Mengulang proses diagnosis?" )
+                Text(fontSize = 15.sp,text = "Mengulang proses diagnosis?", color = Color.White )
             }
         },
         dismissButton = {
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(YesButton),
                 onClick = {
                     SavedPreference.setDiagnosis(context,cur)
                     Log.d(TAG,"Hasil diagnosis terbaru : "+ SavedPreference.getDiagnosis(context))
@@ -280,7 +284,7 @@ fun ShowDiagnose(item:String,navController: NavController) {
                     CurReturn()
                     navController.navigate(Screen.BeratBadanScreen.route){popUpTo(0)}
                 }) {
-                Text(fontSize = 15.sp,text = "Lanjutkan Assessment")
+                Text(fontSize = 15.sp,text = "Lanjutkan Assessment", color = Color.White)
             }
         }
     )

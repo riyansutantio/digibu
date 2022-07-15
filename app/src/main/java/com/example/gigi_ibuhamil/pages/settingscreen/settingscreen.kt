@@ -379,24 +379,6 @@ fun Settingitems(item: settingModel, navController: NavController) {
                                         e -> Log.w("Failed", "Error updating role", e)
                                     Toast.makeText(context, "Gagal menambahkan admin", Toast.LENGTH_SHORT).show()
                                 }
-
-//                            user.get().addOnSuccessListener{
-//                                task ->
-//                                for (doc in task.documents){
-//                                    val email = doc.data?.get("email")
-//                                    Log.d("Email", email.toString())
-//                                    if(emailController.text != email.toString()){
-//                                        Toast.makeText(context, "No Email Matched", Toast.LENGTH_SHORT).show()
-//                                    }else{
-//                                        user.document(emailController.text).update("role", "admin")
-//                                            .addOnSuccessListener{
-//                                                Log.d("Success", "Role successfully updated!")
-//                                            }.addOnFailureListener{
-//                                                    e -> Log.w("Failed", "Error updating role", e)
-//                                            }
-//                                    }
-//                                }
-//                            }
                         }) {
                         Text(fontSize = 15.sp, text = "Add Admin", color = Color.White)
                     }

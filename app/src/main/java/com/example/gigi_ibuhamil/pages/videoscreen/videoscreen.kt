@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.ui.DaftarColor
+import com.example.gigi_ibuhamil.ui.NoButton
+import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.Screen
 
@@ -85,16 +87,21 @@ fun VideoPlayer() {
             Arrangement.Center,
             Alignment.CenterHorizontally
         ) {
-            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
+            Divider(color = Color.White, modifier = Modifier
+                .fillMaxWidth()
+                .width(1.dp))
             Column(Modifier
-                .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
+                .padding(10.dp), Arrangement.Center, Alignment.CenterHorizontally) {
                 Text(
                     text = "Untuk pergi ke video pertama klik tombol di bawah",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     color = Color.White,
                 )
-                Button(onClick = { context.startActivity(intent1) }) {
+                Button(
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(YesButton),
+                    onClick = { context.startActivity(intent1) }) {
                     Text(
                         text = "Navigate to video 1!",
                         textAlign = TextAlign.Center,
@@ -103,16 +110,21 @@ fun VideoPlayer() {
                     )
                 }
             }
-            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
+            Divider(color = Color.White, modifier = Modifier
+                .fillMaxWidth()
+                .width(1.dp))
             Column(Modifier
-                .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
+                .padding(10.dp), Arrangement.Center, Alignment.CenterHorizontally) {
                 Text(
                     text = "Untuk pergi ke video kedua klik tombol di bawah",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     color = Color.White,
                 )
-                Button(onClick = { context.startActivity(intent2) }) {
+                Button(
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(YesButton),
+                    onClick = { context.startActivity(intent2) }) {
                     Text(
                         text = "Navigate to video 2!",
                         textAlign = TextAlign.Center,
@@ -121,16 +133,21 @@ fun VideoPlayer() {
                     )
                 }
             }
-            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
+            Divider(color = Color.White, modifier = Modifier
+                .fillMaxWidth()
+                .width(1.dp))
             Column(Modifier
-                .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
+                .padding(10.dp), Arrangement.Center, Alignment.CenterHorizontally) {
                 Text(
                     text = "Untuk pergi ke video ketiga klik tombol di bawah",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     color = Color.White,
                 )
-                Button(onClick = { context.startActivity(intent3) }) {
+                Button(
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(YesButton),
+                    onClick = { context.startActivity(intent3) }) {
                     Text(
                         text = "Navigate to video 3!",
                         textAlign = TextAlign.Center,
@@ -139,7 +156,9 @@ fun VideoPlayer() {
                     )
                 }
             }
-            Divider(color = Color.White, modifier = Modifier.fillMaxWidth().width(1.dp))
+            Divider(color = Color.White, modifier = Modifier
+                .fillMaxWidth()
+                .width(1.dp))
         }
     }
 }

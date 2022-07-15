@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.models.User
 import com.example.gigi_ibuhamil.ui.DaftarColor
+import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
@@ -62,14 +63,15 @@ fun AkunTitle(navController: NavController) {
             IconButton(
                 modifier = Modifier.weight(1f),
                 onClick = {
-                    navController.navigate(Screen.SettingScreen.route){popUpTo(0)
+                    navController.navigate(Screen.SettingScreen.route) {
+                        popUpTo(0)
                     }
                 }
             ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
             Text(
-                text = "Akun",
+                text = "Ubah Data Akun",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .padding(bottom = 30.dp)
@@ -85,6 +87,7 @@ fun Isi(navController: NavController) {
         FormItems(navController)
     }
 }
+
 @Composable
 fun FormItems(navController: NavController) {
     val TAG = "AKUN STREAM"
@@ -121,7 +124,7 @@ fun FormItems(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(DaftarColor)
-        ){
+        ) {
             Column() {
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -148,7 +151,8 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
                     OutlinedTextField(
                         value = email,
@@ -167,7 +171,8 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
                     OutlinedTextField(
                         value = alamat,
@@ -185,7 +190,8 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
                     OutlinedTextField(
                         value = desa,
@@ -203,7 +209,8 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
                     OutlinedTextField(
                         value = tahun_kelahiran,
@@ -221,7 +228,8 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
                     OutlinedTextField(
                         value = usia_kelahiran,
@@ -239,24 +247,31 @@ fun FormItems(navController: NavController) {
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
+                            cursorColor = Color.White,
+                        ),
                     )
-                    Button(onClick = {
-                        if(nama.text == "" || email.text == "" ||
-                            alamat.text == "" || desa.text == "" ||
-                            tahun_kelahiran.text == "" || usia_kelahiran.text == ""){
-                            Toast.makeText(context,"Mohon untuk tidak mengosongi input",
-                                Toast.LENGTH_SHORT).show()
-                        }else{
-                            dialogState = true
-                        }
-                    }) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(YesButton),
+                        onClick = {
+                            if (nama.text == "" || email.text == "" ||
+                                alamat.text == "" || desa.text == "" ||
+                                tahun_kelahiran.text == "" || usia_kelahiran.text == ""
+                            ) {
+                                Toast.makeText(context, "Mohon untuk tidak mengosongi input",
+                                    Toast.LENGTH_SHORT).show()
+                            } else {
+                                dialogState = true
+                            }
+                        }) {
                         Text(text = "Update Data", color = Color.White, fontSize = 15.sp)
                     }
-                    if(dialogState == true){
+                    if (dialogState == true) {
                         AlertDialog(
                             modifier = Modifier.clip(RoundedCornerShape(15.dp)),
-                            onDismissRequest = { dialogState = false},
+                            onDismissRequest = { dialogState = false },
                             title = {
                                 Text(
                                     fontSize = MaterialTheme.typography.h5.fontSize,
@@ -278,7 +293,7 @@ fun FormItems(navController: NavController) {
                                     onClick = {
                                         dialogState = false
                                     }) {
-                                    Text(fontSize = 15.sp,text = "Kembali" )
+                                    Text(fontSize = 15.sp, text = "Kembali")
                                 }
                             },
                             dismissButton = {
@@ -291,7 +306,9 @@ fun FormItems(navController: NavController) {
                                             db.collection("users").document(email.text)
                                                 .set(user)
                                                 .addOnSuccessListener {
-                                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                                    navController.navigate(Screen.WelcomeScreen.route) {
+                                                        popUpTo(0)
+                                                    }
                                                     Toast.makeText(context,
                                                         "Berhasil mengupdate data user",
                                                         Toast.LENGTH_SHORT).show()
@@ -300,11 +317,11 @@ fun FormItems(navController: NavController) {
                                                         "Gagal mengupdate data user",
                                                         Toast.LENGTH_SHORT).show()
                                                 }
-                                        } catch (e: Exception){
+                                        } catch (e: Exception) {
                                             println("we catch something")
                                         }
                                     }) {
-                                    Text(fontSize = 15.sp,text = "Simpan Data")
+                                    Text(fontSize = 15.sp, text = "Simpan Data")
                                 }
                             }
                         )

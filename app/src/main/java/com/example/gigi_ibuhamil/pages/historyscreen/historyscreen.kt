@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -155,12 +156,17 @@ fun HistorySection(list: List<HistoryItem>, mTodoViewModel: HistoryViewModel) {
             )
         }
         Row(
+            modifier = Modifier
+                .padding(horizontal = 7.5.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(onClick = {
+            Button(
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(NoButton),
+                onClick = {
                 dialogState = true
             }) {
-                Text(text = "Delete all history")
+                Text(text = "Delete all history",fontSize = 15.sp, color = Color.White)
             }
         }
         LazyColumn() {
@@ -179,12 +185,11 @@ fun Historyitems(item: HistoryItem) {
             .padding(7.5.dp)
             .clip(RoundedCornerShape(10.dp))
     ) {
-        val context = LocalContext.current
-        var dialogState by remember { mutableStateOf(false) }
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(DaftarColor)
+                .padding(5.dp)
         ) {
             Row {
                 Column() {
@@ -338,7 +343,9 @@ fun Historyitems(item: HistoryItem) {
                 Column() {
                     Text(
                         text = item.Name,
+                        maxLines = 1,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -348,7 +355,9 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Email,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
                         fontSize = 15.sp,
+                        maxLines = 1,
                         color = Color.White,
                         modifier = Modifier
                             .padding(5.dp)
@@ -357,6 +366,8 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Tahun,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -366,6 +377,8 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Usia,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -375,6 +388,8 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Diagnosis,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -384,6 +399,8 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Bmi,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -393,6 +410,8 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Pola,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -402,6 +421,8 @@ fun Historyitems(item: HistoryItem) {
                     Text(
                         text = item.Perilaku,
                         textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         fontSize = 15.sp,
                         color = Color.White,
                         modifier = Modifier

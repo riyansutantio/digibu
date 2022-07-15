@@ -184,7 +184,7 @@ class lists {
     )
     val tentangList: List<listTentang> = listOf(
         listTentang(
-            iconId = R.mipmap.logoapp,
+            iconId = R.drawable.logoss,
             appname = "Ibu Peri Cerita",
             desc1 = "Ibu Hamil Periksa Mandiri Cegah Karies dan Stunting Anak",
             desc2 ="Aplikasi ini dibuat untuk pencerdasan kepada ibu hamil tentang bahaya penyakit karies gigi dan stunting anak",

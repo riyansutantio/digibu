@@ -26,6 +26,8 @@ import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.PdfViewer
 import com.example.gigi_ibuhamil.util.Screen
 import com.example.gigi_ibuhamil.R
+import com.example.gigi_ibuhamil.ui.NoButton
+import com.example.gigi_ibuhamil.ui.YesButton
 
 @ExperimentalFoundationApi
 @Composable
@@ -52,7 +54,7 @@ fun EbookTitle(navController: NavController) {
         Row() {
             IconButton(
                 modifier = Modifier.weight(1f),
-                onClick = { navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)} }
+                onClick = { navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) } }
             ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
@@ -73,6 +75,7 @@ fun Isi() {
         EbookItems()
     }
 }
+
 @Composable
 fun EbookItems() {
     val context = LocalContext.current
@@ -86,16 +89,18 @@ fun EbookItems() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(DaftarColor)
-        ){
+        ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .padding(15.dp)
             ) {
-                Column(Modifier
-                    .padding(10.dp), Arrangement.Center,Alignment.CenterHorizontally) {
-                    Button(onClick = { context.startActivity(intent1) }) {
+                Column() {
+                    Button(
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(YesButton),
+                        onClick = { context.startActivity(intent1) }) {
                         Text(
                             text = "Unduh Modul",
                             textAlign = TextAlign.Center,
@@ -129,9 +134,11 @@ fun ComposePDFViewer() {
         )
         if (isLoading) {
             Column(
-                modifier = Modifier.fillMaxSize().background(
-                    Color.Gray
-                ),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Color.Gray
+                    ),
                 verticalArrangement = Arrangement.Center
             ) {
                 LinearProgressIndicator(

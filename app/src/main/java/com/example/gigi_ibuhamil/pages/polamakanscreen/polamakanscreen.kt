@@ -93,6 +93,8 @@ fun PolaMakanScreen(navController: NavController) = Box(
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(YesButton),
                             onClick = {
                                 SavedPreference.setPola(context, result)
                                 dialogState = false
@@ -101,13 +103,15 @@ fun PolaMakanScreen(navController: NavController) = Box(
                                 total = 0
                                 navController.navigate(Screen.PolaMakanScreen.route){popUpTo(0)}
                             }) {
-                            Text(fontSize = 15.sp,text = "Mengulang proses perhitungan" )
+                            Text(fontSize = 15.sp,text = "Mengulang proses perhitungan", color = Color.White )
                         }
                     },
                     dismissButton = {
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(YesButton),
                             onClick = {
                                 SavedPreference.setPola(context, result)
                                 dialogState = false
@@ -116,7 +120,7 @@ fun PolaMakanScreen(navController: NavController) = Box(
                                 total = 0
                                 navController.navigate(Screen.PerilakuScreen.route){popUpTo(0)}
                             }) {
-                            Text(fontSize = 15.sp,text = "Lanjutkan Assessment")
+                            Text(fontSize = 15.sp,text = "Lanjutkan Assessment", color = Color.White)
                         }
                     }
                 )

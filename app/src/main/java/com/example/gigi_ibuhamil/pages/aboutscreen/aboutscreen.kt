@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -103,7 +104,16 @@ fun ListD(lists: listTentang) {
                 modifier = Modifier
                     .padding(10.dp)
             ) {
-                Image(painter = painterResource(id = lists.iconId), contentDescription = "Icon")
+                Box(
+                    modifier = Modifier.height(80.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = lists.iconId),
+                        contentDescription = "Icon",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
                 Text(
                     text = lists.appname,
                     textAlign = TextAlign.Center,

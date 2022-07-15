@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.ui.DaftarColor
+import com.example.gigi_ibuhamil.ui.HomeButton
+import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.AmountOrMessageVisualTransformation
 import com.example.gigi_ibuhamil.util.SavedPreference
@@ -75,6 +79,10 @@ fun Isi(navController: NavController) {
 @Composable
 fun FormItems(navController: NavController) {
     val context = LocalContext.current
+    var isErrorBB by remember { mutableStateOf(false) }
+    var isErrorTB by remember { mutableStateOf(false) }
+    var errormessageBB = ""
+    var errormessageTB = ""
     var TB by remember { mutableStateOf(TextFieldValue()) }
     var BB by remember { mutableStateOf(TextFieldValue()) }
     val BBStr : String = BB.text.toString()
@@ -101,62 +109,107 @@ fun FormItems(navController: NavController) {
                         .padding(15.dp)
                         .verticalScroll(rememberScrollState())
                         .weight(1f, false)
+                        .padding(vertical = 10.dp)
                 ) {
-                    OutlinedTextField(
-                        value = BB,
-                        label = { Text(text = "Berat badan setelah hamil (Kg)", color = Color.White) },
-                        onValueChange = {
-                            if (it.text.length <= mMaxLength1) BB = it
-                        },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done
-                        ),
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White,),
-                    )
-                    OutlinedTextField(
-                        value = TB,
-                        label = { Text(text = "berapa tinggi badan setelah hamil (meter)", color = Color.White) },
-                        singleLine = true,
-                        visualTransformation = AmountOrMessageVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done
-                        ),
-                        onValueChange = {
-                            if (it.text.length <= mMaxLength2) TB = it
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
-                    )
-                    Button(onClick = {
+                    Column{
+                        OutlinedTextField(
+                            value = BB,
+                            label = { Text(text = "Berat badan setelah hamil (Kg)", color = Color.White) },
+                            onValueChange = {
+                                if (it.text.length <= mMaxLength1) BB = it
+                                isErrorBB = false
+                            },
+                            trailingIcon = {
+                                if (isErrorBB)
+                                    Icon(Icons.Filled.Error,"error", tint = MaterialTheme.colors.error)
+                            },
+                            singleLine = true,
+                            isError = isErrorBB,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done
+                            ),
+                            modifier = Modifier.fillMaxWidth(),
+                            textStyle = TextStyle(color = Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.White,
+                                unfocusedBorderColor = Color.White,
+                                cursorColor = Color.White,),
+                        )
+                        if (isErrorBB) {
+                            Text(
+                                text = errormessageBB,
+                                color = MaterialTheme.colors.error,
+                                style = MaterialTheme.typography.caption,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
+                    }
+                    Column{
+                        OutlinedTextField(
+                            value = TB,
+                            label = { Text(text = "Berapa tinggi badan setelah hamil (meter)", color = Color.White) },
+                            singleLine = true,
+                            trailingIcon = {
+                                if (isErrorTB)
+                                    Icon(Icons.Filled.Error,"error", tint = MaterialTheme.colors.error)
+                            },
+                            isError = isErrorTB,
+                            visualTransformation = AmountOrMessageVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done
+                            ),
+                            onValueChange = {
+                                if (it.text.length <= mMaxLength2) TB = it
+                                isErrorTB = false
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            textStyle = TextStyle(color = Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.White,
+                                unfocusedBorderColor = Color.White,
+                                cursorColor = Color.White),
+                        )
+                        if (isErrorTB) {
+                            Text(
+                                text = errormessageTB,
+                                color = MaterialTheme.colors.error,
+                                style = MaterialTheme.typography.caption,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(YesButton),
+                        onClick = {
                         if(BB.text.isEmpty() || TB.text.isEmpty()){
-                            Toast.makeText(context,
-                                "Harap isi kedua isian dengan benar",
-                                Toast.LENGTH_SHORT).show()
+                            isErrorBB = true
+                            isErrorTB = true
+                            errormessageBB = "Harap isi field"
+                            errormessageTB = "Harap isi field"
                         }else{
-                            BMI = BBStr.toDouble() / (TBStr.toDouble() * TBStr.toDouble())
+                            if("." !in TB.text){
+                                isErrorTB = true
+                                errormessageTB = "Gunakan Satuan Meter"
+                            }else{
+                                BMI = BBStr.toDouble() / (TBStr.toDouble() * TBStr.toDouble())
 
-                            dialogState = true
-                            ResultReturn(BMI)
-                            if (result <= 18.4) {
-                                BmiReturn("Underweight")
-                            }else if(result >= 18.5 && result <= 25.0){
-                                BmiReturn("Normal")
-                            }else if(result >= 25.1 && result <= 27.0){
-                                BmiReturn("Overweight")
-                            }else if(result >= 27.1){
-                                BmiReturn("Obesitas")
+                                dialogState = true
+                                ResultReturn(BMI)
+                                if (result <= 18.4) {
+                                    BmiReturn("Underweight")
+                                }else if(result >= 18.5 && result <= 25.0){
+                                    BmiReturn("Normal")
+                                }else if(result >= 25.1 && result <= 27.0){
+                                    BmiReturn("Overweight")
+                                }else if(result >= 27.1){
+                                    BmiReturn("Obesitas")
+                                }
                             }
                         }
                         }) {
@@ -181,7 +234,7 @@ fun FormItems(navController: NavController) {
                                         text = "${
                                             result.toBigDecimal().setScale(2, RoundingMode.UP)
                                                 .toString()
-                                        } \nUnderweight (Berat badan anda termasuk kedalam kategori kekurangan berat badan)"
+                                        } \nUnderweight (BMI anda termasuk ke dalam kategori kekurangan berat badan)"
                                     )
                                 }else if(result >= 18.5 && result <= 25.0){
                                     Text(
@@ -190,7 +243,7 @@ fun FormItems(navController: NavController) {
                                         text = "${
                                             result.toBigDecimal().setScale(2, RoundingMode.UP)
                                                 .toString()
-                                        } \nNormal (Berat badan anda termasuk kedalam kategori normal)"
+                                        } \nNormal (BMI anda termasuk ke dalam kategori normal)"
                                     )
                                 }else if(result >= 25.1 && result <= 27.0){
                                     Text(
@@ -199,7 +252,7 @@ fun FormItems(navController: NavController) {
                                         text = "${
                                             result.toBigDecimal().setScale(2, RoundingMode.UP)
                                                 .toString()
-                                        } \nOverweight (Berat badan anda termasuk kedalam kategori kelebihan berat badan ringan)"
+                                        } \nOverweight (BMI anda termasuk ke dalam kategori kelebihan berat badan ringan)"
                                     )
                                 }else if(result >= 27.1){
                                     Text(
@@ -208,7 +261,7 @@ fun FormItems(navController: NavController) {
                                         text = "${
                                             result.toBigDecimal().setScale(2, RoundingMode.UP)
                                                 .toString()
-                                        } \nObesitas (Berat badan anda termasuk kedalam kategori kelebihan berat badan ringan)"
+                                        } \nObesitas (BMI anda termasuk ke dalam kategori kelebihan berat badan ringan)"
                                     )
                                 }
                             },
@@ -216,6 +269,8 @@ fun FormItems(navController: NavController) {
                                 Button(
                                     modifier = Modifier
                                         .fillMaxWidth(),
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.buttonColors(YesButton),
                                     onClick = {
                                         SavedPreference.setBMI(context, bmi)
                                         dialogState = false
@@ -223,13 +278,15 @@ fun FormItems(navController: NavController) {
                                         BmiReturn("Default")
                                         navController.navigate(Screen.BeratBadanScreen.route){popUpTo(0)}
                                     }) {
-                                    Text(fontSize = 15.sp,text = "Mengulang proses perhitungan" )
+                                    Text(fontSize = 15.sp,text = "Mengulang proses perhitungan", color = Color.White )
                                 }
                             },
                             dismissButton = {
                                 Button(
                                     modifier = Modifier
                                         .fillMaxWidth(),
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.buttonColors(YesButton),
                                     onClick = {
                                         SavedPreference.setBMI(context, bmi)
                                         dialogState = false
@@ -237,7 +294,7 @@ fun FormItems(navController: NavController) {
                                         BmiReturn("Default")
                                         navController.navigate(Screen.PolaMakanScreen.route){popUpTo(0)}
                                     }) {
-                                    Text(fontSize = 15.sp,text = "Lanjutkan Assessment")
+                                    Text(fontSize = 15.sp,text = "Lanjutkan Assessment", color = Color.White)
                                 }
                             }
                         )
