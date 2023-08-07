@@ -31,8 +31,8 @@ import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.example.gigi_ibuhamil.models.Result
-import com.example.gigi_ibuhamil.ui.YesButton
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -80,6 +80,7 @@ fun Isi(navController: NavController) {
     )
     val db = Firebase.firestore
     val resultCollection = db.collection("result")
+    val userCollection = db.collection("users")
     val nama = SavedPreference.getDisplayName(context = context).toString()
     val diagnosis = SavedPreference.getDiagnosis(context = context).toString()
     val email = SavedPreference.getEmail(context = context).toString()
@@ -92,7 +93,7 @@ fun Isi(navController: NavController) {
 
     var namaController by remember { mutableStateOf(TextFieldValue(nama)) }
     var emailController by remember { mutableStateOf(TextFieldValue(email)) }
-    var diagnosisController by remember { mutableStateOf(TextFieldValue(diagnosis)) }
+    var diagnosisController by remember { mutableStateOf(TextFieldValue( diagnosis)) }
     var bmiController by remember { mutableStateOf(TextFieldValue(bmi)) }
     var perilakuController by remember { mutableStateOf(TextFieldValue(perilaku)) }
     var polaController by remember { mutableStateOf(TextFieldValue(pola)) }
@@ -120,8 +121,7 @@ fun Isi(navController: NavController) {
                 .background(DaftarColor)
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(15.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -275,52 +275,43 @@ fun Isi(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(YesButton),
-                        onClick = {
-                            fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
-                                var ids = 0
-                                ids += 1
-                                mHistoryViewModel.insertProduct(
-                                    HistoryItem(
-                                        Id = ids,
-                                        Name = namaController.text,
-                                        Email = emailController.text,
-                                        Diagnosis = diagnosisController.text,
-                                        Bmi = bmiController.text,
-                                        Perilaku = perilakuController.text,
-                                        Pola = polaController.text,
-                                        Usia = usiaController.text,
-                                        Tahun = tahunController.text
-                                    )
+                    Button(onClick = {
+                      fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
+                            var ids = 0
+                            ids += 1
+                            mHistoryViewModel.insertProduct(
+                                HistoryItem(
+                                    Id = ids,
+                                    Name = namaController.text,
+                                    Email = emailController.text,
+                                    Diagnosis = diagnosisController.text,
+                                    Bmi = bmiController.text,
+                                    Perilaku = perilakuController.text,
+                                    Pola = polaController.text,
+                                    Usia = usiaController.text,
+                                    Tahun = tahunController.text
                                 )
-                                Log.d("Id History", ids.toString())
-                            }
-                            try {
-                                resultCollection.document(emailController.text)
-                                    .set(diagResult)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(context,
-                                            "Berhasil menyimpan hasil",
-                                            Toast.LENGTH_SHORT).show()
-                                        navController.navigate(Screen.WelcomeScreen.route) {
-                                            popUpTo(0)
-                                        }
-                                    }.addOnFailureListener {
-                                        Toast.makeText(context,
-                                            "Gagal menyimpan hasil",
-                                            Toast.LENGTH_SHORT).show()
-                                    }
-                            } catch (e: Exception) {
-                                println("we catch something")
-                            }
-                            insertIntoDB(mHistoryViewModel)
-                        }) {
-                        Text(text = "Back to home", color = Color.White, fontSize = 15.sp)
+                            )
+                            Log.d("Id History",ids.toString())}
+                        try {
+                            resultCollection.document(emailController.text)
+                                .set(diagResult)
+                                .addOnSuccessListener {
+                                    Toast.makeText(context,
+                                        "Berhasil menyimpan hasil",
+                                        Toast.LENGTH_SHORT).show()
+                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                }.addOnFailureListener {
+                                    Toast.makeText(context,
+                                        "Gagal menyimpan hasil",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                        } catch (e: Exception){
+                            println("we catch something")
+                        }
+                        insertIntoDB(mHistoryViewModel)
+                    }) {
+                        Text(text = "Back to home")
                     }
                 }
             }
