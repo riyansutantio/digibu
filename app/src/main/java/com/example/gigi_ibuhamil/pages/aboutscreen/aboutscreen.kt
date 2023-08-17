@@ -105,6 +105,17 @@ fun ListD(lists: listTentang) {
                     .padding(10.dp)
             ) {
                 Box(
+                    modifier = Modifier.height(100.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = lists.iconId2),
+                        contentDescription = "Icon",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+                Box(
                     modifier = Modifier.height(80.dp)
                 ) {
                     Image(

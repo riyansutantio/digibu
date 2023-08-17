@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class listTentang(
     @DrawableRes val iconId: Int,
+    @DrawableRes val iconId2: Int,
     val appname:String,
     val desc1:String,
     val desc2:String,

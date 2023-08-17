@@ -3,9 +3,13 @@ package com.example.gigi_ibuhamil.pages.videoscreen
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,11 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.gigi_ibuhamil.R
 import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.NoButton
 import com.example.gigi_ibuhamil.ui.YesButton
@@ -57,7 +64,7 @@ fun VideoTitle(navController: NavController) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
             Text(
-                text = "Video",
+                text = "Video Promosi",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .padding(bottom = 30.dp)
@@ -71,9 +78,9 @@ fun VideoTitle(navController: NavController) {
 @Composable
 fun VideoPlayer() {
     val context = LocalContext.current
-    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/zhawF9_lpM0")) }
-    val intent2 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/9C7FGC-ibY4")) }
-    val intent3 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/k7kzc3Nof08")) }
+    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/VKPuagsK9hQ")) }
+    val intent2 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/8ID072BdEL8")) }
+    val intent3 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=u-nR5aKsDqQ")) }
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
@@ -83,17 +90,28 @@ fun VideoPlayer() {
     ) {
         Column(
             Modifier
-                .fillMaxSize(),
-            Arrangement.Center,
-            Alignment.CenterHorizontally
+                .verticalScroll(rememberScrollState())
+                .padding(top = 7.5.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Divider(color = Color.White, modifier = Modifier
-                .fillMaxWidth()
-                .width(1.dp))
+            Text(
+                text = "Untuk pergi ke video promosi kesehatan silahkan klik gambar dibawah",
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                color = Color.White,
+            )
             Column(Modifier
                 .padding(10.dp), Arrangement.Center, Alignment.CenterHorizontally) {
-                Text(
-                    text = "Untuk pergi ke video pertama klik tombol di bawah",
+                Image(
+                    painterResource(R.drawable.vid1),
+                    contentDescription = "",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .clickable { context.startActivity(intent1) }
+                )
+                /*Text(
+                    text = "Untuk pergi ke video promosi kesehatan ibu hamil klik tombol di bawah",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     color = Color.White,
@@ -103,20 +121,28 @@ fun VideoPlayer() {
                     colors = ButtonDefaults.buttonColors(YesButton),
                     onClick = { context.startActivity(intent1) }) {
                     Text(
-                        text = "Navigate to video 1!",
+                        text = "Video 1",
                         textAlign = TextAlign.Center,
                         fontSize = 15.sp,
                         color = Color.White,
                     )
-                }
+                }*/
             }
-            Divider(color = Color.White, modifier = Modifier
-                .fillMaxWidth()
-                .width(1.dp))
+//            Divider(color = Color.White, modifier = Modifier
+//                .fillMaxWidth()
+//                .width(1.dp))
             Column(Modifier
                 .padding(10.dp), Arrangement.Center, Alignment.CenterHorizontally) {
-                Text(
-                    text = "Untuk pergi ke video kedua klik tombol di bawah",
+                Image(
+                    painterResource(R.drawable.vid2),
+                    contentDescription = "",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .clickable { context.startActivity(intent2) }
+                )
+                /*Text(
+                    text = "Untuk pergi ke video 5 Langkah Menyikat Gigi Yang Benar klik tombol di bawah",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     color = Color.White,
@@ -126,20 +152,28 @@ fun VideoPlayer() {
                     colors = ButtonDefaults.buttonColors(YesButton),
                     onClick = { context.startActivity(intent2) }) {
                     Text(
-                        text = "Navigate to video 2!",
+                        text = "Video 2",
                         textAlign = TextAlign.Center,
                         fontSize = 15.sp,
                         color = Color.White,
                     )
-                }
+                }*/
             }
-            Divider(color = Color.White, modifier = Modifier
-                .fillMaxWidth()
-                .width(1.dp))
+//            Divider(color = Color.White, modifier = Modifier
+//                .fillMaxWidth()
+//                .width(1.dp))
             Column(Modifier
                 .padding(10.dp), Arrangement.Center, Alignment.CenterHorizontally) {
-                Text(
-                    text = "Untuk pergi ke video ketiga klik tombol di bawah",
+                Image(
+                    painterResource(R.drawable.vid3),
+                    contentDescription = "",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .clickable { context.startActivity(intent3) }
+                )
+                /*Text(
+                    text = "Untuk pergi ke video Dampak Buruk Bagi Janin Jika Ibu Hamil Tidak Merawat Gigi dan Mulut klik tombol di bawah",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     color = Color.White,
@@ -149,16 +183,13 @@ fun VideoPlayer() {
                     colors = ButtonDefaults.buttonColors(YesButton),
                     onClick = { context.startActivity(intent3) }) {
                     Text(
-                        text = "Navigate to video 3!",
+                        text = "Video 3",
                         textAlign = TextAlign.Center,
                         fontSize = 15.sp,
                         color = Color.White,
                     )
-                }
+                }*/
             }
-            Divider(color = Color.White, modifier = Modifier
-                .fillMaxWidth()
-                .width(1.dp))
         }
     }
 }

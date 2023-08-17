@@ -17,6 +17,8 @@ object SavedPreference {
     const val TAHUN = "DefaultTahun"
     const val USIA = "DefaultUsia"
     const val ROLE = "DefaultRole"
+    const val PENYAKIT = "Penyakit"
+    const val ID = "0"
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -103,6 +105,20 @@ object SavedPreference {
             condition
         )
     }
+    fun setPenyakit(context: Context, penyakit: String?){
+        editor(
+            context,
+            PENYAKIT,
+            penyakit
+        )
+    }
+    fun setId(context: Context, id: String?){
+        editor(
+            context,
+            ID,
+            id
+        )
+    }
 
     fun getEmail(context: Context)= getSharedPreference(
         context
@@ -137,6 +153,12 @@ object SavedPreference {
     fun getRole(context: Context)= getSharedPreference(
         context
     )?.getString(ROLE,"")
+    fun getId(context: Context)= getSharedPreference(
+        context
+    )?.getString(ID,"0")
+    fun getPenyakit(context: Context)= getSharedPreference(
+        context
+    )?.getString(PENYAKIT,"")
 
     fun setDefaultName(context: Context){
         editor(
@@ -185,6 +207,20 @@ object SavedPreference {
             context,
             ROLE,
             "DefaultRole"
+        )
+    }
+    fun setDefaultPenyakit(context: Context){
+        editor(
+            context,
+            PENYAKIT,
+            "DefaultPenyakit"
+        )
+    }
+    fun setDefaultId(context: Context){
+        editor(
+            context,
+            ID,
+            "0"
         )
     }
 }

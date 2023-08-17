@@ -43,7 +43,6 @@ fun DiagnosisScreen(navController: NavController) {
             if ("Penyakit" in cur) {
                 ShowDiagnose(item = cur, navController)
                 Log.d(TAG,"Kemungkinan Penyakit diketahui $cur")
-
             }
             if (cur == "Sehat") {
                 ShowDiagnose(item = cur, navController)

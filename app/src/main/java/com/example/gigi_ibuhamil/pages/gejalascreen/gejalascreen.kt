@@ -59,7 +59,7 @@ fun GejalaTitle(navController: NavController) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack")
             }
             Text(
-                text = "Daftar Gejala",
+                text = "BMI dan Pola Makan",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier.padding(bottom = 30.dp).weight(3f)
             )

@@ -5,6 +5,10 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Colors
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -12,8 +16,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.models.AuthViewModel
 import com.example.gigi_ibuhamil.models.User
@@ -59,6 +67,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
             }
         }
     AuthView(
+        navController,
         errorText = text,
         onClick = {
             text=null
@@ -80,7 +89,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
                     if(SavedPreference.getEmail(context).toString() != email) {
                         navController.navigate(Screen.InformationScreen.route) { popUpTo(0) }
                     }else{
-                        Toast.makeText(current, "Success Login, Directing to Home Screen", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(current, "Success Login, Mengarahkan ke halaman utama", Toast.LENGTH_SHORT).show()
                         navController.navigate(Screen.WelcomeScreen.route) { popUpTo(0) }
                         break
                     }
@@ -106,7 +115,8 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
 
 @ExperimentalMaterialApi
 @Composable
-fun AuthView(errorText:String?,onClick:() -> Unit) {
+fun AuthView(navController: NavController,errorText:String?,onClick:() -> Unit) {
+    val context = LocalContext.current
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -140,7 +150,31 @@ fun AuthView(errorText:String?,onClick:() -> Unit) {
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(text = it)
             }
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(25.dp))
+            Box(
+            ){
+            Button(
+                onClick = {
+                    SavedPreference.setDisplayName(context,"Guest")
+                    SavedPreference.setEmail(context,"Guest@email.com")
+                    SavedPreference.setAlamat(context, "Guest")
+                    SavedPreference.setUsia(context, "")
+                    SavedPreference.setTahun(context, "")
+                    SavedPreference.setDesa(context, "")
+                    SavedPreference.setRole(context, "Guest")
+                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                    Toast.makeText(context, "Success Login, Mengarahkan ke halaman utama", Toast.LENGTH_SHORT).show()
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(ResetButton),
+                modifier = Modifier.size(width = 200.dp, height = 40.dp)
+            ) {
+                Text(
+                    text = "Login sebagai tamu",
+                    color = Color.White,
+                )
+            }
+            }
         }
     }
 }

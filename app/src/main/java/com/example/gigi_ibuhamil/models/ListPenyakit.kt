@@ -1,5 +1,7 @@
 package com.example.gigi_ibuhamil.models
 
+import androidx.annotation.DrawableRes
+
 data class listpenyakit(
     val id:String,
     val namaPenyakit:String,
@@ -8,5 +10,6 @@ data class listpenyakit(
     val penyebab:String,
     val penanganan:String,
     val pencegahan:String,
-    val perawatan:String
+    val perawatan:String,
+    @DrawableRes val gambar1: Int,
 )

@@ -1,6 +1,5 @@
 package com.example.gigi_ibuhamil.pages.beratbadanscreen
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.ui.DaftarColor
-import com.example.gigi_ibuhamil.ui.HomeButton
 import com.example.gigi_ibuhamil.ui.YesButton
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.AmountOrMessageVisualTransformation
@@ -44,13 +42,13 @@ fun BeratBadanScreen(navController: NavController) = Box(
         .fillMaxSize()
 ) {
     Column {
-        BeratBadanTitle(navController)
+        BeratBadanTitle()
         Isi(navController)
     }
 }
 
 @Composable
-fun BeratBadanTitle(navController: NavController) {
+fun BeratBadanTitle() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,7 +112,7 @@ fun FormItems(navController: NavController) {
                     Column{
                         OutlinedTextField(
                             value = BB,
-                            label = { Text(text = "Berat badan setelah hamil (Kg)", color = Color.White) },
+                            label = { Text(text = "Berat badan setelah hamil (dalam KILOGRAM)", color = Color.White) },
                             onValueChange = {
                                 if (it.text.length <= mMaxLength1) BB = it
                                 isErrorBB = false
@@ -148,7 +146,7 @@ fun FormItems(navController: NavController) {
                     Column{
                         OutlinedTextField(
                             value = TB,
-                            label = { Text(text = "Berapa tinggi badan setelah hamil (meter)", color = Color.White) },
+                            label = { Text(text = "Berapa tinggi badan setelah hamil (dalam METER)", color = Color.White) },
                             singleLine = true,
                             trailingIcon = {
                                 if (isErrorTB)
@@ -202,11 +200,11 @@ fun FormItems(navController: NavController) {
                                 dialogState = true
                                 ResultReturn(BMI)
                                 if (result <= 18.4) {
-                                    BmiReturn("Underweight")
+                                    BmiReturn("Kekurangan berat badan")
                                 }else if(result >= 18.5 && result <= 25.0){
                                     BmiReturn("Normal")
                                 }else if(result >= 25.1 && result <= 27.0){
-                                    BmiReturn("Overweight")
+                                    BmiReturn("Kelebihan berat badan")
                                 }else if(result >= 27.1){
                                     BmiReturn("Obesitas")
                                 }

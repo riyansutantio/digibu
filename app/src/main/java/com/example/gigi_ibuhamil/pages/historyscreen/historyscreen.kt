@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.pdf.PdfDocument
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -68,6 +69,7 @@ fun HistoryScreen(navController: NavController) = Box(
         factory = HistoryViewModelFactory(context.applicationContext as Application)
     )
     val items = mTodoViewModel.readAllData.observeAsState(listOf()).value
+    Log.d("history",items.toString())
     Column {
         HistoryTitle(navController)
         HistorySection(list = items, mTodoViewModel)
@@ -134,6 +136,7 @@ fun HistorySection(list: List<HistoryItem>, mTodoViewModel: HistoryViewModel) {
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(YesButton),
                         onClick = {
+                            SavedPreference.setDefaultId(context)
                             dialogState = false
                         }) {
                         Text(fontSize = 15.sp, text = "Tidak", color = Color.White)
@@ -170,16 +173,24 @@ fun HistorySection(list: List<HistoryItem>, mTodoViewModel: HistoryViewModel) {
             }
         }
         LazyColumn() {
-            val i = 0
             items(list) { history ->
-                Historyitems(item = history)
+                Historyitems(
+                    nama = history.Name,
+                    bmi = history.Bmi,
+                    diagnose = history.Diagnosis,
+                    email = history.Email,
+                    pola = history.Pola,
+                    prilaku = history.Perilaku,
+                    tahun = history.Tahun,
+                    usia = history.Usia
+                )
             }
         }
     }
 }
 
 @Composable
-fun Historyitems(item: HistoryItem) {
+fun Historyitems(nama:String, email: String, tahun:String, diagnose:String, bmi:String, prilaku:String,pola:String, usia:String) {
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
@@ -342,7 +353,7 @@ fun Historyitems(item: HistoryItem) {
                 }
                 Column() {
                     Text(
-                        text = item.Name,
+                        text = nama,
                         maxLines = 1,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
@@ -353,7 +364,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Email,
+                        text = email,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 15.sp,
@@ -364,7 +375,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Tahun,
+                        text = tahun,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -375,7 +386,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Usia,
+                        text = usia,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -386,7 +397,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Diagnosis,
+                        text = diagnose,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -397,7 +408,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Bmi,
+                        text = bmi,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -408,7 +419,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Pola,
+                        text = pola,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -419,7 +430,7 @@ fun Historyitems(item: HistoryItem) {
                             .clip(RoundedCornerShape(10.dp))
                     )
                     Text(
-                        text = item.Perilaku,
+                        text = prilaku,
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,

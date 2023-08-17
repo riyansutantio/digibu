@@ -9,59 +9,62 @@ class lists {
         listpenyakit(
             id = "P01",
             namaPenyakit = "Karies Gigi",
-            deskripsi = "Sering disebut dengan gigi berlubang merupakan Proses remineralisasi dan demineraslisasi mineral-mineral penyusun "+
+            deskripsi = "Sering disebut dengan gigi berlubang merupakan proses remineralisasi dan demineraslisasi mineral-mineral penyusun "+
                     "gigi serta ketidakseimbangan antara penyusunan dan pembuangan mineral gigi.",
-            gejala = "G01 - Sakit gigi \n" +
-                    "G02 - Gigi terasa ngilu \n" +
-                    "G03  - Sakit gigi sampai pusing",
+            gejala = "Sakit gigi \n" +
+                    "Gigi terasa ngilu \n" +
+                    "Sakit gigi sampai pusing",
             penyebab = "makanan yang manis, lengket, berkarbohidrat, makanan asam  dan  mengosok "+
                     "gigi dengan metode dan frekuensi yang salah.",
             penanganan = "Berkumur dengan air garam dan meminum obat penahan nyeri (ponstan, paracetamol, dll)",
             pencegahan = "Sikat gigi teratur serta menggunakan metode dan frekuensi yang baik.",
-            perawatan = "Pembersihan gigi, penambalan gigi dan perawatan saluran akar gigi."
+            perawatan = "Pembersihan gigi, penambalan gigi dan perawatan saluran akar gigi.",
+            gambar1 = R.drawable.ums
         ),
         listpenyakit(
             id = "P02",
             namaPenyakit = "Gingivitis",
             deskripsi = "Gusi mengalami pembengkakan/peradangan yang disebabkan oleh sisa makanan "+
-                    "yang mengeras/Karang gigi dan bakteri.",
-            gejala = "G04 - Berdarah ketika menyikat gigi   \n" +
-                    "G05 - Gusi mengalami pembekakan  \n"+
-                    "G06 - Gusi terasa sakit \n" +
-                    "G07 - Gusi berwarna merah sampai kebiruan",
+                    "yang mengeras/karang gigi dan bakteri.",
+            gejala = "Berdarah ketika menyikat gigi   \n" +
+                    "Gusi mengalami pembekakan  \n"+
+                    "Gusi terasa sakit \n" +
+                    "Gusi berwarna merah sampai kebiruan",
             penyebab = "Gingivitis disebabkan oleh bakteri/ karang gigi.",
             penanganan = "Meminum obat anti radang",
             pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat.",
-            perawatan = "Scaling dan root Planning (Pembersihan karang gigi) dab pemberian "+
-                    "obat-obatan anti raadang, antibiotik, sampai operasi gusi."
+            perawatan = "Scaling dan root planning (pembersihan karang gigi) dab pemberian "+
+                    "obat-obatan anti radang, antibiotik, sampai operasi gusi.",
+            gambar1 = R.drawable.ums
         ),
         listpenyakit(
             id = "P03",
             namaPenyakit = "Periodontitis",
             deskripsi = "Peradangan pada jaringan penyokong gigi.",
-            gejala = "G02 - Gigi terasa ngilu \n" +
-                    "G08 - Gigi terasa ngilu yang menyebar  \n"+
-                    "G09 - Gigi terasa ngilu saat mengunyah \n"+
-                    "G10 - Gigi terlihat memanjang \n" +
-                    "G11 - Gigi goyah",
-            penyebab = "Trauma gigitan, Tambalan berlebih, usia lanjut, karang gigi, karies gigi.",
+            gejala = "Gigi terasa ngilu \n" +
+                    "Gigi terasa ngilu yang menyebar  \n"+
+                    "Gigi terasa ngilu saat mengunyah \n"+
+                    "Gigi terlihat memanjang \n" +
+                    "Gigi goyah",
+            penyebab = "Trauma gigitan, tambalan berlebih, usia lanjut, karang gigi, karies gigi.",
             penanganan = "Meminum obat penahan nyeri dan anti radang",
             pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat dan scaling teratur setidaknya 6 bulan sekali.",
-            perawatan = "Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan."
+            perawatan = "Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan.",
+            gambar1 = R.drawable.ums
         ),
     )
     val gejalalist: List<listgejala> = listOf(
         listgejala(
             id = "G01",
-            namagejala = "Sakit Gigi"
+            namagejala = "Sakit gigi"
         ),
         listgejala(
             id = "G02",
-            namagejala = "Gigi Terasa Ngilu"
+            namagejala = "Gigi terasa ngilu"
         ),
         listgejala(
             id = "G03",
-            namagejala = "Sakit Gigi Sampai Pusing "
+            namagejala = "Sakit gigi sampai pusing "
         ),
         listgejala(
             id = "G04",
@@ -100,7 +103,7 @@ class lists {
         listpetunjuk(
             id = "Pt01",
             namapetunjuk = "Assessment",
-            descpetunjuk = "Menu Assessment pada halaman utama berfungsi untuk memulai beberapa proses pertanyaan. " +
+            descpetunjuk = "Menu 'Mulai Screening' pada halaman utama berfungsi untuk memulai beberapa proses pertanyaan. " +
                     "Anda diminta untuk menjawab beberapa pertanyaan yang akan ditampilkan hanya dengan tombol 'Ya' " +
                     "atau 'Tidak' untuk menentukan diagnosis penyakit. Kemudian anda akan diminta untuk mengisi BB dan TB untuk menentukan BMI anda." +
                     "Selanjutnya anda akan diminta untuk menjawab beberapa pertanyaan yang ditampilkan dan anda diminta untuk menjawab sesuai dengan kondisi anda. ",
@@ -108,14 +111,14 @@ class lists {
         ),
         listpetunjuk(
             id = "Pt02",
-            namapetunjuk = "Daftar Penyakit",
-            descpetunjuk = "Menu Daftar Penyakit pada halaman utama berfungsi untuk menampilkan daftar penyakit pada sistem ini, serta menampilkan informasi detail dari penyakit",
+            namapetunjuk = "Gigi dan Mulut",
+            descpetunjuk = "Menu Gigi dan Mulut pada halaman utama berfungsi untuk memberi informasi seputar gigi dan mulut selama kehamilan. Setelah melakukan self-screening, anda dapat mempelajari makna dan nasihat terkait gigi dan mulut di menu ini.",
             iconId = R.mipmap.ic_gejala
         ),
         listpetunjuk(
             id = "Pt03",
-            namapetunjuk = "Daftar Gejala",
-            descpetunjuk = "Menu Daftar Gejala pada halaman utama berfungsi untuk menampilkan daftar gejala penyakit gigi dan mulut",
+            namapetunjuk = "BMI dan Pola Makan",
+            descpetunjuk = "Menu BMI dan Pola Makan di halaman utama berfungsi untuk memberi informasi terkait berat badan dan pola makan selama kehamilan. Setelah melakukan self-screening, anda dapat mempelajari makna dan nasihat terkait berat badan dan pola makan di sini.",
             iconId = R.mipmap.ic_penyakit
         ),
         listpetunjuk(
@@ -128,14 +131,14 @@ class lists {
     val menulist: List<featured> = listOf(
         featured(
             id = "DP",
-            title = "Daftar Penyakit",
+            title = "Gigi dan Mulut",
             R.mipmap.ic_gejala,
             BlueViolet1,
             BlueViolet2,
             BlueViolet3
         ), featured(
             id = "DG",
-            title = "Daftar Gejala",
+            title = "BMI dan Pola Makan",
             R.mipmap.ic_penyakit,
             LightGreen1,
             LightGreen2,
@@ -166,7 +169,7 @@ class lists {
         listpertayaan(
             idpertanyaan = "Q02",
             soal = "Apakah anda merasakah gigi ngilu yang menyebar saat mengunyah dan gigi tampak memanjang serta goyah",
-            jawaban1 = "Penyakit Periodintitis",
+            jawaban1 = "Penyakit Periodontitis",
             jawaban0 = "Q03"
         ),
         listpertayaan(
@@ -185,14 +188,16 @@ class lists {
     val tentangList: List<listTentang> = listOf(
         listTentang(
             iconId = R.drawable.logoss,
+            iconId2 = R.drawable.ums,
             appname = "Ibu Peri Cerita",
             desc1 = "Ibu Hamil Periksa Mandiri Cegah Karies dan Stunting Anak",
-            desc2 ="Aplikasi ini dibuat untuk pencerdasan kepada ibu hamil tentang bahaya penyakit karies gigi dan stunting anak",
-            desc3 = "Aplikasi ini tidak 100% akurat dan hanya menjadi kemungkinan saja. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berffungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\n"+
-                    "\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email perwakilan tim pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.",
+            desc2 ="Aplikasi ini dibuat untuk meningkatkan pengetahuan dan kesadaran Ibu hamil dalam menjaga kesehatan gigi dan mulut, supaya menghindari diagnosis menghindari self-diagnose dan mendeteksi dini penyakit gigi dan mulut sebelum semakin parah",
+            desc3 = "Aplikasi ini tidak 100% akurat dan dan merupakan sebuah perkiraan saja, diagnosis pastinya tetap memerlukan pemeriksaan langsung secara klinis di dokter gigi. Jika keluhan tidak kunjung sembuh segera periksakan ke dokter gigi terdekat.. Namun, terdapat usaha dalam pengembangan aplikasi ini dapat berfungsi semaksimal mungkin dalam memberikan informasi, mohon digunakan dengan bijak.\n"+
+                    "\nPihak pengembang mempersilahkan pengguna untuk memberi saran dan kritikan melalui kontra email perwakilan tim pengembang. mohon maaf yang sebesar-besarnya bila terdapat tutur kata yang kurang baik dalam aplikasi ini.\n\n"+
+                    "Terimakasih pada pihak yang terlibat : \ndrg. Ana Riolina, \ndrg. Naviatullaily Y, MMR \ndrg. Septi Handayani\n\nTim penulis : \nSyafira Alma Raudhia\nDhiya’ Nada Putri\nAlya Aqila Majid\nAmara Syifa Tifani\n\nFakultas Kedokteran Gigi Universitas Muhammadiyah Surakarta",
             desc4 = "Terimakasih, \n" +
-                    "Tim Pengembang.\n\n\n" +
-                    "CP : Riyantio84@gmail.com  ",
+                    "Tim Pengembang.\n\n\n" +"CP Peneliti : syafiraraudia@gmail.com (Alma)\n"+
+                    "CP : Riyantio84@gmail.com",
         )
     )
     val polamakanlist: List<listpolamakan> = listOf(
@@ -202,7 +207,7 @@ class lists {
             jawaban1 = "   7x  ",
             jawaban2 = "5x - 6x",
             jawaban3 = "2x - 4x",
-            jawaban4 = "   1x  ",
+            jawaban4 = "0  - 1x",
             point1 = 4,
             point2 = 3,
             point3 = 2,
@@ -215,7 +220,7 @@ class lists {
             jawaban1 = "   7x  ",
             jawaban2 = "5x - 6x",
             jawaban3 = "2x - 4x",
-            jawaban4 = "   1x  ",
+            jawaban4 = "0  - 1x",
             point1 = 4,
             point2 = 3,
             point3 = 2,
@@ -228,7 +233,7 @@ class lists {
             jawaban1 = "   7x  ",
             jawaban2 = "5x - 6x",
             jawaban3 = "2x - 4x",
-            jawaban4 = "   1x  ",
+            jawaban4 = "0  - 1x",
             point1 = 4,
             point2 = 3,
             point3 = 2,
@@ -241,7 +246,7 @@ class lists {
             jawaban1 = "   7x  ",
             jawaban2 = "5x - 6x",
             jawaban3 = "2x - 4x",
-            jawaban4 = "   1x  ",
+            jawaban4 = "0  - 1x",
             point1 = 1,
             point2 = 2,
             point3 = 3,
@@ -254,7 +259,7 @@ class lists {
             jawaban1 = "   7x  ",
             jawaban2 = "5x - 6x",
             jawaban3 = "2x - 4x",
-            jawaban4 = "   1x  ",
+            jawaban4 = "0  - 1x",
             point1 = 1,
             point2 = 2,
             point3 = 3,

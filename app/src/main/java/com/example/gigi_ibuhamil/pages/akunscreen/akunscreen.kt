@@ -90,7 +90,6 @@ fun Isi(navController: NavController) {
 
 @Composable
 fun FormItems(navController: NavController) {
-    val TAG = "AKUN STREAM"
     val context = LocalContext.current
     val db = Firebase.firestore
     val savedNama = SavedPreference.getDisplayName(context).toString()

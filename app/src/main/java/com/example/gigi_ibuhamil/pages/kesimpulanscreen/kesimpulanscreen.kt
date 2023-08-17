@@ -26,16 +26,17 @@ import androidx.navigation.NavController
 import com.example.gigi_ibuhamil.database.HistoryItem
 import com.example.gigi_ibuhamil.database.HistoryViewModel
 import com.example.gigi_ibuhamil.database.HistoryViewModelFactory
-import com.example.gigi_ibuhamil.ui.DaftarColor
 import com.example.gigi_ibuhamil.ui.gradbg
 import com.example.gigi_ibuhamil.util.SavedPreference
 import com.example.gigi_ibuhamil.util.Screen
 import com.example.gigi_ibuhamil.models.Result
-import com.google.firebase.firestore.FieldValue
+import com.example.gigi_ibuhamil.models.listpenyakit
+import com.example.gigi_ibuhamil.ui.HomeButton
+import com.example.gigi_ibuhamil.util.SuffixTransformer
+import com.example.gigi_ibuhamil.util.lists
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 
 @ExperimentalFoundationApi
 @Composable
@@ -47,6 +48,7 @@ fun KesimpulanScreen(navController: NavController) = Box(
     Column {
         KesimpulanTitle()
         Isi(navController)
+        dataInformation(navController)
     }
 }
 
@@ -61,7 +63,7 @@ fun KesimpulanTitle() {
     ) {
         Row(Modifier.padding(start = 10.dp)) {
             Text(
-                text = "Kesimpulan",
+                text = "Rangkuman Hasil Self-Screening",
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .padding(bottom = 30.dp)
@@ -118,10 +120,11 @@ fun Isi(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DaftarColor)
+                .background(Color.White)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(15.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -175,146 +178,208 @@ fun Isi(navController: NavController) {
                         value = namaController,
                         onValueChange = { namaController = it },
                         enabled = false,
-                        label = { Text("Nama", color = Color.White) },
+                        label = { Text("Nama", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = emailController,
                         onValueChange = { emailController = it },
                         enabled = false,
-                        label = { Text("E-Mail", color = Color.White) },
+                        label = { Text("E-Mail", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = diagnosisController,
                         onValueChange = { diagnosisController = it },
                         enabled = false,
-                        label = { Text("Diagnosis", color = Color.White) },
+                        label = { Text("Diagnosis", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = bmiController,
                         onValueChange = { bmiController = it },
                         enabled = false,
-                        label = { Text("BMI", color = Color.White) },
+                        label = { Text("BMI", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = perilakuController,
                         onValueChange = { perilakuController = it },
                         enabled = false,
-                        label = { Text("Perilaku Kesgilut", color = Color.White) },
+                        label = { Text("Perilaku Kesgilut", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = polaController,
                         onValueChange = { polaController = it },
                         enabled = false,
-                        label = { Text("Pola Makan", color = Color.White) },
+                        label = { Text("Pola Makan", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = tahunController,
                         onValueChange = { tahunController = it },
                         enabled = false,
-                        label = { Text("Tahun Kelahiran", color = Color.White) },
+                        label = { Text("Tahun Kelahiran", color = Color.Black) },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
                     OutlinedTextField(
                         value = usiaController,
                         onValueChange = { usiaController = it },
                         enabled = false,
-                        label = { Text("Usia Kehamilan", color = Color.White) },
+                        label = { Text("Usia Kehamilan", color = Color.Black) },
                         singleLine = true,
+                        visualTransformation = SuffixTransformer(" minggu"),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                            cursorColor = Color.White),
+                            focusedBorderColor = Color.Black,
+                            unfocusedBorderColor = Color.Black,
+                            cursorColor = Color.Black),
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(color = Color.White, fontSize = 15.sp)
+                        textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
                     )
-                    Button(onClick = {
-                      fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
-                            var ids = 0
-                            ids += 1
-                            mHistoryViewModel.insertProduct(
-                                HistoryItem(
-                                    Id = ids,
-                                    Name = namaController.text,
-                                    Email = emailController.text,
-                                    Diagnosis = diagnosisController.text,
-                                    Bmi = bmiController.text,
-                                    Perilaku = perilakuController.text,
-                                    Pola = polaController.text,
-                                    Usia = usiaController.text,
-                                    Tahun = tahunController.text
+                    Row {
+//                        Button(onClick = { /*TODO*/ }) {
+//                            Text(text = "Simpan PDF")
+//                        }
+                        Button(onClick = {
+                            fun insertIntoDB(mHistoryViewModel: HistoryViewModel) {
+                                val id = SavedPreference.getId(context = context)?.toInt()
+                                SavedPreference.setId(context,(id?.plus(1)).toString())
+                                mHistoryViewModel.insertProduct(
+                                    HistoryItem(
+                                        Id = id!!,
+                                        Name = namaController.text,
+                                        Email = emailController.text,
+                                        Diagnosis = diagnosisController.text,
+                                        Bmi = bmiController.text,
+                                        Perilaku = perilakuController.text,
+                                        Pola = polaController.text,
+                                        Usia = usiaController.text,
+                                        Tahun = tahunController.text
+                                    )
                                 )
-                            )
-                            Log.d("Id History",ids.toString())}
-                        try {
-                            resultCollection.document(emailController.text)
-                                .set(diagResult)
-                                .addOnSuccessListener {
-                                    Toast.makeText(context,
-                                        "Berhasil menyimpan hasil",
-                                        Toast.LENGTH_SHORT).show()
-                                    navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
-                                }.addOnFailureListener {
-                                    Toast.makeText(context,
-                                        "Gagal menyimpan hasil",
-                                        Toast.LENGTH_SHORT).show()
                                 }
-                        } catch (e: Exception){
-                            println("we catch something")
+                            try {
+                                resultCollection.document(emailController.text)
+                                    .set(diagResult)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context,
+                                            "Berhasil menyimpan hasil",
+                                            Toast.LENGTH_SHORT).show()
+                                        navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                                    }.addOnFailureListener {
+                                        Toast.makeText(context,
+                                            "Gagal menyimpan hasil",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                            } catch (e: Exception){
+                                println("we catch something")
+                            }
+                            insertIntoDB(mHistoryViewModel)
+                        }) {
+                            Text(text = "Back to home")
                         }
-                        insertIntoDB(mHistoryViewModel)
-                    }) {
-                        Text(text = "Back to home")
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun dataInformation(navController: NavController){
+    val ques:List<listpenyakit> = lists().penyakitllist
+    val context = LocalContext.current
+    var dialogState by remember { mutableStateOf(true) }
+
+    if(dialogState){
+        AlertDialog(
+            modifier = Modifier.clip(RoundedCornerShape(15.dp)),
+            title = {
+                Text(
+                    fontSize = MaterialTheme.typography.h5.fontSize,
+                    textAlign = TextAlign.Center,
+                    text = "Informasi tambahan"
+                )
+            },
+            onDismissRequest = {
+                dialogState = false
+            },
+            text = {
+                Column {
+                    val penyakit = SavedPreference.getDiagnosis(context = context).toString()
+                    Text(text = penyakit)
+                    when(penyakit){
+                        "Penyakit Periodontitis" -> {
+                            Text(text = ques[0].deskripsi)
+                            Text(text = ques[0].penyebab)
+                        }
+                        "Penyakit Karies Gigi" -> {
+                            Text(text = ques[1].deskripsi)
+                            Text(text = ques[1].penyebab)}
+                        "Penyakit Gingivitis" -> {
+                            Text(text = ques[2].deskripsi)
+                            Text(text = ques[2].penyebab)
+                        }
+                        "Penyakit Karies Gigi atau Periodontitis" -> Text(text = "Kemungkinan anda memiliki Penyakit Karies Gigi atau Periodontitis")
+                        "Sehat" -> Text(text = "Anda sehat")
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(HomeButton),
+                    onClick = {
+                        dialogState = false
+                    }) {
+                    Text(fontSize = 15.sp, text = "Tutup",color = Color.White,)
+                }
+            }
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.example.gigi_ibuhamil.pages.welcomescreen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +36,8 @@ import com.example.gigi_ibuhamil.util.*
 @ExperimentalFoundationApi
 @Composable
 fun WelcomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val nama = SavedPreference.getDisplayName(context = context).toString()
     Box(
         modifier = Modifier
             .background(gradbg)
@@ -45,6 +50,9 @@ fun WelcomeScreen(navController: NavController) {
             SecondMainMenu(navController)
             FeatureSection(
                 features = lists().menulist,navController)
+        }
+        if ("Guest" == nama){
+            dataGuest(navController)
         }
     }
 }
@@ -127,12 +135,12 @@ fun MainMenu(navController: NavController) {
             Column(
             ) {
                 Text(
-                    text = "Assessment",
+                    text = "Mulai Screening!",
                     style = MaterialTheme.typography.h4
                 )
                 Text(
-                    text = "Tekan Untuk Memulai Assessment",
-                    style = MaterialTheme.typography.body1
+                    text = "Tekan untuk \nmemulai self-screening \ngigi dan mulut",
+                    style = MaterialTheme.typography.body2
                 )
             }
             Image(
@@ -161,11 +169,11 @@ fun SecondMainMenu(navController: NavController) {
 
         ){
             Text(
-                text = "Modul",
+                text = "Cari Tahu!",
                 style = MaterialTheme.typography.h5
             )
             Text(
-                text = "Tekan Untuk Melihat Modul",
+                text = "Tekan untuk\nmembaca artikel \nseputar gigi dan mulut",
                 style = MaterialTheme.typography.body2
             )
         }
@@ -182,11 +190,11 @@ fun SecondMainMenu(navController: NavController) {
 
         ){
             Text(
-                text = "Video",
+                text = "Video Edukasi",
                 style = MaterialTheme.typography.h5
             )
             Text(
-                text = "Tekan Untuk Melihat Video",
+                text = "Tekan untuk \nmenonton video \nseputar gigi dan mulut",
                 style = MaterialTheme.typography.body2
             )
         }
@@ -197,7 +205,7 @@ fun SecondMainMenu(navController: NavController) {
 fun FeatureSection(features: List<featured>,navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "Fitur",
+            text = "Mari Belajar!",
             style = MaterialTheme.typography.h4,
             modifier = Modifier.padding(15.dp)
         )
@@ -308,5 +316,89 @@ fun FeaturedItems(feature: featured,navController: NavController) {
                 tint = Color.White
             )
         }
+    }
+}
+@Composable
+fun dataGuest(navController: NavController){
+    val context = LocalContext.current
+    var dialogState by remember { mutableStateOf(true) }
+    val nama = SavedPreference.getDisplayName(context = context).toString()
+    val usia = SavedPreference.getUsia(context = context).toString()
+    val tahun = SavedPreference.getTahun(context = context).toString()
+    var namaController by remember { mutableStateOf(TextFieldValue(nama)) }
+    var usiaController by remember { mutableStateOf(TextFieldValue(usia)) }
+    var tahunController by remember { mutableStateOf(TextFieldValue(tahun)) }
+
+    if(dialogState){
+        AlertDialog(
+            modifier = Modifier.clip(RoundedCornerShape(15.dp)),
+            title = {
+                Text(
+                    fontSize = MaterialTheme.typography.h5.fontSize,
+                    textAlign = TextAlign.Center,
+                    text = "Masukkan data pribadi anda"
+                )
+            },
+            onDismissRequest = {
+                dialogState = false
+            },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = namaController,
+                        onValueChange = { namaController = it },
+                        label = { Text("Nama", color = Color.Blue) },
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Blue,
+                            unfocusedBorderColor = Color.Blue,
+                            cursorColor = Color.Blue),
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = TextStyle(color = Color.Blue, fontSize = 15.sp)
+                    )
+                    OutlinedTextField(
+                        value = usiaController,
+                        onValueChange = { usiaController = it },
+                        label = { Text("Usia Kehamilan", color = Color.Blue) },
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Blue,
+                            unfocusedBorderColor = Color.Blue,
+                            cursorColor = Color.Blue),
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = TextStyle(color = Color.Blue, fontSize = 15.sp)
+                    )
+                    OutlinedTextField(
+                        value = tahunController,
+                        onValueChange = { tahunController = it },
+                        label = { Text("Tahun Lahir", color = Color.Blue) },
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Blue,
+                            unfocusedBorderColor = Color.Blue,
+                            cursorColor = Color.Blue),
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = TextStyle(color = Color.Blue, fontSize = 15.sp)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(HomeButton),
+                    onClick = {
+                        SavedPreference.setDisplayName(context,namaController.text)
+                        SavedPreference.setUsia(context,usiaController.text)
+                        SavedPreference.setTahun(context,tahunController.text)
+                        navController.navigate(Screen.WelcomeScreen.route){popUpTo(0)}
+                        Toast.makeText(context, "Berhasil mengupdate data", Toast.LENGTH_SHORT).show()
+                        dialogState = false
+                    }) {
+                    Text(fontSize = 15.sp, text = "Simpan",color = Color.White,)
+                }
+            }
+        )
     }
 }

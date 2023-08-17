@@ -1,5 +1,7 @@
 package com.example.gigi_ibuhamil.database
 
+import androidx.annotation.NonNull
+import androidx.lifecycle.LiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

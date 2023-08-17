@@ -79,7 +79,7 @@ fun Isi() {
 @Composable
 fun EbookItems() {
     val context = LocalContext.current
-    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/zhawF9_lpM0")) }
+    val intent1 = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://drive.google.com/drive/u/0/folders/1vsouDmNBY6UGXDtC035YBjEyx9PYZRZk")) }
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)
@@ -88,7 +88,7 @@ fun EbookItems() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(DaftarColor)
+                .background(Color.White)
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -97,6 +97,12 @@ fun EbookItems() {
                     .padding(15.dp)
             ) {
                 Column() {
+                    Text(
+                        text = "Silahkan baca modul yang sudah disediakan oleh tim dengan menekan tombol dibawah ini.",
+                        textAlign = TextAlign.Left,
+                        fontSize = 15.sp,
+                        color = Color.Black,
+                    )
                     Button(
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(YesButton),
@@ -109,7 +115,7 @@ fun EbookItems() {
                         )
                     }
                 }
-                ComposePDFViewer()
+                //ComposePDFViewer()
             }
         }
     }

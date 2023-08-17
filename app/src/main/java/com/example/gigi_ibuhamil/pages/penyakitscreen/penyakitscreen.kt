@@ -5,6 +5,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +68,9 @@ fun PenyakitTitle(navController: NavController) {
             Text(
                 text = "Daftar Penyakit",
                 style = MaterialTheme.typography.h4,
-                modifier = Modifier.padding(bottom = 30.dp).weight(3f)
+                modifier = Modifier
+                    .padding(bottom = 30.dp)
+                    .weight(3f)
             )
         }
     }
@@ -123,7 +127,9 @@ fun Penyakititems(item: listpenyakit) {
             }
         ){
             Surface(
-                modifier = Modifier.background(DaftarColor).fillMaxSize()
+                modifier = Modifier
+                    .background(DaftarColor)
+                    .fillMaxSize()
             ) {
                 Column(
                     modifier = Modifier
@@ -136,7 +142,7 @@ fun Penyakititems(item: listpenyakit) {
                             .fillMaxHeight()
                     ) {
                         Text(
-                            text = item.id + " - " + item.namaPenyakit,
+                            text = item.namaPenyakit,
                             fontSize = 25.sp,
                             color = Color.White,
                             textAlign = TextAlign.Left,
@@ -172,6 +178,7 @@ fun Penyakititems(item: listpenyakit) {
                                 text = "\nGejala :",
                                 fontSize = 25.sp
                             )
+                            Image(painter = painterResource(id = item.gambar1), contentDescription = "gambar penyakit 1")
                             Text(
                                 text = item.gejala,
                                 fontSize = 20.sp

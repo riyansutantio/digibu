@@ -12,7 +12,7 @@ interface HistoryDatabaseDao{
     @Query("SELECT * FROM history WHERE Id = :id")
     fun getById(id: Int): HistoryItem?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(item:HistoryItem)
 
     @Update
