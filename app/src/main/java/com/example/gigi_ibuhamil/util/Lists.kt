@@ -9,95 +9,131 @@ class lists {
         listpenyakit(
             id = "P01",
             namaPenyakit = "Karies Gigi",
-            deskripsi = "Sering disebut dengan gigi berlubang merupakan proses remineralisasi dan demineraslisasi mineral-mineral penyusun "+
-                    "gigi serta ketidakseimbangan antara penyusunan dan pembuangan mineral gigi.",
-            gejala = "Sakit gigi \n" +
-                    "Gigi terasa ngilu \n" +
-                    "Sakit gigi sampai pusing",
-            penyebab = "makanan yang manis, lengket, berkarbohidrat, makanan asam  dan  mengosok "+
-                    "gigi dengan metode dan frekuensi yang salah.",
-            penanganan = "Berkumur dengan air garam dan meminum obat penahan nyeri (ponstan, paracetamol, dll)",
-            pencegahan = "Sikat gigi teratur serta menggunakan metode dan frekuensi yang baik.",
-            perawatan = "Pembersihan gigi, penambalan gigi dan perawatan saluran akar gigi.",
-            gambar1 = R.drawable.ums
+            deskripsi = "Lubang pada gigi karena proses demineralisasi struktur gigi oleh asam yang dihasilkan oleh mikroorganisme yang ditandai adanya kavitas (lubang) pada gigi. \n\n" +
+                    "Karies gigi pada ibu hamil dipengaruhi oleh peningkatan hormon progesterone selama kehamilan yang menyebabkan penurunan plasma bikarbonat dan memicu pH saliva (air liur) menjadi asam. pH saliva (air liur) berperan untuk menjaga stabilitas email gigi, jika mengalami penurunan pH akan berisiko meningkatkan pertumbuhan bakteri kariogenik. Hal tersebut membuat ibu hamil lebih rentan mengalami karies. \n\n" +
+                    "*pH\uF0E0 tingkat keasaman \n" +
+                    "*email \uF0E0 bagian terluar dan terkuat dari gigi yang dapat dilihat \n",
+            gejala = "a. Sakit gigi dan nyeri \n" +
+                    "b. Sensitivitas gigi \n" +
+                    "c. Terlihat adanya lubang di gigi\n" +
+                    "d. Ada noda coklat, hitam, atau putih pada permukaan gigi\n" +
+                    "e. Sakit apabila untuk menggigit",
+            //pengobatan
+            penyebab = "Pengobatan yang dapat dilakukan untuk menangani gigi yang mengalami karies, diantaranya:\n" +
+                    "a. Penambalan pada area yang berlubang \n" +
+                    "b. Pembuatan mahkota gigi buatan jika lubang pada gigi cukup besar \n" +
+                    "c. Perawatan saluran akar apabila kerusakan gigi telah mencapai syaraf \n" +
+                    "d. Pencabutan, merupakan pilihan terakhir apabila gigi sudah dalam kondisi yang parah dan pasien menghendaki untuk dicabut.\n",
+            //komplikasi
+            penanganan = "Apabila karies gigi tidak segera ditangani, dikahawatirkan akan menimbulkan komplikasi lain, diantaranya:\n" +
+                    "a. Nyeri berkepanjangan \n" +
+                    "b. Abses gigi dan pembengkakan \n" +
+                    "c. Kesulitan saat makan \n" +
+                    "d. Kehilangan gigi yang dapat memicu pergeseran gigi lan serta mempengaruhi penampilan\n",
+            pencegahan = "Perawatan mendasar pencegahan karies adalah dengan menggosok gigi secara teratur 2x sehari (setelah sarapan dan sebelum tidur). Flossing atau menggunakan benang gigi juga direkomendasikan untuk menghilangkan sisa makanan diantara sela-sela gigi yang sulit diraih sikat gigi. \n\n" +
+                    "Pilihlah sikat gigi yang kecil dan lembut agar dapat menjangkau area gigi paling belakang, tetap lakukan kontrol rutin setiap 6 bulan sekali untuk langkah pencegahan yang paling optimal \n\n" +
+                    "Untuk ibu hamil, disarankan untuk mengkonsumsi makanan yang bergizi dan menyikat gigi dengan pasta gigi berfluoride untuk menjaga kebersihan gigi dan memperkuat email gigi. \n",
+            perawatan = "",
+            gambar1 = R.drawable.penyakit1
         ),
         listpenyakit(
             id = "P02",
             namaPenyakit = "Gingivitis",
-            deskripsi = "Gusi mengalami pembengkakan/peradangan yang disebabkan oleh sisa makanan "+
-                    "yang mengeras/karang gigi dan bakteri.",
-            gejala = "Berdarah ketika menyikat gigi   \n" +
-                    "Gusi mengalami pembekakan  \n"+
-                    "Gusi terasa sakit \n" +
-                    "Gusi berwarna merah sampai kebiruan",
-            penyebab = "Gingivitis disebabkan oleh bakteri/ karang gigi.",
-            penanganan = "Meminum obat anti radang",
-            pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat.",
-            perawatan = "Scaling dan root planning (pembersihan karang gigi) dab pemberian "+
-                    "obat-obatan anti radang, antibiotik, sampai operasi gusi.",
-            gambar1 = R.drawable.ums
+            deskripsi = "Gingivitis (radang gusi) adalah peradangan yang ditandai dengan pembengkakan dan kemerahan pada gusi sekitar pangkal gigi. Gingivitis saat kehamilan (gingivitis gradiraum) terjadi akibat perubahan hormonal berupa peningkatan konsentrasi hormon estrogen dan progesteron yang meningkat pada usia 8-9 bulan kehamilan dan kembali normal setelah melahirkan. ",
+            gejala = "Gingivitis selama kehamilan ditandai dengan:\n" +
+                    "a. Pembengkakan pada ujung gusi yang melekat pada pangkal gigi \n" +
+                    "b. Gusi mudah berdarah \n" +
+                    "c. Terdapat pembengkan dan warna kemerahan \n",
+            //pengobatan
+            penyebab = "a. Scaling -> tindakan penghilangan karang gigi pada permukaan gigi, sebagai upaya menjaga keberishan rongga mulut. Perawatan pada ibu hamil direkomendasikan pada usia kehamilan trisemester ke-2 ",
+            //komplikasi
+            penanganan = "Apabila gingivitis tidak ditangani, maka dapat berpotensi peradangan yang semakin parah dan menyebar ke jaringan pendukung gigi. ",
+            pencegahan = "Perawatan mendasar pencegahan gingivitis adalah dengan menggosok gigi secara teratur 2x sehari (setelah sarapan dan sebelum tidur). Flossing atau menggunakan benang gigi juga direkomendasikan untuk menghilangkan sisa makanan diantara sela-sela gigi yang sulit diraih sikat gigi. \n\n" +
+                    "Pilihlah sikat gigi yang kecil dan lembut agar dapat menjangkau area gigi paling belakang, tetap lakukan kontrol rutin setiap 6 bulan sekali ke dokter gigi untuk langkah pencegahan yang paling optimal.\n\n" +
+                    "Untuk ibu hamil, disarankan untuk mengkonsumsi makanan yang bergizi dan menyikat gigi dengan pasta gigi berfluoride untuk menjaga kebersihan gigi dan memperkuat email gigi.\n",
+            perawatan = "",
+            gambar1 = R.drawable.penyakit2
         ),
         listpenyakit(
             id = "P03",
             namaPenyakit = "Periodontitis",
-            deskripsi = "Peradangan pada jaringan penyokong gigi.",
-            gejala = "Gigi terasa ngilu \n" +
-                    "Gigi terasa ngilu yang menyebar  \n"+
-                    "Gigi terasa ngilu saat mengunyah \n"+
-                    "Gigi terlihat memanjang \n" +
-                    "Gigi goyah",
-            penyebab = "Trauma gigitan, tambalan berlebih, usia lanjut, karang gigi, karies gigi.",
-            penanganan = "Meminum obat penahan nyeri dan anti radang",
-            pencegahan = "Menggosokgigi dengan frekuensi dan teknik yang tepat dan scaling teratur setidaknya 6 bulan sekali.",
-            perawatan = "Scaling dan root Planning (Pembersihan karang gigi) serta pemberian obat-obatan.",
-            gambar1 = R.drawable.ums
+            deskripsi = "Merupakan penyakit periodontal (penyokong gigi) yang diakibatkan oleh peningkatan hormon estrogen selama kehamilan. Kondisi ini ditandai dengan peradangan pada gusi sebagai respon tubuh terhadap bakteri yang terkumpul di gigi dan sekitarnya. \n\n" +
+                    "Periodontitis terjadi akibat kumpulan plak di gigi, plak tersebut dapat berasal dari sisa makanan yang tidak dibersihkan dan higenitas rongga mulut yang buruk. Plak yang mengeras akan menjadi kalkulus (karang gigi), semakin banyak plak dan kalkulus di gigi, maka resiko kerusakan pada penyokong gigi semakin tinggi. \n\n" +
+                    "Faktor yang memeprburuk penyakit periodontal dimasa kehamilan adalah plak, usia kehamilan, karies, usia ibu hamil, tingkat pendidikan dan pengetahuan, frekuensi waktu menyikat gigi, dan kebersihan rongga mulut. \n",
+            gejala = "Gejala periodontitis secara umum ditandai dengan:\n" +
+                    "a. Pembengkakan gusi \n" +
+                    "b. Gusi memerah, gelap, atau keunguan\n" +
+                    "c. Gusi mudah berdaraj \n" +
+                    "d. Bau mulut \n" +
+                    "e. Gigi yang goyang \n" +
+                    "f. Terbentung rongga natara gusi dan gigi \n",
+            //Pengobatan
+            penyebab = "Pengobatan yang dilakukan untuk kondisi periodontitis:\n" +
+                    "a. Scaling \n" +
+                    "   Tindakan penghilangan karang gigi pada permukaan gigi, sebagai upaya perawatan kesehatan rongga mulut. \n" +
+                    "b. Root planning \n" +
+                    "   Upaya penghalusan permukaan akar gigi untuk mengurangi bakteri dan hal lain yang memicu peradanagn pada gusi. \n" +
+                    "c. Pemberian antibiotik \n" +
+                    "   Pemberian antibiotik ditujukan untuk mengendalika infeksi yang terjadi. \n",
+            //komplikasi
+            penanganan = "Jika terus dibiarkan, periodontitis menimbulkan komplikasi lain, diantaranya:\n" +
+                    "a. Abses gigi (kumpulan nanah)\n" +
+                    "b. Kerusakan jaringan pendukung gigi \n" +
+                    "c. Gigi goyang yang memicu gigi tanggal \n",
+            pencegahan = "Perawatan mendasar pencegahan periodontitis adalah dengan menggosok gigi secara teratur 2x sehari (setelah sarapan dan sebelum tidur). Flossing atau menggunakan benang gigi juga direkomendasikan untuk menghilangkan sisa makanan diantara sela-sela gigi yang sulit diraih sikat gigi. \n\n" +
+                    "Pilihlah sikat gigi yang kecil dan lembut agar dapat menjangkau area gigi paling belakang, tetap lakukan kontrol rutin setiap 6 bulan sekali ke dokter gigi untuk langkah pencegahan yang paling optimal.\n\n" +
+                    "Untuk ibu hamil, disarankan untuk mengkonsumsi makanan yang bergizi dan menyikat gigi dengan pasta gigi berfluoride untuk menjaga kebersihan gigi dan memperkuat email gigi.\n",
+            perawatan = "",
+            gambar1 = R.drawable.penyakit3
         ),
     )
     val gejalalist: List<listgejala> = listOf(
         listgejala(
-            id = "G01",
-            namagejala = "Sakit gigi"
+            id = "Kurang Tepat",
+            namagejala = "Perilaku menjaga kesehatan gigi dan mulut anda masih buruk, cobalah untuk melakukan perawatan kesehatan gigi dan mulut secara mandiri untuk merawatan kondisi rongga mulut selama kehamilan. \n" +
+                    "a.\tLakukan sikat gigi 2x sehari setelah sarapan dan sebelum tidur dan menggunakan dental floss untuk membersihkan sela-sela gigi. Pilihlah sikat gigi yang kecil dan lembut agar dapat menggapai bagian belakang gigi. \n" +
+                    "b.\tGunakan pasta gigi berfloride untuk memperkuat email gigi. \n" +
+                    "c.\tLakukan kontrol rutin ke dokter gigi setiap 6 bulan sekali. Perawatan gigi selama kehamilan direkomendasikan saat usia kehamilan di trimester ke-2 \n" +
+                    "d.\tUsahakan berkumur setiap setelah muntah, untuk menghilangkan sisa zat asam dan sisa makanan di rongga mulut yang dapat memicu masalah gigi dan mulut\n" +
+                    "e.\tPerbanyak minum air putih dan kurangi makanan manis \n" +
+                    "•\tMenjaga kesehatan gigi dan mulut selama kehamilan sangatlah penting, penyakit rongga mulut dapat mengakibatkan konsumsi makanan yang berkurang dan berisiko pada perkembangan janin. \n" +
+                    "•\tBagaimana cara menyikat gigi dengan benar? Silakan untuk cek di fitur video ya! "
         ),
         listgejala(
-            id = "G02",
-            namagejala = "Gigi terasa ngilu"
+            id = "Baik",
+            namagejala = "Perilaku menjaga kesehatan gigi anda telah benar! Tetap pertahankan. Untuk edukasi lebih lanjut silakan membuka fitur video dan modul yaa!"
         ),
         listgejala(
-            id = "G03",
-            namagejala = "Sakit gigi sampai pusing "
+            id = "Kurang Tepat",
+            namagejala = "Perilaku menjaga kesehatan gigi dan mulut anda masih buruk, cobalah untuk melakukan perawatan kesehatan gigi dan mulut secara mandiri untuk merawatan kondisi rongga mulut selama kehamilan. \n" +
+                    "f.\tLakukan sikat gigi 2x sehari setelah sarapan dan sebelum tidur dan menggunakan dental floss untuk membersihkan sela-sela gigi. Pilihlah sikat gigi yang kecil dan lembut agar dapat menggapai bagian belakang gigi. \n" +
+                    "g.\tGunakan pasta gigi berfloride untuk memperkuat email gigi. \n" +
+                    "h.\tLakukan kontrol rutin ke dokter gigi setiap 6 bulan sekali. Perawatan gigi selama kehamilan direkomendasikan saat usia kehamilan di trimester ke-2 \n" +
+                    "i.\tUsahakan berkumur setiap setelah muntah, untuk menghilangkan sisa zat asam dan sisa makanan di rongga mulut yang dapat memicu masalah gigi dan mulut\n" +
+                    "j.\tPerbanyak minum air putih dan kurangi makanan manis \n" +
+                    "•\tMenjaga kesehatan gigi dan mulut selama kehamilan sangatlah penting, penyakit rongga mulut dapat mengakibatkan konsumsi makanan yang berkurang dan berisiko pada perkembangan janin. \n" +
+                    "•\tBagaimana cara menyikat gigi dengan benar? Silakan untuk cek di fitur video ya!\n"
         ),
         listgejala(
-            id = "G04",
-            namagejala = "Berdarah ketika menyikat gigi"
+            id = "Baik",
+            namagejala = "Perilaku menjaga kesehatan gigi anda telah benar! Tetap pertahankan. Untuk edukasi lebih lanjut silakan membuka fitur video dan modul yaa!"
         ),
         listgejala(
-            id = "P05",
-            namagejala = "Gusi mengalami pembekakan"
+            id = "Kekurangan berat badan",
+            namagejala = "•\tBMI (body mass index) memiliki rentan ideal di angka 18,5-25. Jika BMI anda kurang <18,5 terdapat kemungkinan jika asupan makan yang kurang yang bisa jadi diakibatkan karena kehilangan nafsu makan selama kehamilan. \n" +
+                    "•\tSelama kehamilan, disarankan untuk menjaga BMI dalan range normal untuk mencegah risiko bayi lahir prematur, bayi berat lahir rendah, dan keguguran. \n" +
+                    "•\tSegera konsultasikan dengan bidan terdekat untuk memantau tumbuh kembang bayi dalam kandungan dan diskusikan terkait pola makan agar BMI kembali normal. \n"
         ),
         listgejala(
-            id = "G06",
-            namagejala = "Gusi terasa sakit"
+            id = "Normal",
+            namagejala = "•\tBMI anda sudah berada dalam kondisi yang normal, tetap pertahankan dan tetap mengkonsumi makanan yang bergizi. "
         ),
         listgejala(
-            id = "G07",
-            namagejala = "Gusi berwarna merah sampai kebiruan"
-        ),
-        listgejala(
-            id = "G08",
-            namagejala = "Gigi terasa ngilu yang menyebar"
-        ),
-        listgejala(
-            id = "G09",
-            namagejala = "Gigi terasa ngilu saat mengunyah"
-        ),
-        listgejala(
-            id = "G10",
-            namagejala = "Gigi terlihat memanjang"
-        ),
-        listgejala(
-            id = "G11",
-            namagejala = "Gigi goyah"
-        ),
+            id = "Kelebihan berat badan",
+            namagejala = "•\tJika BMI anda >25 maka anda dikategorikan kelebihan berat badan. Hal ini dapat dipicu karena pertumbuhan janin dalam kandungan, namun tetap disarankan tetap dalam batasan yang normal (18,5-25). \n" +
+                    "•\tPemicu terjadinya kelebihan berat badan diantaranya adalah konsumsi makanan berkalori tinggi, dan kurangnya aktivitas fisik. \n" +
+                    "•\tIbu hamil yang mengalami kelebihan berat badan lebih berisiko mengalamai keguguran, preeklamsia, persalinaan yang diinduksi, dan permasalahan saat menyusui. \n"
+        )
     )
     val petunjuklist: List<listpetunjuk> = listOf(
         listpetunjuk(

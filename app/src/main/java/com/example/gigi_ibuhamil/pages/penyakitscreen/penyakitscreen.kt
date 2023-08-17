@@ -167,7 +167,7 @@ fun Penyakititems(item: listpenyakit) {
                             modifier = Modifier.padding(5.dp)
                         ) {
                             Text(
-                                text = "\nDeskripsi :",
+                                text = "\nDeskripsi",
                                 fontSize = 25.sp
                             )
                             Text(
@@ -175,7 +175,7 @@ fun Penyakititems(item: listpenyakit) {
                                 fontSize = 20.sp
                             )
                             Text(
-                                text = "\nGejala :",
+                                text = "\nGejala",
                                 fontSize = 25.sp
                             )
                             Image(painter = painterResource(id = item.gambar1), contentDescription = "gambar penyakit 1")
@@ -184,7 +184,7 @@ fun Penyakititems(item: listpenyakit) {
                                 fontSize = 20.sp
                             )
                             Text(
-                                text = "\nPenyebab Penyakit :",
+                                text = "\nPengobatan",
                                 fontSize = 25.sp
                             )
                             Text(
@@ -192,7 +192,7 @@ fun Penyakititems(item: listpenyakit) {
                                 fontSize = 20.sp
                             )
                             Text(
-                                text = "\nPenanganan Pertama Oleh Pasien :",
+                                text = "\nKomplikasi",
                                 fontSize = 25.sp
                             )
                             Text(
@@ -200,19 +200,11 @@ fun Penyakititems(item: listpenyakit) {
                                 fontSize = 20.sp
                             )
                             Text(
-                                text = "\nLangkah Pencegahan :",
+                                text = "\nLangkah Pencegahan",
                                 fontSize = 25.sp
                             )
                             Text(
                                 text = item.pencegahan,
-                                fontSize = 20.sp
-                            )
-                            Text(
-                                text = "\nPerawatan Oleh Dokter :",
-                                fontSize = 25.sp
-                            )
-                            Text(
-                                text =  item.perawatan,
                                 fontSize = 20.sp
                             )
                         }
